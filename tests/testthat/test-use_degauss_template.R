@@ -1,0 +1,13 @@
+test_that("use_degauss_template_works", {
+  path <- fs::path_join(c(fs::path_wd(), 'tests/test_template'))
+  fs::dir_create(path)
+  use_degauss_template(path = path)
+  testthat::expect_true(fs::file_exists('.Rprofile'))
+  testthat::expect_true(fs::file_exists('Dockerfile.txt'))
+  testthat::expect_true(fs::file_exists('Makefile.txt'))
+  testthat::expect_true(fs::file_exists('README.md'))
+  testthat::expect_true(fs::file_exists('renv.lock'))
+  testthat::expect_true(fs::file_exists('test/my_address_file_geocoded.csv'))
+  testthat::expect_true(fs::file_exists('test_template.R'))
+  fs::dir_delete(path)
+})
