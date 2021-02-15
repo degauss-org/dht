@@ -141,7 +141,7 @@ opt <- docopt::docopt(doc)
 
 message('
 reading input file...')
-d <- read_lat_lon_csv(opt$filename, sf = T, project_to_crs = 5072))
+d <- read_lat_lon_csv(opt$filename, sf = T, project_to_crs = 5072)
 
 check_for_column(d$raw_data, 'lat', d$raw_data$lat)
 
