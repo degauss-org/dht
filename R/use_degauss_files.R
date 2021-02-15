@@ -124,7 +124,7 @@ use_degauss_rscript <- function(name) {
       "
 #!/usr/local/bin/Rscript
 
-greeting(geomarker_name = {name}, version = '0.1', description = 'short description goes here')
+greeting(geomarker_name = '{name}', version = '0.1', description = 'short description goes here')
 
 library(dplyr)
 library(tidyr)
@@ -165,7 +165,7 @@ d <- d %>%
 write_geomarker_file(d = d$d,
                      raw_data = d$raw_data,
                      filename = opt$filename,
-                     geomarker_name = {name},
+                     geomarker_name = '{name}',
                      version = '0.1')"
     )
   writeLines(rscript, glue::glue('{name}.R'))
