@@ -4,10 +4,13 @@
 \alias{read_lat_lon_csv}
 \title{read in and format input file for DeGAUSS container}
 \usage{
-read_lat_lon_csv(filename, sf_out = FALSE, project_to_crs = NULL)
+read_lat_lon_csv(filename, nest_df = FALSE, sf_out = FALSE,
+  project_to_crs = NULL)
 }
 \arguments{
 \item{filename}{name of input file, probably opt$filename if inside container}
+
+\item{nest_df}{logical. If TRUE, data is nested on lat/lon. Defaults to FALSE.}
 
 \item{sf_out}{logical. If TRUE, data is converted as an sf object. Defaults to FALSE.}
 
