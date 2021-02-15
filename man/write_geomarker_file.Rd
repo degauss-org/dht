@@ -4,12 +4,14 @@
 \alias{write_geomarker_file}
 \title{write geomarker output to file}
 \usage{
-write_geomarker_file(d, raw_data, filename, geomarker_name, version)
+write_geomarker_file(d, raw_data = NULL, filename, geomarker_name,
+  version)
 }
 \arguments{
 \item{d}{input nest on .row with added geomarker column(s)}
 
-\item{raw_data}{original unnested input data}
+\item{raw_data}{original unnested input data, defaults to NULL (for use when
+nest_df = FALSE in read_lat_lon_csv)}
 
 \item{filename}{name of input file, probably opt$filename if inside container}
 
