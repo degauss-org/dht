@@ -1,9 +1,18 @@
 # Dockerfile
 use_degauss_dockerfile <- function(name,
-                           base_image = 'rocker/r-ver:3.6.1',
+                           from = c('r-ver', 'verse', 'shinyverse', 'spatial'),
+                           r_version = paste(getRversion(), sep = '.'),
                            renv_version = '0.8.3-81') {
+
+  r_version <- paste(getRversion(), sep = '.')
+  if (r_version < "4.0.0") {
+    message("Your R version is less than 4.0.0.")
+    ans <- readline("Would you like to use 4.0.0 for this Dockerfile? (y/n)")
+    if (ans %in% c("", "y", "Y")) r_version <- "4.0.0"
+  }
+
   dockerfile <- glue::glue(
-    "FROM {base_image}
+    "FROM rocker/{from[1]}:{r_version}
 
     # install required version of renv
     RUN R --quiet -e 'install.packages('remotes', repos = 'https://cran.rstudio.com')'
@@ -13,14 +22,15 @@ use_degauss_dockerfile <- function(name,
 
     WORKDIR /app
 
-    RUN apt-get update \
-    && apt-get install -yqq --no-install-recommends \
-    libgdal-dev=2.1.2+dfsg-5 \
-    libgeos-dev=3.5.1-3 \
-    libudunits2-dev=2.2.20-1+b1 \
-    libproj-dev=4.9.3-1 \
+    RUN apt-get update \\\
+    && apt-get install -yqq --no-install-recommends \\\
+    libgdal-dev=2.1.2+dfsg-5 \\\
+    libgeos-dev=3.5.1-3 \\\
+    libudunits2-dev=2.2.20-1+b1 \\\
+    libproj-dev=4.9.3-1 \\\
     && apt-get clean
 
+    ENV CRAN=https://packagemanager.rstudio.com/all/__linux__/focal/latest
     COPY renv.lock .
     RUN R --quiet -e 'renv::restore()'
 
@@ -31,52 +41,12 @@ use_degauss_dockerfile <- function(name,
 
     ENTRYPOINT ['/app/{name}.R']"
   )
-  writeLines(dockerfile, "Dockerfile.txt")
+  writeLines(dockerfile, "Dockerfile")
 }
 
-# Makefile
+# makefile
 use_degauss_makefile <- function() {
-  makefile <- glue::glue(
-    '
-    REGISTRY_HOST=docker.io
-    USERNAME=degauss
-    NAME=$(shell basename "$(CURDIR)")
-    IMAGE=$(REGISTRY_HOST)/$(USERNAME)/$(NAME)
-
-    .PHONY: build test shell release clean
-
-    build:
-    docker build -t $(IMAGE) .
-
-    test:
-    docker run --rm -v "${{PWD}}/test":/tmp $(IMAGE) my_address_file_geocoded.csv
-
-    shell:
-    docker run --rm -it --entrypoint=/bin/bash -v "${{PWD}}/test":/tmp $(IMAGE)
-
-    release:
-    ifndef VERSION
-           $(error VERSION is not set. Usage: "make release VERSION=X.X")
-    endif
-    ifndef DOCKER_USERNAME
-           $(error DOCKER_USERNAME is not set)
-    endif
-    ifndef DOCKER_PAT
-           $(error DOCKER_PAT is not set)
-    endif
-          git commit -am "Release for image version $(VERSION)" --allow-empty
-          git tag -a $(VERSION) -m "${{VERSION}}"
-          git push origin ${{VERSION}}
-          git push
-          echo "${{DOCKER_PAT}}" | docker login -u "${{DOCKER_USERNAME}}" --password-stdin
-          docker tag ${{IMAGE}}:latest ${{IMAGE}}:${{VERSION}}
-          docker push ${{IMAGE}}:${{VERSION}}
-          docker push ${{IMAGE}}:latest
-
-    clean:
-          docker system prune -f
-    ')
-    writeLines(makefile, "Makefile.txt")
+  writeLines(makefile, 'Makefile')
 }
 
 # README
@@ -124,7 +94,7 @@ use_degauss_rscript <- function(name) {
       "
 #!/usr/local/bin/Rscript
 
-greeting(geomarker_name = '{name}', version = '0.1', description = 'short description goes here')
+dht::greeting(geomarker_name = '{name}', version = '0.1', description = 'short description goes here')
 
 library(dplyr)
 library(tidyr)
@@ -141,9 +111,10 @@ opt <- docopt::docopt(doc)
 
 message('
 reading input file...')
-d <- read_lat_lon_csv(opt$filename, sf = T, project_to_crs = 5072)
+d <- dht::read_lat_lon_csv(opt$filename, nest_df = T, sf = T, project_to_crs = 5072)
 
-check_for_column(d$raw_data, 'lat', d$raw_data$lat)
+dht::check_for_column(d$raw_data, 'lat', d$raw_data$lat)
+dht::check_for_column(d$raw_data, 'lat', d$raw_data$lat)
 
 ## function for creating a {name} based on a single sf point
 get_{name} <- function(query_point) {{
@@ -183,7 +154,7 @@ use_degauss_dockerignore <- function(name) {
     !/{name}.rds
     "
   )
-  writeLines(dockerignore, '.dockerignore.txt')
+  writeLines(dockerignore, '.dockerignore')
 }
 
 # .gitignore
@@ -194,7 +165,7 @@ use_degauss_gitignore <- function() {
   *.qs
     "
   )
-  writeLines(gitignore, '.gitignore.txt')
+  writeLines(gitignore, '.gitignore')
 }
 
 # tests folder and sample address file

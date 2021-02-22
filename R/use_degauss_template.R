@@ -40,7 +40,6 @@ use_degauss_template <- function(path = fs::path_wd(),
   use_degauss_gitignore()
   use_degauss_tests(path)
   usethis::use_gpl3_license()
-  renv::init(project = path, restart = FALSE)
 
   return(invisible(path))
 }
