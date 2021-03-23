@@ -2,7 +2,9 @@
 
 export("%>%")
 export(check_dates)
+export(check_end_after_start_date)
 export(check_for_column)
+export(expand_dates)
 export(greeting)
 export(qlibrary)
 export(read_lat_lon_csv)

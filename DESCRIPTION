@@ -17,7 +17,7 @@ License: GPL-3
 Encoding: UTF-8
 LazyData: true
 Roxygen: list(markdown = TRUE)
-RoxygenNote: 6.1.1
+RoxygenNote: 7.1.1
 Suggests: 
     testthat
 Imports: 
@@ -31,6 +31,7 @@ Imports:
     fs (>= 1.5.0),
     renv (>= 0.8.3),
     withr (>= 2.2.0),
-    usethis (>= 1.6.1)
+    usethis (>= 1.6.1),
+    purrr (>= 0.3.4)
 Depends: 
     R (>= 2.10)

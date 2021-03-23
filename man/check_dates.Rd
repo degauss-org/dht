@@ -16,8 +16,8 @@ reformatted vector of dates, or an error if dates could not be reformatted
 check format of dates from DeGUASS container input file
 }
 \details{
-ISO formatted dates (e.g., "%Y-%m-%d" or 2021-01-01) will stay the same
-U.S. standard slash formatted dates (common to Microsoft Excel; e.g., "%m/%d/%y" or 1/1/21)
+ISO formatted dates (e.g., "\%Y-\%m-\%d" or 2021-01-01) will stay the same
+U.S. standard slash formatted dates (common to Microsoft Excel; e.g., "\%m/\%d/\%y" or 1/1/21)
 will be reformatted to ISO format
 Any input not recognized by one of the two above formats will cause an error and
 the user will be instructed to manually reformat their dates.

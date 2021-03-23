@@ -4,8 +4,7 @@
 \alias{write_geomarker_file}
 \title{write geomarker output to file}
 \usage{
-write_geomarker_file(d, raw_data = NULL, filename, geomarker_name,
-  version)
+write_geomarker_file(d, raw_data = NULL, filename, geomarker_name, version)
 }
 \arguments{
 \item{d}{input nest on .row with added geomarker column(s)}
