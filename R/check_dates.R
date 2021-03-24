@@ -50,3 +50,46 @@ check_dates <- function(date) {
   }
 }
 
+#' check that end_date occurs after start_date
+#'
+#' @export
+#' @param start_date vector of start dates
+#' @param end_date vector of end dates
+#' @examples
+#' \dontrun{
+#' start_date <- check_dates(c('1/1/21', '1/2/21', '1/3/21'))
+#' end_date <- check_dates(c('1/7/21', '1/8/21', '1/9/20'))
+#' check_end_after_start_date(start_date, end_date)
+#' }
+check_end_after_start_date <- function(start_date, end_date) {
+  check_date_order <- end_date > start_date
+  if (FALSE %in% check_date_order) {
+    row_num <- which(!check_date_order)
+    cli::cli_alert_danger('end_date occurs before start_date in these rows: {row_num}')
+    stop(call. = FALSE)
+  }
+}
+
+
+#' expand dates between start_date and end_date
+#'
+#' @export
+#' @param d data.frame or tibble with columns called 'start_date' and 'end_date'
+#' @param by time interval to expand dates (e.g., 'day', 'week', etc)
+#' @return long data.frame or tibble with column called 'date' including all dates
+#'         between start_date and end_date
+#' @examples
+#' \dontrun{
+#' d <- data.frame(
+#' start_date = check_dates(c('1/1/21', '1/2/21', '1/3/21')),
+#' end_date = check_dates(c('1/7/21', '1/8/21', '1/9/21'))
+#' )
+#' expand_dates(d, by = 'day')
+#' }
+expand_dates <- function(d, by) {
+  d <- dplyr::mutate(d, date = purrr::map2(start_date, end_date,
+                                           ~seq.Date(from = .x, to = .y, by = by)))
+  tidyr::unnest(d, cols = c(date))
+}
+
+

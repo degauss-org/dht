@@ -4,8 +4,11 @@
 \alias{use_degauss_template}
 \title{Use DeGAUSS Template}
 \usage{
-use_degauss_template(path = fs::path_wd(),
-  base_image = "rocker/r-ver:3.6.1", renv_version = "0.8.3-81")
+use_degauss_template(
+  path = fs::path_wd(),
+  base_image = "rocker/r-ver:3.6.1",
+  renv_version = "0.8.3-81"
+)
 }
 \arguments{
 \item{path}{A path. If it exists, it is used. If it does not exist, it is
@@ -25,7 +28,7 @@ This function creates the following:
 \item \code{Dockerfile.txt}
 \item \code{Makefile.txt}
 \item \code{README.md}
-\item \code{R script}
+\item \verb{R script}
 \item \code{.dockerignore}
 \item \code{.gitignore}
 \item \code{test/my_address_file_geocoded.csv}

@@ -17,3 +17,37 @@ test_that("check ambiguous dates", {
     check_dates(c("jan 1", "jan 2", "jan 3"))
   )
 })
+
+
+test_that("check ambiguous dates", {
+  expect_error(
+    check_dates(c("jan 1", "jan 2", "jan 3"))
+  )
+})
+
+test_that("check end date after start date", {
+  start_date <- check_dates(c('1/1/21', '1/2/21', '1/3/21'))
+  end_date <- check_dates(c('1/7/21', '1/8/21', '1/9/20'))
+  expect_error(
+    check_end_after_start_date(start_date, end_date)
+  )
+})
+
+test_that("check end date after start date", {
+  d <- data.frame(
+    start_date = check_dates(c('1/1/21', '1/2/21', '1/3/21')),
+    end_date = check_dates(c('1/3/21', '1/4/21', '1/5/21'))
+  )
+  expect_equal(
+    expand_dates(d, by = 'day'),
+    tibble::tibble(
+      start_date = rep(check_dates(c('1/1/21', '1/2/21', '1/3/21')), each = 3),
+      end_date = rep(check_dates(c('1/3/21', '1/4/21', '1/5/21')), each = 3),
+      date = as.Date(c('2021-01-01', '2021-01-02', '2021-01-03',
+                       '2021-01-02', '2021-01-03', '2021-01-04',
+                       '2021-01-03', '2021-01-04', '2021-01-05')))
+  )
+})
+
+
+
