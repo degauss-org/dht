@@ -11,35 +11,44 @@ use_degauss_dockerfile <- function(name,
     if (ans %in% c("", "y", "Y")) r_version <- "4.0.0"
   }
 
+  quo_install_remotes <- glue::double_quote("install.packages('remotes', repos = 'https://cran.rstudio.com')")
+  quo_install_renv <- glue::double_quote("remotes::install_github('rstudio/renv@${RENV_VERSION}')")
+  quo_renv_restore <- glue::double_quote("renv::restore(repos = c(CRAN = 'https://packagemanager.rstudio.com/all/__linux__/focal/latest'))")
+
   dockerfile <- glue::glue(
     "FROM rocker/{from[1]}:{r_version}
 
     # install required version of renv
-    RUN R --quiet -e 'install.packages('remotes', repos = 'https://cran.rstudio.com')'
+    RUN R --quiet -e {quo_install_remotes}
     # make sure version matches what is used in the project: packageVersion('renv')
     ENV RENV_VERSION {renv_version}
-    RUN R --quiet -e 'remotes::install_github('rstudio/renv@${{RENV_VERSION}}')'
+    RUN R --quiet -e {quo_install_renv}
 
     WORKDIR /app
 
-    RUN apt-get update \\\
-    && apt-get install -yqq --no-install-recommends \\\
-    libgdal-dev=2.1.2+dfsg-5 \\\
-    libgeos-dev=3.5.1-3 \\\
-    libudunits2-dev=2.2.20-1+b1 \\\
-    libproj-dev=4.9.3-1 \\\
+    RUN apt-get update \\
+
+    && apt-get install -yqq --no-install-recommends \\
+
+    libgdal-dev=2.1.2+dfsg-5 \\
+
+    libgeos-dev=3.5.1-3 \\
+
+    libudunits2-dev=2.2.20-1+b1 \\
+
+    libproj-dev=4.9.3-1 \\
+
     && apt-get clean
 
-    ENV CRAN=https://packagemanager.rstudio.com/all/__linux__/focal/latest
     COPY renv.lock .
-    RUN R --quiet -e 'renv::restore()'
+    RUN R --quiet -e {quo_renv_restore}
 
     COPY {name}.rds .
     COPY {name}.R .
 
     WORKDIR /tmp
 
-    ENTRYPOINT ['/app/{name}.R']"
+    ENTRYPOINT [{glue::double_quote('/app/{name}.R')}]"
   )
   writeLines(dockerfile, "Dockerfile")
 }
