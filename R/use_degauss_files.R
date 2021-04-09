@@ -30,13 +30,13 @@ use_degauss_dockerfile <- function(name,
 
       && apt-get install -yqq --no-install-recommends \\\\
 
-      libgdal-dev=2.1.2+dfsg-5 \\\\
+      libgdal-dev \\\\
 
-      libgeos-dev=3.5.1-3 \\\\
+      libgeos-dev \\\\
 
-      libudunits2-dev=2.2.20-1+b1 \\\\
+      libudunits2-dev \\\\
 
-      libproj-dev=4.9.3-1 \\\\
+      libproj-dev \\\\
 
       && apt-get clean
 
