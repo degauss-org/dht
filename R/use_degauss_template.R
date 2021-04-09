@@ -15,15 +15,13 @@
 #' @param path A path. If it exists, it is used. If it does not exist, it is
 #'   created, provided that the parent path exists. The terminal directory
 #'   should be named for the geomarker (e.g., 'home/folder/geomarker_name')
-#' @param base_image base Docker image
-#' @param renv_version version number for renv to be installed in container
+#' @param ... additional arguments passed to `use_degauss_dockerfile` used
+#'            to specify the base image and renv version
 #'
 #' @return Path to the newly created degauss directory, invisibly.
 #' @export
 
-use_degauss_template <- function(path = fs::path_wd(),
-                                 base_image = 'rocker/r-ver:3.6.1',
-                                 renv_version = '0.8.3-81') {
+use_degauss_template <- function(path = fs::path_wd(), ...) {
 
   path <- fs::path_expand(path)
   check_path_is_directory(fs::path_dir(path))
@@ -32,7 +30,7 @@ use_degauss_template <- function(path = fs::path_wd(),
 
   name <- fs::path_file(fs::path_abs(path))
 
-  use_degauss_dockerfile(name, base_image, renv_version)
+  use_degauss_dockerfile(name, ...)
   use_degauss_makefile()
   use_degauss_readme(name)
   use_degauss_rscript(name)

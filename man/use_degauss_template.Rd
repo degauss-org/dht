@@ -4,17 +4,15 @@
 \alias{use_degauss_template}
 \title{Use DeGAUSS Template}
 \usage{
-use_degauss_template(path = fs::path_wd(),
-  base_image = "rocker/r-ver:3.6.1", renv_version = "0.8.3-81")
+use_degauss_template(path = fs::path_wd(), ...)
 }
 \arguments{
 \item{path}{A path. If it exists, it is used. If it does not exist, it is
 created, provided that the parent path exists. The terminal directory
 should be named for the geomarker (e.g., 'home/folder/geomarker_name')}
 
-\item{base_image}{base Docker image}
-
-\item{renv_version}{version number for renv to be installed in container}
+\item{...}{additional arguments passed to \code{use_degauss_dockerfile} used
+to specify the base image and renv version}
 }
 \value{
 Path to the newly created degauss directory, invisibly.
@@ -25,7 +23,7 @@ This function creates the following:
 \item \code{Dockerfile.txt}
 \item \code{Makefile.txt}
 \item \code{README.md}
-\item \code{R script}
+\item \verb{R script}
 \item \code{.dockerignore}
 \item \code{.gitignore}
 \item \code{test/my_address_file_geocoded.csv}

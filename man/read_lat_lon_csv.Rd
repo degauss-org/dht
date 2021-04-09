@@ -4,8 +4,12 @@
 \alias{read_lat_lon_csv}
 \title{read in and format input file for DeGAUSS container}
 \usage{
-read_lat_lon_csv(filename, nest_df = FALSE, sf_out = FALSE,
-  project_to_crs = NULL)
+read_lat_lon_csv(
+  filename,
+  nest_df = FALSE,
+  sf_out = FALSE,
+  project_to_crs = NULL
+)
 }
 \arguments{
 \item{filename}{name of input file, probably opt$filename if inside container}
