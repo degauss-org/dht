@@ -2,7 +2,7 @@
 use_degauss_dockerfile <- function(name,
                            from = c('r-ver', 'verse', 'shinyverse', 'spatial'),
                            r_version = paste(getRversion(), sep = '.'),
-                           renv_version = '0.8.3-81') {
+                           renv_version = packageVersion("renv")) {
 
   r_version <- paste(getRversion(), sep = '.')
   if (r_version < "4.0.0") {
@@ -12,7 +12,7 @@ use_degauss_dockerfile <- function(name,
   }
 
   quo_install_remotes <- glue::double_quote("install.packages('remotes', repos = 'https://cran.rstudio.com')")
-  quo_install_renv <- glue::double_quote("remotes::install_github('rstudio/renv@${RENV_VERSION}')")
+  quo_install_renv <- glue::double_quote("remotes::install_github('rstudio/renv@${RENV_VERSION}')") # ENV var doesn't work
   quo_renv_restore <- glue::double_quote("renv::restore(repos = c(CRAN = 'https://packagemanager.rstudio.com/all/__linux__/focal/latest'))")
 
   dockerfile <- glue::glue(
