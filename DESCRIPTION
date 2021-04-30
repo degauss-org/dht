@@ -1,6 +1,6 @@
 Package: dht
 Title: A Collection of Functions to Assist Building DeGAUSS Containers
-Version: 0.0.0.9000
+Version: 0.0.1
 Authors@R: c(
     person(given = "Erika",
            family = "Rasnick",
@@ -32,6 +32,7 @@ Imports:
     renv (>= 0.8.3),
     withr (>= 2.2.0),
     usethis (>= 1.6.1),
-    purrr (>= 0.3.4)
+    purrr (>= 0.3.4),
+    stringr (>= 1.4.0)
 Depends: 
     R (>= 2.10)
