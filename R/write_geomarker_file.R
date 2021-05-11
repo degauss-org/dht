@@ -26,7 +26,7 @@ write_geomarker_file <- function(d, raw_data = NULL, filename, geomarker_name, v
     out <- d
   }
 
-  out_file_name <- glue::glue('{tools::file_path_sans_ext(filename)}_{geomarker_name}_v{version}.csv')
+  out_file_name <- glue::glue('{tools::file_path_sans_ext(filename)}_{geomarker_name}_v{version}.csv', wrap = TRUE)
   readr::write_csv(out, out_file_name)
-  cli::cli_alert_success('\nFINISHED! output written to {out_file_name}')
+  cli::cli_alert_success('\nFINISHED! output written to {out_file_name}', wrap = TRUE)
 }

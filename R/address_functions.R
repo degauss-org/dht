@@ -6,12 +6,12 @@
 #'         which are left in for +4 ZIP issues) and excess white space
 #'         removed.
 clean_address <- function(address) {
-  cli::cli_alert_info('removing non-alphanumeric characters...\n')
+  cli::cli_alert_info('removing non-alphanumeric characters...', wrap = TRUE)
   address <- stringr::str_replace_all(address, stringr::fixed('\\'), '')
   address <- stringr::str_replace_all(address, stringr::fixed('"'), '')
   address <- stringr::str_replace_all(address, "[^a-zA-Z0-9-]"," ")
 
-  cli::cli_alert_info('removing excess whitespace...\n')
+  cli::cli_alert_info('removing excess whitespace...', wrap = TRUE)
   address <- stringr::str_squish(address)
   return(address)
 }
@@ -23,7 +23,7 @@ clean_address <- function(address) {
 #' @return logical vector; TRUE when address text contains some
 #'         variation of "PO Box"
 address_is_po_box <- function(address) {
-  cli::cli_alert_info('flagging PO boxes...\n')
+  cli::cli_alert_info('flagging PO boxes...', wrap = TRUE)
   po_regex_string <- c('\\bP(OST)*\\.*\\s*[O|0](FFICE)*\\.*\\sB[O|0]X')
   po_box <- purrr::map(address, ~ stringr::str_detect(.x, stringr::regex(po_regex_string, ignore_case=TRUE)))
   missing_address <- c(which(is.na(address)), which(address == ''))
@@ -39,7 +39,7 @@ address_is_po_box <- function(address) {
 #'         indicating Cincinnati Children's Hospital, Ronald
 #'         McDonald House, or Cincinnati Jobs and Family Services.
 address_is_institutional <- function(address) {
-  cli::cli_alert_info('flagging known Cincinnati foster & institutional addresses...\n')
+  cli::cli_alert_info('flagging known Cincinnati foster & institutional addresses...', wrap = TRUE)
   institutional_strings <- c('Ronald McDonald House',
                              '350 Erkenbrecher Ave',
                              '350 Erkenbrecher Avenue',
@@ -66,7 +66,7 @@ address_is_institutional <- function(address) {
 #' @return logical vector; TRUE when address text is "verify",
 #'         "foreign", "foreign country", "unknown", or blank.
 address_is_nonaddress <- function(address) {
-  cli::cli_alert_info('flagging non-address text and missing addresses...\n')
+  cli::cli_alert_info('flagging non-address text and missing addresses...', wrap = TRUE)
   non_address_strings <- c('verify',
                            'foreign',
                            'foreign country',
