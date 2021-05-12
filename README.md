@@ -30,7 +30,7 @@ remotes::install_github("degauss-org/dht")
 library(dht)
 greeting(geomarker_name = "roads", version = "0.1", description = "calculates proximity and length of nearby major roadways")
 #> 
-#> ── Wecome to DeGAUSS! ─────────────────────────────────────────────────────
+#> ── Wecome to DeGAUSS! ──────────────────────────────────────────────────────────
 #> ℹ You are using the roads container, version 0.1.
 #> This container calculates proximity and length of nearby major roadways.
 #> For more information about the roads container, visit
@@ -46,37 +46,19 @@ greeting(geomarker_name = "roads", version = "0.1", description = "calculates pr
 qlibrary(dplyr)
 ```
 
-**Read in geocoded
-data**
+**Read in geocoded data**
 
 ``` r
 (d <- read_lat_lon_csv('tests/my_address_file_geocoded.csv', sf = T, project_to_crs = 5072))
 #> ℹ loading input file...
-#> ℹ converting input to sf object...
-#> ℹ projecting input...
-#> $raw_data
-#> # A tibble: 5 x 4
-#>            id   lat   lon  .row
-#>         <dbl> <dbl> <dbl> <int>
-#> 1 55001310120  NA    NA       1
-#> 2 55000100280  39.2 -84.6     2
-#> 3 55000100281  39.3 -84.5     3
-#> 4 55000100282  39.2 -84.4     4
-#> 5 55000100283  39.2 -84.4     5
-#> 
-#> $d
-#> Simple feature collection with 3 features and 1 field
-#> geometry type:  POINT
-#> dimension:      XY
-#> bbox:           xmin: 974636.5 ymin: 1853031 xmax: 989175.5 ymax: 1866438
-#> epsg (SRID):    5072
-#> proj4string:    +proj=aea +lat_1=29.5 +lat_2=45.5 +lat_0=23 +lon_0=-96 +x_0=0 +y_0=0 +ellps=GRS80 +towgs84=0,0,0,0,0,0,0 +units=m +no_defs
-#> # A tibble: 3 x 2
-#>   .rows                      geometry
-#>   <list>                  <POINT [m]>
-#> 1 <tibble [1 × 1]> (974636.5 1855578)
-#> 2 <tibble [1 × 1]> (979560.3 1866438)
-#> 3 <tibble [2 × 1]> (989175.5 1853031)
+#> # A tibble: 5 x 6
+#>            id   lat   lon start_date end_date  .row
+#>         <dbl> <dbl> <dbl> <chr>      <chr>    <int>
+#> 1 55001310120  NA    NA   6/11/20    6/18/20      1
+#> 2 55000100280  39.2 -84.6 3/1/17     3/8/17       2
+#> 3 55000100281  39.3 -84.5 1/30/12    2/6/12       3
+#> 4 55000100282  39.2 -84.4 12/1/20    12/8/20      4
+#> 5 55000100283  39.2 -84.4 4/8/19     4/15/19      5
 ```
 
 Returns a list with two elements – the raw data and tibble nested on row
@@ -85,7 +67,7 @@ Returns a list with two elements – the raw data and tibble nested on row
 **Check that required columns are present**
 
 ``` r
-check_for_column(d$raw_data, 'lat', d$raw_data$lat)
+check_for_column(d, 'lat', d$lat)
 ```
 
 Nothing is returned if the column is present. An error is thrown if the
@@ -94,13 +76,13 @@ column is not present.
 **Check for column type**
 
 ``` r
-check_for_column(d$raw_data, 'lat', d$raw_data$lat, 'numeric')
+check_for_column(d, 'lat', d$lat, 'numeric')
 ```
 
 Again, nothing is returned if the column type matches the desired type.
 
 ``` r
-check_for_column(d$raw_data, 'lat', d$raw_data$lat, 'character')
+check_for_column(d, 'lat', d$lat, 'character')
 #> ! lat is of type numeric, not character
 ```
 
@@ -125,8 +107,8 @@ raw data, then writes the output csv with container name and version
 appended to filename.
 
 ``` r
-write_geomarker_file(d = d$d, 
-                     raw_data = d$raw_data, 
+write_geomarker_file(d = d, 
+                     raw_data = d, 
                      filename = 'tests/my_address_file_geocoded.csv', 
                      geomarker_name = 'roads', 
                      version = '0.1')
