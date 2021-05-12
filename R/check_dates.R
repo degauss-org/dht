@@ -39,8 +39,8 @@ check_dates <- function(date) {
       return(date)
     } else
     {
-      cli::cli_alert_danger('Your dates are not properly formatted. Here are the first 3 dates in your data. \n{print(dates_to_print)}')
-      cli::cli_alert_info("Dates must be formatted as YYYY-MM-DD or MM/DD/YY. For help, please see Excel formatting tips in the DeGAUSS wiki.")
+      cli::cli_alert_danger('Your dates are not properly formatted. Here are the first 3 dates in your data. \n{print(dates_to_print)}', wrap = TRUE)
+      cli::cli_alert_info("Dates must be formatted as YYYY-MM-DD or MM/DD/YY. For help, please see Excel formatting tips in the DeGAUSS wiki.", wrap = TRUE)
       stop(call. = FALSE)
     }
   }
@@ -65,7 +65,7 @@ check_end_after_start_date <- function(start_date, end_date) {
   check_date_order <- end_date > start_date
   if (FALSE %in% check_date_order) {
     row_num <- which(!check_date_order)
-    cli::cli_alert_danger('end_date occurs before start_date in these rows: {row_num}')
+    cli::cli_alert_danger('end_date occurs before start_date in these rows: {row_num}', wrap = TRUE)
     stop(call. = FALSE)
   }
 }

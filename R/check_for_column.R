@@ -21,12 +21,12 @@
 
 check_for_column <- function(d, column_name, column, column_type=NULL) {
   if (! column_name %in% names(d)) {
-    cli::cli_alert_danger('no column called {column_name} found in the input file')
+    cli::cli_alert_danger('no column called {column_name} found in the input file', wrap = TRUE)
     stop(call. = FALSE)
   }
   if(!is.null(column_type)) {
     if (class(column) != column_type) {
-      cli::cli_alert_warning('{column_name} is of type {class(column)}, not {column_type}')
+      cli::cli_alert_warning('{column_name} is of type {class(column)}, not {column_type}', wrap = TRUE)
     }
   }
 }

@@ -17,7 +17,7 @@
 #' }
 
 read_lat_lon_csv <- function(filename, nest_df=FALSE, sf_out=FALSE, project_to_crs=NULL) {
-  cli::cli_alert_info('loading input file...')
+  cli::cli_alert_info('loading input file...', wrap = TRUE)
   raw_data <- suppressMessages(readr::read_csv(filename))
   raw_data$.row <- seq_len(nrow(raw_data))
 
@@ -30,11 +30,11 @@ read_lat_lon_csv <- function(filename, nest_df=FALSE, sf_out=FALSE, project_to_c
       tidyr::nest(.rows = c(.row))
 
     if(sf_out) {
-      cli::cli_alert_info('converting input to sf object...')
+      cli::cli_alert_info('converting input to sf object...', wrap = TRUE)
       d <- sf::st_as_sf(d, coords = c('lon', 'lat'), crs = 4326)
 
       if(!is.null(project_to_crs)) {
-        cli::cli_alert_info('projecting input...')
+        cli::cli_alert_info('projecting input...', wrap = TRUE)
         d <- sf::st_transform(d, project_to_crs)
       }
     }
