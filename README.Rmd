@@ -57,7 +57,7 @@ Returns a list with two elements -- the raw data and tibble nested on row (to pr
 **Check that required columns are present**
 
 ```{r}
-check_for_column(d$raw_data, 'lat', d$raw_data$lat)
+check_for_column(d, 'lat', d$lat)
 ```
 
 Nothing is returned if the column is present.
@@ -66,13 +66,13 @@ An error is thrown if the column is not present.
 **Check for column type**
 
 ```{r}
-check_for_column(d$raw_data, 'lat', d$raw_data$lat, 'numeric')
+check_for_column(d, 'lat', d$lat, 'numeric')
 ```
 
 Again, nothing is returned if the column type matches the desired type.
 
 ```{r}
-check_for_column(d$raw_data, 'lat', d$raw_data$lat, 'character')
+check_for_column(d, 'lat', d$lat, 'character')
 ```
 
 A warning is displayed if the column type does not match the desired type.
@@ -91,8 +91,8 @@ If dates are in another format, an error is thrown.
 Unnests the tibble created with `read_lat_lon_csv()` and merges back to raw data, then writes the output csv with container name and version appended to filename.
 
 ```{r, eval = F}
-write_geomarker_file(d = d$d, 
-                     raw_data = d$raw_data, 
+write_geomarker_file(d = d, 
+                     raw_data = d, 
                      filename = 'tests/my_address_file_geocoded.csv', 
                      geomarker_name = 'roads', 
                      version = '0.1')
