@@ -49,5 +49,13 @@ test_that("check end date after start date", {
   )
 })
 
+test_that("check end date after start date if end = start", {
+  start_date <- check_dates(c('1/1/21'))
+  end_date <- check_dates(c('1/1/21'))
+  expect_error(
+    check_end_after_start_date(start_date, end_date)
+  )
+})
+
 
 
