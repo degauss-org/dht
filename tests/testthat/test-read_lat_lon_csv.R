@@ -1,6 +1,6 @@
 test_that("read in file, raw data", {
   expect_equal(
-   read_lat_lon_csv(filename = 'tests/my_address_file_geocoded.csv')$raw_data %>%
+   read_lat_lon_csv(filename = test_path(test_path('my_address_file_geocoded.csv'))) %>%
      dplyr::select(id, lat, lon, .row),
     tibble::tribble(
       ~id,      ~lat,       ~lon, ~.row,
@@ -15,8 +15,7 @@ test_that("read in file, raw data", {
 
 test_that("read in file, d", {
   expect_equal(
-    read_lat_lon_csv(filename = 'tests/my_address_file_geocoded.csv')$d %>%
-      dplyr::select(lat, lon, .rows),
+    read_lat_lon_csv(filename = test_path('my_address_file_geocoded.csv'), nest_df = T)$d,
     tibble::tribble(
       ~lat,       ~lon,           ~.rows,
       39.19674, -84.582601,   tibble::tibble(.row = 2),
@@ -28,7 +27,7 @@ test_that("read in file, d", {
 
 test_that("read in file, sf, d", {
   expect_equal(
-    read_lat_lon_csv(filename = 'tests/my_address_file_geocoded.csv', sf = T)$d,
+    read_lat_lon_csv(filename = test_path('my_address_file_geocoded.csv'), nest_df = T, sf_out = T)$d,
     tibble::tribble(
       ~lat,       ~lon,           ~.rows,
       39.19674, -84.582601,   tibble::tibble(.row = 2),
@@ -39,9 +38,10 @@ test_that("read in file, sf, d", {
   )
 })
 
-test_that("read in file, sf, d", {
+test_that("read in file and project, sf, d", {
   expect_equal(
-    read_lat_lon_csv(filename = 'tests/my_address_file_geocoded.csv', sf = T, project_to_crs = 5072)$d,
+    read_lat_lon_csv(filename = test_path('my_address_file_geocoded.csv'), nest_df = TRUE,
+                     sf_out = TRUE, project_to_crs = 5072)$d,
     tibble::tribble(
       ~lat,       ~lon,           ~.rows,
       39.19674, -84.582601,   tibble::tibble(.row = 2),
