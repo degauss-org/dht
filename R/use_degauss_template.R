@@ -39,7 +39,7 @@ use_degauss_template <- function(path = fs::path_wd(),
   use_degauss_dockerignore(name)
   use_degauss_gitignore()
   use_degauss_tests(path)
-  usethis::use_gpl3_license()
+  # usethis::use_gpl3_license()
 
   return(invisible(path))
 }
