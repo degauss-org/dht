@@ -1,7 +1,6 @@
 ^dht\.Rproj$
 ^\.Rproj\.user$
 ^LICENSE\.md$
-^tests
 ^\.github$
 ^README\.Rmd$
 ^renv$
