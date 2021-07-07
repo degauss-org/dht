@@ -30,6 +30,8 @@ read_lat_lon_csv <- function(filename, nest_df=FALSE, sf_out=FALSE, project_to_c
       tidyr::nest(.rows = c(.row))
 
     if(sf_out) {
+      if (!requireNamespace("sf", quietly = TRUE))
+        stop("reading input data as an sf object requires the sf package; install that first")
       cli::cli_alert_info('converting input to sf object...', wrap = TRUE)
       d <- sf::st_as_sf(d, coords = c('lon', 'lat'), crs = 4326)
 
