@@ -26,6 +26,7 @@ test_that("read in file, d", {
 })
 
 test_that("read in file, sf, d", {
+  skip_on_ci()
   expect_equal(
     read_lat_lon_csv(filename = test_path('my_address_file_geocoded.csv'), nest_df = T, sf_out = T)$d,
     tibble::tribble(
@@ -39,6 +40,7 @@ test_that("read in file, sf, d", {
 })
 
 test_that("read in file and project, sf, d", {
+  skip_on_ci()
   expect_equal(
     read_lat_lon_csv(filename = test_path('my_address_file_geocoded.csv'), nest_df = TRUE,
                      sf_out = TRUE, project_to_crs = 5072)$d,
