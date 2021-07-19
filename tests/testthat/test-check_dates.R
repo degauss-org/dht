@@ -5,6 +5,12 @@ test_that("check slash dates", {
   )
 })
 
+test_that("slash dates with four digit year error", {
+  expect_error(
+    check_dates(c("12/15/2020", "8/4/1998", "06/09/1995"))
+  )
+})
+
 test_that("check ISO dates", {
   expect_identical(
     check_dates(c("2021-01-01", "2021-01-02", "2021-01-03")),

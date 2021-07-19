@@ -4,6 +4,16 @@ IsDateISO <- function(mydate, date.format = "%Y-%m-%d") {
 }
 
 IsDateSlash <- function(mydate, date.format = "%m/%d/%y") {
+
+  max_component_lengths <-
+    strsplit(mydate, "/") %>%
+    purrr::map(nchar) %>%
+    purrr::map(max)
+    
+
+  if (any(max_component_lengths > 2)) {
+    return(FALSE)
+  }
   tryCatch(!is.na(as.Date(mydate, date.format)),
            error = function(err) {FALSE})
 }
