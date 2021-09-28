@@ -1,0 +1,308 @@
+---
+title: "degauss_template.Rmd"
+author: "Erika Rasnick"
+date: "September 24, 2021"
+output: html_document
+editor_options: 
+  chunk_output_type: console
+---
+
+```{r prep, eval = FALSE, echo = FALSE}
+# use these variables along with the find/replace function to update globally
+geomarker <- basename(here::here())
+container_version <- 0.0.1
+r_version <- dht::detect_r_version()
+renv_version <- packageVersion("renv")
+```
+
+```{text dockerfile, eval = FALSE, echo = FALSE}
+FROM rocker/r-ver:4.0.4
+
+# install required version of renv
+RUN R --quiet -e "install.packages('remotes', repos = 'https://cran.rstudio.com')"
+# make sure version matches what is used in the project: packageVersion('renv')
+ENV RENV_VERSION 0.14.0
+RUN R --quiet -e "remotes::install_github('rstudio/renv@${RENV_VERSION}')"
+
+WORKDIR /app
+
+RUN apt-get update \
+  && apt-get install -yqq --no-install-recommends \
+  libgdal-dev \
+  libgeos-dev \
+  libudunits2-dev \
+  libproj-dev \
+  libv8-dev \
+  && apt-get clean
+
+COPY renv.lock .
+RUN R --quiet -e "renv::restore(repos = c(CRAN = 'https://packagemanager.rstudio.com/all/__linux__/focal/latest'))"
+
+COPY geomarker.rds .
+COPY entrypoint.R .
+
+WORKDIR /tmp
+
+ENTRYPOINT ["/app/entrypoint.R"]
+```
+
+```{r rscript, eval = FALSE, echo = FALSE}
+#!/usr/local/bin/Rscript
+
+dht::greeting(geomarker_name = 'geomarker', version = '0.0.1', description = 'short description goes here')
+
+library(dplyr)
+library(tidyr)
+library(sf)
+
+doc <- '
+      Usage:
+      entrypoint.R <filename>
+      '
+
+opt <- docopt::docopt(doc)
+## for interactive testing
+## opt <- docopt::docopt(doc, args = 'test/my_address_file_geocoded.csv')
+
+message('
+reading input file...')
+d <- dht::read_lat_lon_csv(opt$filename, nest_df = T, sf = T, project_to_crs = 5072)
+
+dht::check_for_column(d$raw_data, 'lat', d$raw_data$lat)
+dht::check_for_column(d$raw_data, 'lon', d$raw_data$lon)
+
+## function for creating a {name} based on a single sf point
+get_geomarker <- function(query_point) {{
+   query_point <- st_sfc(query_point, crs = 4326)
+
+   # ...
+
+}}
+
+## apply this function across all points
+message('e.g. finding closest schwartz grid site index for each point...')
+
+d <- d %>%
+   mutate(geomarker = mappp::mappp(d$d$geometry, get_geomarker,
+                                   parallel = FALSE,
+                                   quiet = FALSE))
+
+## merge back on .row after unnesting .rows into .row
+write_geomarker_file(d = d$d,
+                     raw_data = d$raw_data,
+                     filename = opt$filename,
+                     geomarker_name = 'geomarker',
+                     version = '0.0.1')"
+```
+
+```{text dockerignore, eval = FALSE, echo = FALSE}
+# ignore everything
+**
+
+# except what we need
+!/renv.lock
+!/entrypoint.R
+```
+
+```{text gitignore, eval = FALSE, echo = FALSE}
+*.rds
+*.fst
+*.qs
+.Rproj.user
+```
+
+```{r test-dir, echo = FALSE, cache = TRUE}
+test_dir <- fs::path_join(c(here::here(), '/test'))
+fs::dir_create(test_dir)
+readr::write_csv(dht::my_address_file_geocoded,
+                   fs::path_join(c(test_dir, 'my_address_file_geocoded.csv')))
+```
+
+
+```{text makefile, eval = FALSE, echo = FALSE}
+REGISTRY_HOST=docker.io
+USERNAME=degauss
+NAME=$(shell basename "$(CURDIR)")
+IMAGE=$(REGISTRY_HOST)/$(USERNAME)/$(NAME)
+
+.PHONY: build test shell release clean tag-gh
+
+build:
+	docker build -t $(IMAGE) .
+
+test:
+	docker run --rm -v "${PWD}/test":/tmp $(IMAGE) my_address_file_geocoded.csv
+
+shell:
+	docker run --rm -it --entrypoint=/bin/bash -v "${PWD}/test":/tmp $(IMAGE)
+
+release:
+ifndef VERSION
+	$(error VERSION is not set. Usage: "make release VERSION=X.X")
+endif
+ifndef DOCKER_USERNAME
+	$(error DOCKER_USERNAME is not set)
+endif
+ifndef DOCKER_PAT
+	$(error DOCKER_PAT is not set)
+endif
+	git commit -am "Release for image version $(VERSION)" --allow-empty
+	git tag -a $(VERSION) -m "${VERSION}"
+	git push origin ${VERSION}
+	git push
+	echo "${DOCKER_PAT}" | docker login -u "${DOCKER_USERNAME}" --password-stdin
+	docker tag ${IMAGE}:latest ${IMAGE}:${VERSION}
+	docker push ${IMAGE}:${VERSION}
+	docker push ${IMAGE}:latest
+
+clean:
+	docker system prune -f
+
+tag-gh:
+ifndef VERSION
+	$(error VERSION is not set. Usage: "make release VERSION=X.X")
+endif
+	docker tag $(IMAGE) ghcr.io/degauss-org/$(NAME):$(VERSION)
+```
+
+```{r license, eval = FALSE, echo = FALSE}
+usethis::use_gpl3_license()
+```
+
+```{r actions-dir, echo = FALSE, cache = TRUE}
+actions_dir <- fs::path_join(c(here::here(), '/.github/workflows'))
+fs::dir_create(actions_dir)
+```
+
+
+```{text actions}
+name: Build & Deploy Docker Containers
+on:
+  # We'll trigger this workflow when a PR is submitted to make sure
+  # your application still builds successfully with the new commits.
+  pull_request: []
+  # We'll also trigger this workflow when you want to deploy your container.
+  # This means any push to main. You might want to do a release trigger.
+  push:
+    branches:
+      - main
+      - master
+  # Let's also trigger a build and publish of your container when
+  # you release a new version. You can use "created" here instead of published.
+  release:
+    types: [published]
+
+jobs:
+  deploy-images:
+    runs-on: ubuntu-latest
+
+    # Define your registry and repository here.
+    # These are for the GitHub Container registry, you can also use
+    # Quay.io or another OCI registry
+    env:
+      registry: ghcr.io
+      username: degauss-org
+      repository: pm
+
+    strategy:
+      # Even if one docker container build fails we want the others to continue.
+      fail-fast: false
+      # A matrix of Dockerfile paths and associated tags
+      # Dockerfile in root builds to tag latest
+      matrix:
+        dockerfile: [[Dockerfile, latest]]
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Set Container Tag Normal
+        run: |
+          container="${{ env.registry }}/${{ env.username}}/${{ env.repository }}:${{ matrix.dockerfile[1] }}"
+          echo "container=${container}" >> $GITHUB_ENV
+        # On a new release create a container with the same tag as the release.
+      - name: Set Container Tag Release
+        if: github.event_name == 'release'
+        run: |
+          versioned="${{ env.registry }}/${{ env.username}}/${{ env.repository }}:${GITHUB_REF##*/}"
+          echo "versioned=${versioned}" >> $GITHUB_ENV
+        # On a PR create a "test" container with the same tag as the branch name.
+      - name: Set Branch Tag Release
+        if: github.event_name == 'pull_request'
+        run: |
+          versioned="${{ env.registry }}/${{ env.username}}/${{ env.repository }}:${GITHUB_HEAD_REF}"
+          echo "versioned=${versioned}" >> $GITHUB_ENV
+      - name: Build ${{ matrix.dockerfile[1] }}
+        run: |
+          printf "Preparing to build ${{ env.container }} from ${{ matrix.dockerfile[0] }}"
+          if [ ! -f "${{ matrix.dockerfile[0]}}" ]; then
+              printf "Dockerfile ${{ matrix.dockerfile[0] }} does not exist"
+              exit 1;
+          fi
+          docker build -f ${{ matrix.dockerfile[0] }} -t ${{ env.container }} .
+          docker images
+      - name: Test ${{ matrix.dockerfile[1] }}
+        run: |
+          printf "Testing ${{ env.container }}"
+          docker run --rm -v "${PWD}/test":/tmp ${{ env.container }} my_address_file_geocoded.csv
+      - name: Log in to GitHub Container Registry
+        uses: docker/login-action@v1
+        with:
+          registry: ${{ env.registry }}
+          username: ${{ env.username }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+          # Example variables for a non GitHub registry like Quay or Docker Hub
+          # username: ${{ secrets.DOCKERHUB_USERNAME }}
+          # password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+     # Deploy branch container on pull request
+      - name: Test Deploy ${{ env.versioned }}
+        if: github.event_name == 'pull_request'
+        run: |
+          docker tag ${{ env.container }} ${{ env.versioned }}
+          docker push ${{ env.versioned }}
+    # Deploy release container on release
+      - name: Deploy ${{ env.versioned }}
+        if: github.event_name == 'release'
+        run: |
+          docker tag ${{ env.container }} ${{ env.versioned }}
+          docker push ${{ env.versioned }}
+          docker push ${{ env.container }}
+```
+
+# geomarker <a href='https://degauss-org.github.io/DeGAUSS/'><img src='https://github.com/degauss-org/degauss_template/blob/master/DeGAUSS_hex.png' align='right' height='138.5' /></a>
+
+> short description of geomarker
+
+[![Docker Build Status](https://img.shields.io/docker/automated/degauss/geomarker)](https://hub.docker.com/repository/docker/degauss/geomarker/tags)
+[![GitHub Latest Tag](https://img.shields.io/github/v/tag/degauss-org/geomarker)](https://github.com/degauss-org/geomarker/releases)
+
+## DeGAUSS example call
+
+If `my_address_file_geocoded.csv` is a file in the current working directory with coordinate columns named `lat` and `lon`, then
+
+```sh
+docker run --rm -v $PWD:/tmp degauss/geomarker:0.0.1 my_address_file_geocoded.csv
+```
+
+will produce `my_address_file_geocoded_geomarker_v0.0.1.csv` with an added column named geomarker.
+
+## geomarker methods
+
+- if any non-trivial methods were developed for geomarker assessment (i.e. inverse distance weighted averaging), then describe them here
+
+## geomarker data
+
+- list how geomarker was created, including any scripts within the repo used to do so
+- list where geomarker data is stored in S3 using a hyperlink like: [`s3://path/to/geomarker.rds`](https://geomarker.s3.us-east-2.amazonaws.com/path/to/geomarker.rds)
+
+## DeGAUSS details
+
+For detailed documentation on DeGAUSS, including general usage and installation, please see the [DeGAUSS homepage](https://degauss.org).
+
+```{r development-1, eval=FALSE, echo = FALSE}
+# Run but keep eval=FALSE to avoid infinite loop
+# Execute in the console directly
+dht::inflate(rmd = "dev/degauss_template.Rmd")
+```
+

@@ -1,45 +1,59 @@
-# Dockerfile
-use_degauss_dockerfile <- function(name,
-                           from = c('r-ver', 'verse', 'shinyverse', 'spatial'),
-                           r_version = paste(getRversion(), sep = '.'),
-                           renv_version = '0.8.3-81') {
-
+#' Detect current version of R and prompt to update to at least 4.0.0
+#' @return
+#' Return current version of R
+#' @export
+detect_r_version <- function() {
   r_version <- paste(getRversion(), sep = '.')
   if (r_version < "4.0.0") {
     message("Your R version is less than 4.0.0.")
     ans <- readline("Would you like to use 4.0.0 for this Dockerfile? (y/n)")
     if (ans %in% c("", "y", "Y")) r_version <- "4.0.0"
   }
+  return(r_version)
+}
+
+# Dockerfile
+use_degauss_dockerfile <- function(name,
+                                   from = c('r-ver', 'verse', 'shinyverse', 'spatial'),
+                                   r_version = paste(getRversion(), sep = '.'),
+                                   renv_version = packageVersion("renv")) {
+
+  r_version <- detect_r_version()
+
+  quo_install_remotes <- glue::double_quote("install.packages('remotes', repos = 'https://cran.rstudio.com')")
+  quo_install_renv <- glue::double_quote("remotes::install_github('rstudio/renv@${RENV_VERSION}')") # ENV var doesn't work
+  quo_renv_restore <- glue::double_quote("renv::restore(repos = c(CRAN = 'https://packagemanager.rstudio.com/all/__linux__/focal/latest'))")
+  space <- ' '
 
   dockerfile <- glue::glue(
+
     "FROM rocker/{from[1]}:{r_version}
 
     # install required version of renv
-    RUN R --quiet -e 'install.packages('remotes', repos = 'https://cran.rstudio.com')'
+    RUN R --quiet -e {quo_install_remotes}
     # make sure version matches what is used in the project: packageVersion('renv')
     ENV RENV_VERSION {renv_version}
-    RUN R --quiet -e 'remotes::install_github('rstudio/renv@${{RENV_VERSION}}')'
+    RUN R --quiet -e {quo_install_renv}
 
     WORKDIR /app
 
-    RUN apt-get update \\\
-    && apt-get install -yqq --no-install-recommends \\\
-    libgdal-dev=2.1.2+dfsg-5 \\\
-    libgeos-dev=3.5.1-3 \\\
-    libudunits2-dev=2.2.20-1+b1 \\\
-    libproj-dev=4.9.3-1 \\\
-    && apt-get clean
+    RUN apt-get update \\\ {space}
+      && apt-get install -yqq --no-install-recommends \\\ {space}
+      libgdal-dev \\\ {space}
+      libgeos-dev \\\ {space}
+      libudunits2-dev \\\ {space}
+      libproj-dev \\\ {space}
+      && apt-get clean
 
-    ENV CRAN=https://packagemanager.rstudio.com/all/__linux__/focal/latest
     COPY renv.lock .
-    RUN R --quiet -e 'renv::restore()'
+    RUN R --quiet -e {quo_renv_restore}
 
     COPY {name}.rds .
     COPY {name}.R .
 
     WORKDIR /tmp
 
-    ENTRYPOINT ['/app/{name}.R']"
+    ENTRYPOINT [{glue::double_quote('/app/{name}.R')}]"
   )
   writeLines(dockerfile, "Dockerfile")
 }
