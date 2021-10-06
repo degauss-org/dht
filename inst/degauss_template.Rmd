@@ -9,19 +9,19 @@ editor_options:
 
 ```{r prep, eval = FALSE, echo = FALSE}
 # use these variables along with the find/replace function to update globally
-geomarker <- basename(here::here())
+geomarker <- basename(here::here()) # find: paste_geomarker_name_here
 container_version <- 0.0.1
-r_version <- dht::detect_r_version()
-renv_version <- packageVersion("renv")
+r_version <- dht::detect_r_version() # find: paste_r_version 
+renv_version <- packageVersion("renv") # find: paste_renv_version
 ```
 
 ```{text dockerfile, eval = FALSE, echo = FALSE}
-FROM rocker/r-ver:4.0.4
+FROM rocker/r-ver:paste_r_version
 
 # install required version of renv
 RUN R --quiet -e "install.packages('remotes', repos = 'https://cran.rstudio.com')"
 # make sure version matches what is used in the project: packageVersion('renv')
-ENV RENV_VERSION 0.14.0
+ENV RENV_VERSION paste_renv_version
 RUN R --quiet -e "remotes::install_github('rstudio/renv@${RENV_VERSION}')"
 
 WORKDIR /app
@@ -38,7 +38,7 @@ RUN apt-get update \
 COPY renv.lock .
 RUN R --quiet -e "renv::restore(repos = c(CRAN = 'https://packagemanager.rstudio.com/all/__linux__/focal/latest'))"
 
-COPY geomarker.rds .
+COPY paste_geomarker_name_here.rds .
 COPY entrypoint.R .
 
 WORKDIR /tmp
@@ -49,7 +49,7 @@ ENTRYPOINT ["/app/entrypoint.R"]
 ```{r rscript, eval = FALSE, echo = FALSE}
 #!/usr/local/bin/Rscript
 
-dht::greeting(geomarker_name = 'geomarker', version = '0.0.1', description = 'short description goes here')
+dht::greeting(geomarker_name = 'paste_geomarker_name_here', version = '0.0.1', description = 'short description goes here')
 
 library(dplyr)
 library(tidyr)
@@ -64,15 +64,14 @@ opt <- docopt::docopt(doc)
 ## for interactive testing
 ## opt <- docopt::docopt(doc, args = 'test/my_address_file_geocoded.csv')
 
-message('
-reading input file...')
+message('reading input file...')
 d <- dht::read_lat_lon_csv(opt$filename, nest_df = T, sf = T, project_to_crs = 5072)
 
 dht::check_for_column(d$raw_data, 'lat', d$raw_data$lat)
 dht::check_for_column(d$raw_data, 'lon', d$raw_data$lon)
 
 ## function for creating a {name} based on a single sf point
-get_geomarker <- function(query_point) {{
+get_paste_geomarker_name_here <- function(query_point) {{
    query_point <- st_sfc(query_point, crs = 4326)
 
    # ...
@@ -83,7 +82,7 @@ get_geomarker <- function(query_point) {{
 message('e.g. finding closest schwartz grid site index for each point...')
 
 d <- d %>%
-   mutate(geomarker = mappp::mappp(d$d$geometry, get_geomarker,
+   mutate(paste_geomarker_name_here = mappp::mappp(d$d$geometry, get_paste_geomarker_name_here,
                                    parallel = FALSE,
                                    quiet = FALSE))
 
@@ -91,7 +90,7 @@ d <- d %>%
 write_geomarker_file(d = d$d,
                      raw_data = d$raw_data,
                      filename = opt$filename,
-                     geomarker_name = 'geomarker',
+                     geomarker_name = 'paste_geomarker_name_here',
                      version = '0.0.1')"
 ```
 
@@ -102,6 +101,7 @@ write_geomarker_file(d = d$d,
 # except what we need
 !/renv.lock
 !/entrypoint.R
+!/paste_geomarker_name_here.rds
 ```
 
 ```{text gitignore, eval = FALSE, echo = FALSE}
@@ -114,7 +114,7 @@ write_geomarker_file(d = d$d,
 ```{r test-dir, echo = FALSE, cache = TRUE}
 test_dir <- fs::path_join(c(here::here(), '/test'))
 fs::dir_create(test_dir)
-readr::write_csv(dht::my_address_file_geocoded,
+readr::write_csv(dht:::my_address_file_geocoded,
                    fs::path_join(c(test_dir, 'my_address_file_geocoded.csv')))
 ```
 
@@ -202,7 +202,7 @@ jobs:
     env:
       registry: ghcr.io
       username: degauss-org
-      repository: pm
+      repository: paste_geomarker_name_here
 
     strategy:
       # Even if one docker container build fails we want the others to continue.
@@ -270,22 +270,22 @@ jobs:
           docker push ${{ env.container }}
 ```
 
-# geomarker <a href='https://degauss-org.github.io/DeGAUSS/'><img src='https://github.com/degauss-org/degauss_template/blob/master/DeGAUSS_hex.png' align='right' height='138.5' /></a>
+# paste_geomarker_name_here <a href='https://degauss-org.github.io/DeGAUSS/'><img src='https://github.com/degauss-org/degauss_template/blob/master/DeGAUSS_hex.png' align='right' height='138.5' /></a>
 
-> short description of geomarker
+> short description of paste_geomarker_name_here
 
-[![Docker Build Status](https://img.shields.io/docker/automated/degauss/geomarker)](https://hub.docker.com/repository/docker/degauss/geomarker/tags)
-[![GitHub Latest Tag](https://img.shields.io/github/v/tag/degauss-org/geomarker)](https://github.com/degauss-org/geomarker/releases)
+[![Docker Build Status](https://img.shields.io/docker/automated/degauss/paste_geomarker_name_here)](https://hub.docker.com/repository/docker/degauss/paste_geomarker_name_here/tags)
+[![GitHub Latest Tag](https://img.shields.io/github/v/tag/degauss-org/paste_geomarker_name_here)](https://github.com/degauss-org/paste_geomarker_name_here/releases)
 
 ## DeGAUSS example call
 
 If `my_address_file_geocoded.csv` is a file in the current working directory with coordinate columns named `lat` and `lon`, then
 
 ```sh
-docker run --rm -v $PWD:/tmp degauss/geomarker:0.0.1 my_address_file_geocoded.csv
+docker run --rm -v $PWD:/tmp degauss/paste_geomarker_name_here:0.0.1 my_address_file_geocoded.csv
 ```
 
-will produce `my_address_file_geocoded_geomarker_v0.0.1.csv` with an added column named geomarker.
+will produce `my_address_file_geocoded_paste_geomarker_name_here_v0.0.1.csv` with an added column named paste_geomarker_name_here.
 
 ## geomarker methods
 
@@ -294,7 +294,7 @@ will produce `my_address_file_geocoded_geomarker_v0.0.1.csv` with an added colum
 ## geomarker data
 
 - list how geomarker was created, including any scripts within the repo used to do so
-- list where geomarker data is stored in S3 using a hyperlink like: [`s3://path/to/geomarker.rds`](https://geomarker.s3.us-east-2.amazonaws.com/path/to/geomarker.rds)
+- list where geomarker data is stored in S3 using a hyperlink like: [`s3://path/to/paste_geomarker_name_here.rds`](https://geomarker.s3.us-east-2.amazonaws.com/path/to/paste_geomarker_name_here.rds)
 
 ## DeGAUSS details
 
