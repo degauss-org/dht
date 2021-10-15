@@ -64,12 +64,6 @@ inflate <- function(geomarker = ".", rmd = file.path("dev", "degauss_template.Rm
     file = '.gitignore', sep = "\n"
   )
 
-  makefile <- parsermd::rmd_select(parsed_tbl, "makefile")$ast[[1]]$code
-  cat(
-    enc2utf8(makefile),
-    file = 'Makefile', sep = "\n"
-  )
-
   actions <- parsermd::rmd_select(parsed_tbl, "actions")$ast[[1]]$code
   cat(
     enc2utf8(actions),
