@@ -111,7 +111,7 @@ write_geomarker_file(d = d$d,
 .Rproj.user
 ```
 
-```{r test-dir, echo = FALSE, cache = TRUE}
+```{r test-dir, echo = FALSE}
 test_dir <- fs::path_join(c(here::here(), '/test'))
 fs::dir_create(test_dir)
 readr::write_csv(dht:::my_address_file_geocoded,
@@ -123,7 +123,7 @@ readr::write_csv(dht:::my_address_file_geocoded,
 usethis::use_gpl3_license()
 ```
 
-```{r actions-dir, echo = FALSE, cache = TRUE}
+```{r actions-dir, echo = FALSE}
 actions_dir <- fs::path_join(c(here::here(), '/.github/workflows'))
 fs::dir_create(actions_dir)
 ```
