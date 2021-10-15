@@ -128,7 +128,7 @@ IMAGE=$(REGISTRY_HOST)/$(USERNAME)/$(NAME)
 .PHONY: build test shell release clean tag-gh
 
 build:
-  R -e "dht::inflate()"
+	R -e "dht::inflate()"
 	docker build -t $(IMAGE) .
 
 test:
