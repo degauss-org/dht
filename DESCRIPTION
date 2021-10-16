@@ -32,11 +32,9 @@ Imports:
     fs (>= 1.5.0),
     renv (>= 0.8.3),
     withr (>= 2.2.0),
-    usethis (>= 1.6.1),
     purrr (>= 0.3.4),
     stringr (>= 1.4.0),
-    parsermd (>= 0.1.2), 
-    here (>= 1.0.1)
+    parsermd (>= 0.1.2)
 Depends: 
     R (>= 2.10)
 Config/testthat/edition: 3

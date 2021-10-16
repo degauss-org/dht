@@ -9,7 +9,7 @@ editor_options:
 
 ```{r prep, eval = FALSE, echo = FALSE}
 # use these variables along with the find/replace function to update globally
-geomarker <- basename(here::here()) # find: paste_geomarker_name_here
+geomarker <- basename(getwd()) # find: paste_geomarker_name_here
 container_version <- 0.0.1
 r_version <- dht::detect_r_version() # find: paste_r_version 
 renv_version <- packageVersion("renv") # find: paste_renv_version

@@ -4,14 +4,14 @@
 #'
 #' @return
 #' Create a degauss_template.Rmd file and return its path
-#' @export
 #'
 #' @examples
 #' \dontrun{
 #' add_degauss_template(geomarker = geomarker_example)
 #' unlink(geomarker_example, recursive = TRUE)
 #' }
-add_degauss_template <- function(geomarker = ".") {
+#' @export
+use_degauss_template <- function(geomarker = ".") {
   geomarker_path <- normalizePath(geomarker, mustWork = FALSE)
 
   # rmd file
@@ -54,7 +54,7 @@ add_degauss_template <- function(geomarker = ".") {
 #' @return
 #' Return path to current container
 #' @export
-inflate <- function(geomarker = getwd()) {
+inflate_degauss_template <- function(geomarker = getwd()) {
 
   geomarker_path <- normalizePath(geomarker, mustWork = TRUE)
   rmd_path <- file.path(geomarker_path, "degauss.Rmd")

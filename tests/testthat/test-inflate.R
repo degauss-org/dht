@@ -1,7 +1,7 @@
 test_that("use_degauss_template adds correct files", {
   path <- fs::path_join(c(fs::path_wd(), "test_geomarker"))
   fs::dir_create(path)
-  add_degauss_template(geomarker = path)
+  use_degauss_template(geomarker = path)
   testthat::expect_true(fs::file_exists(fs::path_join(c(path, "degauss.Rmd"))))
   testthat::expect_true(fs::file_exists(fs::path_join(c(path, "Makefile"))))
   fs::dir_delete(path)
@@ -10,8 +10,8 @@ test_that("use_degauss_template adds correct files", {
 test_that("inflation of degauss.Rmd produces correct files", {
   path <- fs::path_join(c(fs::path_wd(), "test_geomarker"))
   fs::dir_create(path)
-  add_degauss_template(geomarker = path)
-  inflate(geomarker = path)
+  use_degauss_template(geomarker = path)
+  inflate_degauss_template(geomarker = path)
 
   check_it <- function(file_name) {
     testthat::expect_true(fs::file_exists(
