@@ -46,7 +46,7 @@ WORKDIR /tmp
 ENTRYPOINT ["/app/entrypoint.R"]
 ```
 
-```{r rscript, eval = FALSE, echo = FALSE}
+```{r entrypoint, eval = FALSE, echo = FALSE}
 #!/usr/local/bin/Rscript
 
 dht::greeting(geomarker_name = 'paste_geomarker_name_here', version = '0.0.1', description = 'short description goes here')
@@ -91,7 +91,7 @@ write_geomarker_file(d = d$d,
                      raw_data = d$raw_data,
                      filename = opt$filename,
                      geomarker_name = 'paste_geomarker_name_here',
-                     version = '0.0.1')"
+                     version = '0.0.1')
 ```
 
 ```{text dockerignore, eval = FALSE, echo = FALSE}
@@ -110,24 +110,6 @@ write_geomarker_file(d = d$d,
 *.qs
 .Rproj.user
 ```
-
-```{r test-dir, echo = FALSE}
-test_dir <- fs::path_join(c(here::here(), '/test'))
-fs::dir_create(test_dir)
-readr::write_csv(dht:::my_address_file_geocoded,
-                   fs::path_join(c(test_dir, 'my_address_file_geocoded.csv')))
-```
-
-
-```{r license, eval = FALSE, echo = FALSE}
-usethis::use_gpl3_license()
-```
-
-```{r actions-dir, echo = FALSE}
-actions_dir <- fs::path_join(c(here::here(), '/.github/workflows'))
-fs::dir_create(actions_dir)
-```
-
 
 ```{text actions}
 name: Build & Deploy Docker Containers
@@ -224,7 +206,7 @@ jobs:
           docker push ${{ env.container }}
 ```
 
-# paste_geomarker_name_here <a href='https://degauss-org.github.io/DeGAUSS/'><img src='https://github.com/degauss-org/degauss_template/blob/master/DeGAUSS_hex.png' align='right' height='138.5' /></a>
+# paste_geomarker_name_here <a href='https://degauss-org.github.io/DeGAUSS/'><img src='https://github.com/degauss-org/degauss_template/raw/master/DeGAUSS_hex.png' align='right' height='138.5' /></a>
 
 > short description of paste_geomarker_name_here
 
@@ -253,10 +235,3 @@ will produce `my_address_file_geocoded_paste_geomarker_name_here_v0.0.1.csv` wit
 ## DeGAUSS details
 
 For detailed documentation on DeGAUSS, including general usage and installation, please see the [DeGAUSS homepage](https://degauss.org).
-
-```{r development-1, eval=FALSE, echo = FALSE}
-# Run but keep eval=FALSE to avoid infinite loop
-# Execute in the console directly
-dht::inflate(rmd = "dev/degauss_template.Rmd")
-```
-

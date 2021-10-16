@@ -12,12 +12,10 @@
 #' unlink(geomarker_example, recursive = TRUE)
 #' }
 add_degauss_template <- function(geomarker = ".") {
-
-  project_name <- basename(normalizePath(geomarker))
-  geomarker <- normalizePath(geomarker)
+  geomarker_path <- normalizePath(geomarker, mustWork = FALSE)
 
   # rmd file
-  rmd_path <- file.path(geomarker, "degauss.Rmd")
+  rmd_path <- file.path(geomarker_path, "degauss.Rmd")
 
   if (file.exists(rmd_path)) {
     cli::cli_abort("A degauss.Rmd file already exists at {rmd_path}")
@@ -40,7 +38,7 @@ add_degauss_template <- function(geomarker = ".") {
     cli::cli_abort("A Makefile already exists at {makefile_path}")
   }
 
-  file.copy(from = system.file("Makefile", package = "dht"), to = makefile_path)
+  fs::file_copy(system.file("Makefile", package = "dht"), makefile_path)
 
   cli::cli_alert_success("Makefile added at {makefile_path}")
 
@@ -50,85 +48,70 @@ add_degauss_template <- function(geomarker = ".") {
 #' Inflate Rmd to degauss files
 #'
 #' @param geomarker path to folder containing degauss.Rmd
-#' @param test Logical. Whether to test container after Rmd inflating
-#' @param overwrite Logical. Whether to overwrite vignette and functions if already exists.
 #'
 #' @importFrom parsermd parse_rmd as_tibble
 #' @importFrom utils getFromNamespace
 #' @return
 #' Return path to current container
 #' @export
-inflate <- function(geomarker = ".", rmd = file.path("dev", "degauss_template.Rmd"),
-                    test = FALSE, overwrite = c("ask", "yes", "no")) {
-  old <- setwd(geomarker)
-  on.exit(setwd(old))
+inflate <- function(geomarker = getwd()) {
 
-  old_proj <- usethis::proj_get()
-  if (normalizePath(old_proj) != normalizePath(geomarker)) {
-    on.exit(usethis::proj_set(old_proj))
-    usethis::proj_set(geomarker)
-  }
-
-  geomarker <- normalizePath(geomarker)
-  rmd <- normalizePath(rmd, mustWork = FALSE)
-
-  if (grepl(geomarker, rmd, fixed = TRUE)) {
-    # Rmd already contains pkgpath
-    rmd_path <- rmd
-  } else {
-    rmd_path <- file.path(geomarker, rmd)
-  }
+  geomarker_path <- normalizePath(geomarker, mustWork = TRUE)
+  rmd_path <- file.path(geomarker_path, "degauss.Rmd")
 
   if (!file.exists(rmd_path)) {
-    stop(rmd, " does not exists, please use dht::add_degauss_template() to create it.")
+    stop(rmd_path, " does not exist, please use dht::add_degauss_template() to create it.")
   }
 
-  parsed_rmd <- parse_rmd(rmd)
-  parsed_tbl <- as_tibble(parsed_rmd)
+  parsed_rmd <-
+    parse_rmd(rmd_path) %>%
+    as_tibble()
 
-  # dockerfile
-  dockerfile <- parsermd::rmd_select(parsed_tbl, "dockerfile")$ast[[1]]$code
-  cat(
-    enc2utf8(dockerfile),
-    file = 'Dockerfile', sep = "\n"
+  cli::cli_alert_success("inflating degauss.Rmd in {geomarker_path}")
+
+  cli::cli_alert_success("added test directory and added example geocoded file")
+  test_dir <- fs::path_join(c(geomarker_path, "/test"))
+  fs::dir_create(test_dir)
+  readr::write_csv(
+    dht:::my_address_file_geocoded,
+    fs::path_join(c(test_dir, "my_address_file_geocoded.csv"))
   )
 
-  # rscript
-  rscript <- parsermd::rmd_select(parsed_tbl, "rscript")$ast[[1]]$code
-  cat(
-    enc2utf8(rscript),
-    file = 'entrypoint.R', sep = "\n"
+  fs::file_copy(
+    system.file("LICENSE.md", package = "dht"),
+    fs::path_join(c(geomarker_path, "LICENSE.md"))
+  )
+  cli::cli_alert_success("added LICENSE.md")
+
+  cli::cli_alert_success("added github workflows folder")
+  fs::dir_create(fs::path_join(c(geomarker_path, ".github/workflows/")))
+
+  # for each text chunk, pull out the code and put it in the appropriate file
+  select_and_cat <- function(chunk_name, file_name) {
+    the_code <- parsermd::rmd_select(parsed_rmd, chunk_name)$ast[[1]]$code
+    cat(enc2utf8(the_code), file = file.path(geomarker_path, file_name), sep = "\n")
+    cli::cli_alert_success("created {file_name}")
+  }
+
+  fls <- c(
+    "Dockerfile" = "dockerfile",
+    "entrypoint.R" = "entrypoint",
+    ".dockerignore" = "dockerignore",
+    ".gitignore" = "gitignore",
+    ".github/workflows/build-deploy.yaml" = "actions"
   )
 
-  dockerignore <- parsermd::rmd_select(parsed_tbl, "dockerignore")$ast[[1]]$code
-  cat(
-    enc2utf8(dockerignore),
-    file = '.dockerignore', sep = "\n"
-  )
+  purrr::iwalk(fls, select_and_cat)
 
-  gitignore <- parsermd::rmd_select(parsed_tbl, "gitignore")$ast[[1]]$code
-  cat(
-    enc2utf8(gitignore),
-    file = '.gitignore', sep = "\n"
-  )
-
-  actions <- parsermd::rmd_select(parsed_tbl, "actions")$ast[[1]]$code
-  cat(
-    enc2utf8(actions),
-    file = '.github/workflows/build-deploy.yaml', sep = "\n"
-  )
-
-  readme_tbl <- parsed_tbl[
-    !(grepl("delete|prep|dockerfile|rscript|dockerignore|gitignore|license|test|makefile|actions|development",
-            parsed_tbl[["label"]]) |
-        grepl("rmd_yaml_list", parsed_tbl[["type"]])),
-    ]
+  # pull out markdown from the Rmd and put into README.md
+  readme_tbl <-
+    parsed_rmd %>%
+    dplyr::filter(type %in% c("rmd_heading", "rmd_markdown"))
 
   cat("",
-      enc2utf8(parsermd::as_document(readme_tbl)),
-      sep = "\n",
-      file = 'readme.md'
+    enc2utf8(parsermd::as_document(readme_tbl)),
+    sep = "\n",
+    file = fs::path_join(c(geomarker_path, "README.md"))
   )
+
 }
-
-
