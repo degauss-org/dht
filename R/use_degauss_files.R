@@ -1,72 +1,75 @@
-# save_as is name of file inside geomarker directory to save it to
+# info automatically used:
+# geomarker name is basename of geomarker directory
+# R version, renv version
 
-render_template <- function(template, data = list(), save_as) {
-  template_path <- fs::path_join(c(fs::path_package("dht"), template))
+use_degauss_container <- function() {}
+
+
+render_template <- function(read_from, write_to, data = list(), overwrite = FALSE) {
+  template_path <- fs::path_join(c(fs::path_package("dht"), read_from))
   rendered_template <- whisker::whisker.render(readLines(template_path), data)
-  cat(rendered_template, file = save_as)
+  if (fs::file_exists(write_to) & !overwrite) {
+    cli::cli_abort(c("{write_to} already exists",
+                     "i" = "overwrite by running again and setting {.val overwrite = TRUE}"))
+  }
+  cat(rendered_template, file = write_to)
+  cli::cli_alert_success("created {write_to}")
 }
 
 # Dockerfile
-use_degauss_dockerfile <- function(geomarker = getwd()) {
-  geomarker_path <- normalizePath(geomarker, mustWork = TRUE)
+use_degauss_dockerfile <- function(geomarker = getwd(), ...) {
 
   r_version <- paste(getRversion(), sep = ".")
-  # TODO must use R > 4.0.0 to work with r-ver and RSPM
+  if (r_version < "4.0.0") {
+    cli::cli_abort("The r-ver container framework and RSPM repo only work with R versions 4.0 or greater.")
+  }
 
   renv_version <- utils::packageDescription("renv")$Version
-  # TODO renv must be installed; renv.lock must exist
+  # TODO renv must be installed
+  # TODO renv.lock must exist
 
+  geomarker_path <- normalizePath(geomarker, mustWork = TRUE)
+  dest_path <- fs::path_join(c(geomarker_path, "Dockerfile"))
   render_template(
-    template = "degauss_Dockerfile",
+    read_from = "degauss_Dockerfile",
+    write_to = dest_path,
     data = list(
       "r_version" = r_version,
       "renv_version" = renv_version
     ),
-    save_as = fs::path_join(c(geomarker, "Dockerfile"))
-  )
+    ...)
 }
 
 # makefile
-use_degauss_makefile <- function() {
-  writeLines(makefile, "Makefile")
+# TODO overhaul template; don't use it for release anymore?
+use_degauss_makefile <- function(geomarker = getwd(), ...) {
+  geomarker_path <- normalizePath(geomarker, mustWork = TRUE)
+  dest_path <- fs::path_join(c(geomarker_path, "Makefile"))
+  render_template(
+    read_from = "degauss_Makefile",
+    write_to = dest_path,
+    data = list(
+      "registry_host" = "docker.io",
+      "username" = "degauss",
+      "name" = basename(geomarker_path)
+    ),
+    ...
+  )
 }
 
-# README
-use_degauss_readme <- function(name) {
-  readme <- glue::glue(
-    "
-    # {name} <a href='https://degauss-org.github.io/DeGAUSS/'><img src='https://github.com/degauss-org/degauss_template/blob/master/DeGAUSS_hex.png' align='right' height='138.5' /></a>
-
-    > short description of geomarker
-
-    [![Docker Build Status](https://img.shields.io/docker/automated/degauss/{name})](https://hub.docker.com/repository/docker/degauss/{name}/tags
-    [![GitHub Latest Tag](https://img.shields.io/github/v/tag/degauss-org/{name})](https://github.com/degauss-org/{name}/releases)
-
-    ## DeGAUSS example call
-
-    If `my_address_file_geocoded.csv` is a file in the current working directory with coordinate columns named `lat` and `lon`, then
-
-    ```sh
-    docker run --rm -v $PWD:/tmp degauss/{name}:0.1 my_address_file_geocoded.csv
-    ```
-
-    will produce `my_address_file_geocoded_{name}.csv` with an added column named {name}.
-
-    ## geomarker methods
-
-    - if any non-trivial methods were developed for geomarker assessment (i.e. inverse distance weighted averaging), then describe them here
-
-    ## geomarker data
-
-    - list how geomarker was created, including any scripts within the repo used to do so
-    - list where geomarker data is stored in S3 using a hyperlink like: [`s3://path/to/{name}.rds`](https://geomarker.s3.us-east-2.amazonaws.com/path/to/{name}.rds)
-
-    ## DeGAUSS details
-
-    For detailed documentation on DeGAUSS, including general usage and installation, please see the [DeGAUSS homepage](https://degauss.org).
-    "
+# TODO change to include ghcr.io?
+use_degauss_readme <- function(geomarker = getwd(), ...) {
+  geomarker_path <- normalizePath(geomarker, mustWork = TRUE)
+  dest_path <- fs::path_join(c(geomarker_path, "README.md"))
+  render_template(
+    read_from = "degauss_README.md",
+    write_to = dest_path,
+    data = list(
+      "name" = basename(geomarker_path),
+      "version" = "TODO how to get version"
+    ),
+    ...
   )
-  writeLines(readme, "README.md")
 }
 
 # R script
