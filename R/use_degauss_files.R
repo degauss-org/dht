@@ -1,52 +1,34 @@
+# save_as is name of file inside geomarker directory to save it to
+
+render_template <- function(template, data = list(), save_as) {
+  template_path <- fs::path_join(c(fs::path_package("dht"), template))
+  rendered_template <- whisker::whisker.render(readLines(template_path), data)
+  cat(rendered_template, file = save_as)
+}
+
 # Dockerfile
-use_degauss_dockerfile <- function(name,
-                           from = c('r-ver', 'verse', 'shinyverse', 'spatial'),
-                           r_version = paste(getRversion(), sep = '.'),
-                           renv_version = '0.8.3-81') {
+use_degauss_dockerfile <- function(geomarker = getwd()) {
+  geomarker_path <- normalizePath(geomarker, mustWork = TRUE)
 
-  r_version <- paste(getRversion(), sep = '.')
-  if (r_version < "4.0.0") {
-    message("Your R version is less than 4.0.0.")
-    ans <- readline("Would you like to use 4.0.0 for this Dockerfile? (y/n)")
-    if (ans %in% c("", "y", "Y")) r_version <- "4.0.0"
-  }
+  r_version <- paste(getRversion(), sep = ".")
+  # TODO must use R > 4.0.0 to work with r-ver and RSPM
 
-  dockerfile <- glue::glue(
-    "FROM rocker/{from[1]}:{r_version}
+  renv_version <- utils::packageDescription("renv")$Version
+  # TODO renv must be installed; renv.lock must exist
 
-    # install required version of renv
-    RUN R --quiet -e 'install.packages('remotes', repos = 'https://cran.rstudio.com')'
-    # make sure version matches what is used in the project: packageVersion('renv')
-    ENV RENV_VERSION {renv_version}
-    RUN R --quiet -e 'remotes::install_github('rstudio/renv@${{RENV_VERSION}}')'
-
-    WORKDIR /app
-
-    RUN apt-get update \\\
-    && apt-get install -yqq --no-install-recommends \\\
-    libgdal-dev=2.1.2+dfsg-5 \\\
-    libgeos-dev=3.5.1-3 \\\
-    libudunits2-dev=2.2.20-1+b1 \\\
-    libproj-dev=4.9.3-1 \\\
-    && apt-get clean
-
-    ENV CRAN=https://packagemanager.rstudio.com/all/__linux__/focal/latest
-    COPY renv.lock .
-    RUN R --quiet -e 'renv::restore()'
-
-    COPY {name}.rds .
-    COPY {name}.R .
-
-    WORKDIR /tmp
-
-    ENTRYPOINT ['/app/{name}.R']"
+  render_template(
+    template = "degauss_Dockerfile",
+    data = list(
+      "r_version" = r_version,
+      "renv_version" = renv_version
+    ),
+    save_as = fs::path_join(c(geomarker, "Dockerfile"))
   )
-  writeLines(dockerfile, "Dockerfile")
 }
 
 # makefile
 use_degauss_makefile <- function() {
-  writeLines(makefile, 'Makefile')
+  writeLines(makefile, "Makefile")
 }
 
 # README
@@ -84,7 +66,7 @@ use_degauss_readme <- function(name) {
     For detailed documentation on DeGAUSS, including general usage and installation, please see the [DeGAUSS homepage](https://degauss.org).
     "
   )
-  writeLines(readme, 'README.md')
+  writeLines(readme, "README.md")
 }
 
 # R script
@@ -139,7 +121,7 @@ write_geomarker_file(d = d$d,
                      geomarker_name = '{name}',
                      version = '0.1')"
     )
-  writeLines(rscript, glue::glue('{name}.R'))
+  writeLines(rscript, glue::glue("{name}.R"))
 }
 
 # .dockerignore
@@ -152,9 +134,8 @@ use_degauss_dockerignore <- function(name) {
     !/renv.lock
     !/{name}.R
     !/{name}.rds
-    "
-  )
-  writeLines(dockerignore, '.dockerignore')
+    ")
+  writeLines(dockerignore, ".dockerignore")
 }
 
 # .gitignore
@@ -163,15 +144,16 @@ use_degauss_gitignore <- function() {
   *.rds
   *.fst
   *.qs
-    "
-  )
-  writeLines(gitignore, '.gitignore')
+    ")
+  writeLines(gitignore, ".gitignore")
 }
 
 # tests folder and sample address file
 use_degauss_tests <- function(path) {
-  test_dir <- fs::path_join(c(path, '/test'))
+  test_dir <- fs::path_join(c(path, "/test"))
   fs::dir_create(test_dir)
-  readr::write_csv(my_address_file_geocoded,
-                   fs::path_join(c(test_dir, 'my_address_file_geocoded.csv')))
+  readr::write_csv(
+    my_address_file_geocoded,
+    fs::path_join(c(test_dir, "my_address_file_geocoded.csv"))
+  )
 }
