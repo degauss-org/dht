@@ -7,6 +7,25 @@
 # idea! make a specific function that is designed to update the version inside entrypoint.R, and README.md?
 # dht::release_major, release_minor, release_patch
 
+#' Use DeGAUSS Container Template
+#'
+#' @description
+#' This function calls all of the individual `dht::use_degauss_*()` functions to add:
+#'   * `Dockerfile`
+#'   * `Makefile`
+#'   * `README.md`
+#'   * `entrypoint.R`
+#'   * `.dockerignore`
+#'   * `.gitignore`
+#'   * `test/my_address_file_geocoded.csv`
+#'   * `LICENSE.md` GPL license
+#'   * `.github/workflows/build-deply.yaml`
+#'
+#' @param geomarker Path to folder where DeGAUSS container files are to be added;
+#' @param ... arguments passed to render_degauss_template
+#' defaults to the current working directory
+#'
+#' @export
 use_degauss_container <- function(geomarker = getwd(), ...) {
   use_degauss_license(geomarker = geomarker)
   use_degauss_dockerignore(geomarker = geomarker)
@@ -19,7 +38,7 @@ use_degauss_container <- function(geomarker = getwd(), ...) {
   use_degauss_tests(geomarker = geomarker)
 }
 
-render_template <- function(read_from, write_to, data = list(), overwrite = FALSE) {
+render_degauss_template <- function(read_from, write_to, data = list(), overwrite = FALSE) {
   template_path <- fs::path_join(c(fs::path_package("dht"), read_from))
   rendered_template <- whisker::whisker.render(readLines(template_path), data)
   if (fs::file_exists(write_to) & !overwrite) {
@@ -44,7 +63,7 @@ use_degauss_dockerfile <- function(geomarker = getwd(), ...) {
 
   geomarker_path <- normalizePath(geomarker, mustWork = TRUE)
   dest_path <- fs::path_join(c(geomarker_path, "Dockerfile"))
-  render_template(
+  render_degauss_template(
     read_from = "degauss_Dockerfile",
     write_to = dest_path,
     data = list(
@@ -60,7 +79,7 @@ use_degauss_dockerfile <- function(geomarker = getwd(), ...) {
 use_degauss_makefile <- function(geomarker = getwd(), ...) {
   geomarker_path <- normalizePath(geomarker, mustWork = TRUE)
   dest_path <- fs::path_join(c(geomarker_path, "Makefile"))
-  render_template(
+  render_degauss_template(
     read_from = "degauss_Makefile",
     write_to = dest_path,
     data = list(
@@ -75,7 +94,7 @@ use_degauss_makefile <- function(geomarker = getwd(), ...) {
 use_degauss_readme <- function(geomarker = getwd(), ...) {
   geomarker_path <- normalizePath(geomarker, mustWork = TRUE)
   dest_path <- fs::path_join(c(geomarker_path, "README.md"))
-  render_template(
+  render_degauss_template(
     read_from = "degauss_README.md",
     write_to = dest_path,
     data = list(
@@ -89,7 +108,7 @@ use_degauss_readme <- function(geomarker = getwd(), ...) {
 use_degauss_entrypoint <- function(geomarker = getwd(), ...) {
   geomarker_path <- normalizePath(geomarker, mustWork = TRUE)
   dest_path <- fs::path_join(c(geomarker_path, "entrypoint.R"))
-  render_template(
+  render_degauss_template(
     read_from = "degauss_entrypoint.R",
     write_to = dest_path,
     data = list(
@@ -103,7 +122,7 @@ use_degauss_entrypoint <- function(geomarker = getwd(), ...) {
 use_degauss_gitignore <- function(geomarker = getwd(), ...) {
   geomarker_path <- normalizePath(geomarker, mustWork = TRUE)
   dest_path <- fs::path_join(c(geomarker_path, ".gitignore"))
-  render_template(
+  render_degauss_template(
     read_from = "degauss_.gitignore",
     write_to = dest_path,
     data = list(),
@@ -114,7 +133,7 @@ use_degauss_gitignore <- function(geomarker = getwd(), ...) {
 use_degauss_dockerignore <- function(geomarker = getwd(), ...) {
   geomarker_path <- normalizePath(geomarker, mustWork = TRUE)
   dest_path <- fs::path_join(c(geomarker_path, ".dockerignore"))
-  render_template(
+  render_degauss_template(
     read_from = "degauss_.dockerignore",
     write_to = dest_path,
     data = list(),
@@ -137,7 +156,7 @@ use_degauss_tests <- function(geomarker = getwd(), ...) {
 use_degauss_license <- function(geomarker = getwd(), ...) {
   geomarker_path <- normalizePath(geomarker, mustWork = TRUE)
   dest_path <- fs::path_join(c(geomarker_path, "LICENSE.md"))
-  render_template(
+  render_degauss_template(
     read_from = "degauss_LICENSE.md",
     write_to = dest_path,
     data = list(),
@@ -150,7 +169,7 @@ use_degauss_github_actions <- function(geomarker = getwd(), ...) {
   gha_dir <- fs::path_join(c(geomarker_path, ".github/workflows/"))
   dest_path <- fs::path_join(c(gha_dir, "build-deploy.yaml"))
   fs::dir_create(gha_dir)
-  render_template(
+  render_degauss_template(
     read_from = "degauss_build-deploy.yaml",
     write_to = dest_path,
     data = list(),
