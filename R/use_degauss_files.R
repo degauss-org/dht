@@ -1,16 +1,31 @@
 # info automatically used:
 # geomarker name is basename of geomarker directory
+# assumes initial container creation means version 0.1
 # R version, renv version
 
-use_degauss_container <- function() {}
 
+# idea! make a specific function that is designed to update the version inside entrypoint.R, and README.md?
+# dht::release_major, release_minor, release_patch
+
+use_degauss_container <- function(geomarker = getwd(), ...) {
+  use_degauss_license(geomarker = geomarker)
+  use_degauss_dockerignore(geomarker = geomarker)
+  use_degauss_gitignore(geomarker = geomarker)
+  use_degauss_entrypoint(geomarker = geomarker)
+  use_degauss_readme(geomarker = geomarker)
+  use_degauss_dockerfile(geomarker = geomarker)
+  use_degauss_github_actions(geomarker = geomarker)
+  use_degauss_makefile(geomarker = geomarker)
+  use_degauss_tests(geomarker = geomarker)
+}
 
 render_template <- function(read_from, write_to, data = list(), overwrite = FALSE) {
   template_path <- fs::path_join(c(fs::path_package("dht"), read_from))
   rendered_template <- whisker::whisker.render(readLines(template_path), data)
   if (fs::file_exists(write_to) & !overwrite) {
     cli::cli_abort(c("{write_to} already exists",
-                     "i" = "overwrite by running again and setting {.val overwrite = TRUE}"))
+      "i" = "overwrite by running again and setting {.code overwrite = TRUE}"
+    ))
   }
   cat(rendered_template, file = write_to)
   cli::cli_alert_success("created {write_to}")
@@ -18,7 +33,6 @@ render_template <- function(read_from, write_to, data = list(), overwrite = FALS
 
 # Dockerfile
 use_degauss_dockerfile <- function(geomarker = getwd(), ...) {
-
   r_version <- paste(getRversion(), sep = ".")
   if (r_version < "4.0.0") {
     cli::cli_abort("The r-ver container framework and RSPM repo only work with R versions 4.0 or greater.")
@@ -37,7 +51,8 @@ use_degauss_dockerfile <- function(geomarker = getwd(), ...) {
       "r_version" = r_version,
       "renv_version" = renv_version
     ),
-    ...)
+    ...
+  )
 }
 
 # makefile
@@ -57,7 +72,6 @@ use_degauss_makefile <- function(geomarker = getwd(), ...) {
   )
 }
 
-# TODO change to include ghcr.io?
 use_degauss_readme <- function(geomarker = getwd(), ...) {
   geomarker_path <- normalizePath(geomarker, mustWork = TRUE)
   dest_path <- fs::path_join(c(geomarker_path, "README.md"))
@@ -66,97 +80,80 @@ use_degauss_readme <- function(geomarker = getwd(), ...) {
     write_to = dest_path,
     data = list(
       "name" = basename(geomarker_path),
-      "version" = "TODO how to get version"
+      "version" = "0.1"
     ),
     ...
   )
 }
 
-# R script
-use_degauss_rscript <- function(name) {
-  rscript <-
-    glue::glue(
-      "
-#!/usr/local/bin/Rscript
-
-dht::greeting(geomarker_name = '{name}', version = '0.1', description = 'short description goes here')
-
-library(dplyr)
-library(tidyr)
-library(sf)
-
-doc <- '
-      Usage:
-      {name}.R <filename>
-      '
-
-opt <- docopt::docopt(doc)
-## for interactive testing
-## opt <- docopt::docopt(doc, args = 'test/my_address_file_geocoded.csv')
-
-message('
-reading input file...')
-d <- dht::read_lat_lon_csv(opt$filename, nest_df = T, sf = T, project_to_crs = 5072)
-
-dht::check_for_column(d$raw_data, 'lat', d$raw_data$lat)
-dht::check_for_column(d$raw_data, 'lat', d$raw_data$lat)
-
-## function for creating a {name} based on a single sf point
-get_{name} <- function(query_point) {{
-   query_point <- st_sfc(query_point, crs = 4326)
-
-   # ...
-
-}}
-
-## apply this function across all points
-message('e.g. finding closest schwartz grid site index for each point...')
-
-d <- d %>%
-   mutate({name} = mappp::mappp(d$d$geometry, get_{name},
-                                   parallel = FALSE,
-                                   quiet = FALSE))
-
-## merge back on .row after unnesting .rows into .row
-write_geomarker_file(d = d$d,
-                     raw_data = d$raw_data,
-                     filename = opt$filename,
-                     geomarker_name = '{name}',
-                     version = '0.1')"
-    )
-  writeLines(rscript, glue::glue("{name}.R"))
+use_degauss_entrypoint <- function(geomarker = getwd(), ...) {
+  geomarker_path <- normalizePath(geomarker, mustWork = TRUE)
+  dest_path <- fs::path_join(c(geomarker_path, "entrypoint.R"))
+  render_template(
+    read_from = "degauss_entrypoint.R",
+    write_to = dest_path,
+    data = list(
+      "name" = basename(geomarker_path),
+      "version" = "0.1"
+    ),
+    ...
+  )
 }
 
-# .dockerignore
-use_degauss_dockerignore <- function(name) {
-  dockerignore <- glue::glue("
-    # ignore everything
-    **
-
-    # except what we need
-    !/renv.lock
-    !/{name}.R
-    !/{name}.rds
-    ")
-  writeLines(dockerignore, ".dockerignore")
+use_degauss_gitignore <- function(geomarker = getwd(), ...) {
+  geomarker_path <- normalizePath(geomarker, mustWork = TRUE)
+  dest_path <- fs::path_join(c(geomarker_path, ".gitignore"))
+  render_template(
+    read_from = "degauss_.gitignore",
+    write_to = dest_path,
+    data = list(),
+    ...
+  )
 }
 
-# .gitignore
-use_degauss_gitignore <- function() {
-  gitignore <- glue::glue("
-  *.rds
-  *.fst
-  *.qs
-    ")
-  writeLines(gitignore, ".gitignore")
+use_degauss_dockerignore <- function(geomarker = getwd(), ...) {
+  geomarker_path <- normalizePath(geomarker, mustWork = TRUE)
+  dest_path <- fs::path_join(c(geomarker_path, ".dockerignore"))
+  render_template(
+    read_from = "degauss_.dockerignore",
+    write_to = dest_path,
+    data = list(),
+    ...
+  )
+  cli::cli_alert_info("don't forget to add any data/files that are needed to build the container")
 }
 
 # tests folder and sample address file
-use_degauss_tests <- function(path) {
-  test_dir <- fs::path_join(c(path, "/test"))
+use_degauss_tests <- function(geomarker = getwd(), ...) {
+  geomarker_path <- normalizePath(geomarker, mustWork = TRUE)
+  test_dir <- fs::path_join(c(geomarker_path, "test"))
   fs::dir_create(test_dir)
   readr::write_csv(
     my_address_file_geocoded,
     fs::path_join(c(test_dir, "my_address_file_geocoded.csv"))
+  )
+}
+
+use_degauss_license <- function(geomarker = getwd(), ...) {
+  geomarker_path <- normalizePath(geomarker, mustWork = TRUE)
+  dest_path <- fs::path_join(c(geomarker_path, "LICENSE.md"))
+  render_template(
+    read_from = "degauss_LICENSE.md",
+    write_to = dest_path,
+    data = list(),
+    ...
+  )
+}
+
+use_degauss_github_actions <- function(geomarker = getwd(), ...) {
+  geomarker_path <- normalizePath(geomarker, mustWork = TRUE)
+  gha_dir <- fs::path_join(c(geomarker_path, ".github/workflows/"))
+  dest_path <- fs::path_join(c(gha_dir, "build-deploy.yaml"))
+  fs::dir_create(gha_dir)
+  render_template(
+    read_from = "degauss_build-deploy.yaml",
+    write_to = dest_path,
+    data = list(),
+    ...
   )
 }
