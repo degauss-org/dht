@@ -4,16 +4,21 @@
 \alias{use_degauss_container}
 \title{Use DeGAUSS Container Template}
 \usage{
-use_degauss_container(geomarker = getwd(), ...)
+use_degauss_container(geomarker = getwd(), version = "0.1", ...)
 }
 \arguments{
 \item{geomarker}{Path to folder where DeGAUSS container files are to be added;}
 
-\item{...}{arguments passed to render_degauss_template
+\item{version}{string of version number used in freshly created README and entrypoint.R; defaults to "0.1"}
+
+\item{...}{arguments passed to render_degauss_template (overwrite)
 defaults to the current working directory}
 }
 \description{
-This function calls all of the individual \verb{dht::use_degauss_*()} functions to add:
+Creates all the necessary files to create a DeGAUSS container.
+The container/geomarker name is assumed to be the basename of the working directory
+and the version of R and renv is taken from the calling environment.
+This function calls all of the individual \verb{dht::use_degauss_*()} functions to create the following:
 \itemize{
 \item \code{Dockerfile}
 \item \code{Makefile}
