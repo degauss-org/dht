@@ -1,6 +1,6 @@
 #!/usr/local/bin/Rscript
 
-dht::greeting(geomarker_name = "{{{name}}}", version = "0.0.1", description = "short description goes here")
+dht::greeting(geomarker_name = "{{{name}}}", version = "{{{version}}}", description = "insert short description here")
 
 dht::qlibrary(dplyr)
 dht::qlibrary(tidyr)

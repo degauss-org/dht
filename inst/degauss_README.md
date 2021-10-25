@@ -1,4 +1,4 @@
-# {{{name}}} <a href='https://degauss-org.github.io/DeGAUSS/'><img src='https://github.com/degauss-org/degauss_template/raw/master/DeGAUSS_hex.png' align='right' height='138.5' /></a>
+# {{{name}}} <a href='https://degauss.org'><img src='https://github.com/degauss-org/degauss_template/raw/master/DeGAUSS_hex.png' align='right' height='138.5' /></a>
 
 > {insert brief description of {{{name}}} here}
 [![Docker Build Status](https://img.shields.io/docker/automated/degauss/{{{name}}})](https://hub.docker.com/repository/docker/degauss/{{{name}}}/tags)
@@ -21,7 +21,7 @@ will produce `my_address_file_geocoded_{{{name}}}_v{{{version}}}.csv` with an ad
 ## geomarker data
 
 - list how geomarker was created, including any scripts within the repo used to do so
-- list where geomarker data is stored in S3 using a hyperlink like: [`s3://path/to/{{{name}}}.rds`](https://geomarker.s3.us-east-2.amazonaws.com/path/to/paste_geomarker_name_here.rds)
+- list where geomarker data is stored in S3 using a hyperlink like: [`s3://path/to/{{{name}}}.rds`](https://geomarker.s3.us-east-2.amazonaws.com/path/to/{{{name}}}.rds)
 
 ## DeGAUSS details
 

@@ -10,7 +10,10 @@
 #' Use DeGAUSS Container Template
 #'
 #' @description
-#' This function calls all of the individual `dht::use_degauss_*()` functions to add:
+#' Creates all the necessary files to create a DeGAUSS container.
+#' The container/geomarker name is assumed to be the basename of the working directory
+#' and the version of R and renv is taken from the calling environment.
+#' This function calls all of the individual `dht::use_degauss_*()` functions to create the following:
 #'   * `Dockerfile`
 #'   * `Makefile`
 #'   * `README.md`
@@ -22,16 +25,17 @@
 #'   * `.github/workflows/build-deply.yaml`
 #'
 #' @param geomarker Path to folder where DeGAUSS container files are to be added;
-#' @param ... arguments passed to render_degauss_template
+#' @param version string of version number used in freshly created README and entrypoint.R; defaults to "0.1"
+#' @param ... arguments passed to render_degauss_template (overwrite)
 #' defaults to the current working directory
 #'
 #' @export
-use_degauss_container <- function(geomarker = getwd(), ...) {
+use_degauss_container <- function(geomarker = getwd(), version = "0.1", ...) {
   use_degauss_license(geomarker = geomarker)
   use_degauss_dockerignore(geomarker = geomarker)
   use_degauss_gitignore(geomarker = geomarker)
-  use_degauss_entrypoint(geomarker = geomarker)
-  use_degauss_readme(geomarker = geomarker)
+  use_degauss_entrypoint(geomarker = geomarker, version = version)
+  use_degauss_readme(geomarker = geomarker, version = version)
   use_degauss_dockerfile(geomarker = geomarker)
   use_degauss_github_actions(geomarker = geomarker)
   use_degauss_makefile(geomarker = geomarker)
@@ -83,15 +87,13 @@ use_degauss_makefile <- function(geomarker = getwd(), ...) {
     read_from = "degauss_Makefile",
     write_to = dest_path,
     data = list(
-      "registry_host" = "docker.io",
-      "username" = "degauss",
       "name" = basename(geomarker_path)
     ),
     ...
   )
 }
 
-use_degauss_readme <- function(geomarker = getwd(), ...) {
+use_degauss_readme <- function(geomarker = getwd(), version = "0.1", ...) {
   geomarker_path <- normalizePath(geomarker, mustWork = TRUE)
   dest_path <- fs::path_join(c(geomarker_path, "README.md"))
   render_degauss_template(
@@ -99,13 +101,13 @@ use_degauss_readme <- function(geomarker = getwd(), ...) {
     write_to = dest_path,
     data = list(
       "name" = basename(geomarker_path),
-      "version" = "0.1"
+      "version" = version
     ),
     ...
   )
 }
 
-use_degauss_entrypoint <- function(geomarker = getwd(), ...) {
+use_degauss_entrypoint <- function(geomarker = getwd(), version = "0.1", ...) {
   geomarker_path <- normalizePath(geomarker, mustWork = TRUE)
   dest_path <- fs::path_join(c(geomarker_path, "entrypoint.R"))
   render_degauss_template(
@@ -113,7 +115,7 @@ use_degauss_entrypoint <- function(geomarker = getwd(), ...) {
     write_to = dest_path,
     data = list(
       "name" = basename(geomarker_path),
-      "version" = "0.1"
+      "version" = version
     ),
     ...
   )

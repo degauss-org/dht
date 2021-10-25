@@ -22,7 +22,7 @@ jobs:
     env:
       registry: ghcr.io
       username: degauss-org
-      repository: paste_geomarker_name_here
+      repository: {{{name}}}
     strategy:
       # Even if one docker container build fails we want the others to continue.
       fail-fast: false
