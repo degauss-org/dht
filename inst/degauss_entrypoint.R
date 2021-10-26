@@ -29,4 +29,4 @@ write_geomarker_file(d = d$d,
                      raw_data = d$raw_data,
                      filename = opt$filename,
                      geomarker_name = "{{{name}}}",
-                     version = "0.0.1")
+                     version = "{{{version}}}")
