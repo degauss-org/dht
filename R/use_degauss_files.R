@@ -61,9 +61,14 @@ use_degauss_dockerfile <- function(geomarker = getwd(), ...) {
     cli::cli_abort("The r-ver container framework and RSPM repo only work with R versions 4.0 or greater.")
   }
 
+  if (!"renv" %in% tibble::as_tibble(installed.packages())$Package) {
+    cli::cli_abort("The renv package must be installed.")
+  }
   renv_version <- utils::packageDescription("renv")$Version
-  # TODO renv must be installed
-  # TODO renv.lock must exist
+
+  if (!fs::file_exists("renv.lock")) {
+    cli::cli_abort("Use renv::init() to initialize renv and create renv.lock.")
+  }
 
   geomarker_path <- normalizePath(geomarker, mustWork = TRUE)
   dest_path <- fs::path_join(c(geomarker_path, "Dockerfile"))
@@ -79,7 +84,6 @@ use_degauss_dockerfile <- function(geomarker = getwd(), ...) {
 }
 
 # makefile
-# TODO overhaul template; don't use it for release anymore?
 use_degauss_makefile <- function(geomarker = getwd(), ...) {
   geomarker_path <- normalizePath(geomarker, mustWork = TRUE)
   dest_path <- fs::path_join(c(geomarker_path, "Makefile"))
