@@ -1,12 +1,3 @@
-# info automatically used:
-# geomarker name is basename of geomarker directory
-# assumes initial container creation means version 0.1
-# R version, renv version
-
-
-# idea! make a specific function that is designed to update the version inside entrypoint.R, and README.md?
-# dht::release_major, release_minor, release_patch
-
 #' Use DeGAUSS Container Template
 #'
 #' @description
@@ -30,7 +21,7 @@
 #' defaults to the current working directory
 #'
 #' @export
-use_degauss_container <- function(geomarker = getwd(), version = "0.1", ...) {
+use_degauss_container <- function(geomarker = getwd(), version = "0.1.0", ...) {
   use_degauss_license(geomarker = geomarker)
   use_degauss_dockerignore(geomarker = geomarker)
   use_degauss_gitignore(geomarker = geomarker)
@@ -97,7 +88,7 @@ use_degauss_makefile <- function(geomarker = getwd(), ...) {
   )
 }
 
-use_degauss_readme <- function(geomarker = getwd(), version = "0.1", ...) {
+use_degauss_readme <- function(geomarker = getwd(), version = "0.1.0", ...) {
   geomarker_path <- normalizePath(geomarker, mustWork = TRUE)
   dest_path <- fs::path_join(c(geomarker_path, "README.md"))
   render_degauss_template(
@@ -111,7 +102,7 @@ use_degauss_readme <- function(geomarker = getwd(), version = "0.1", ...) {
   )
 }
 
-use_degauss_entrypoint <- function(geomarker = getwd(), version = "0.1", ...) {
+use_degauss_entrypoint <- function(geomarker = getwd(), version = "0.1.0", ...) {
   geomarker_path <- normalizePath(geomarker, mustWork = TRUE)
   dest_path <- fs::path_join(c(geomarker_path, "entrypoint.R"))
   render_degauss_template(

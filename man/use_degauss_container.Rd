@@ -4,7 +4,7 @@
 \alias{use_degauss_container}
 \title{Use DeGAUSS Container Template}
 \usage{
-use_degauss_container(geomarker = getwd(), version = "0.1", ...)
+use_degauss_container(geomarker = getwd(), version = "0.1.0", ...)
 }
 \arguments{
 \item{geomarker}{Path to folder where DeGAUSS container files are to be added;}
