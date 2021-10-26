@@ -4,8 +4,8 @@ test_that("render_template doesn't overwrite an existing file", {
   on.exit(fs::dir_delete(path))
   testthat::expect_error(
     {
-      use_degauss_dockerfile(geomarker = path)
-      use_degauss_dockerfile(geomarker = path)
+      use_degauss_makefile(geomarker = path)
+      use_degauss_makefile(geomarker = path)
     },
     regex = "overwrite"
   )
@@ -15,14 +15,15 @@ test_that("render_template overwrites an existing file when asked", {
   path <- fs::path_join(c(fs::path_wd(), "test_geomarker"))
   fs::dir_create(path)
   on.exit(fs::dir_delete(path))
-  use_degauss_dockerfile(geomarker = path)
-  use_degauss_dockerfile(geomarker = path, overwrite = TRUE)
-  testthat::expect_true(fs::file_exists(fs::path_join(c(path, "Dockerfile"))))
+  use_degauss_makefile(geomarker = path)
+  use_degauss_makefile(geomarker = path, overwrite = TRUE)
+  testthat::expect_true(fs::file_exists(fs::path_join(c(path, "Makefile"))))
 })
 
 test_that("use_degauss_dockerfile makes a Dockerfile", {
   path <- fs::path_join(c(fs::path_wd(), "test_geomarker"))
   fs::dir_create(path)
+  fs::file_touch(fs::path_join(c(path, "renv.lock")))
   on.exit(fs::dir_delete(path))
   use_degauss_dockerfile(geomarker = path)
   testthat::expect_true(fs::file_exists(fs::path_join(c(path, "Dockerfile"))))
@@ -103,6 +104,7 @@ test_that("use_degauss_github_actions makes a build-deploy.yaml", {
 test_that("use_degauss_container makes all the files", {
   path <- fs::path_join(c(fs::path_wd(), "test_geomarker"))
   fs::dir_create(path)
+  fs::file_touch(fs::path_join(c(path, "renv.lock")))
   on.exit(fs::dir_delete(path))
   use_degauss_container(geomarker = path)
   testthat::expect_true(fs::file_exists(fs::path_join(c(path, "Makefile"))))

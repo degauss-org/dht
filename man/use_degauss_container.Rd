@@ -7,9 +7,9 @@
 use_degauss_container(geomarker = getwd(), version = "0.1.0", ...)
 }
 \arguments{
-\item{geomarker}{Path to folder where DeGAUSS container files are to be added;}
+\item{geomarker}{path to folder where DeGAUSS container files are to be added;}
 
-\item{version}{string of version number used in freshly created README and entrypoint.R; defaults to "0.1"}
+\item{version}{string of version number used in freshly created README and entrypoint.R; defaults to "0.1.0"}
 
 \item{...}{arguments passed to render_degauss_template (overwrite)
 defaults to the current working directory}
