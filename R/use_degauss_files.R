@@ -15,8 +15,8 @@
 #'   * `LICENSE.md` GPL license
 #'   * `.github/workflows/build-deply.yaml`
 #'
-#' @param geomarker Path to folder where DeGAUSS container files are to be added;
-#' @param version string of version number used in freshly created README and entrypoint.R; defaults to "0.1"
+#' @param geomarker path to folder where DeGAUSS container files are to be added;
+#' @param version string of version number used in freshly created README and entrypoint.R; defaults to "0.1.0"
 #' @param ... arguments passed to render_degauss_template (overwrite)
 #' defaults to the current working directory
 #'
