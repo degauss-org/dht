@@ -10,7 +10,9 @@ status](https://github.com/degauss-org/dht/workflows/R-CMD-check/badge.svg)](htt
 <!-- badges: end -->
 
 dht is a collection of functions to assist in building DeGAUSS
-containers
+containers. This includes `use_degauss_container`, which creates the
+files necessary to build a DeGAUSS container, as well as several other
+helper functions to be used within DeGAUSS containers.
 
 ## Installation
 
@@ -23,6 +25,25 @@ remotes::install_github("degauss-org/dht")
 ```
 
 ## Example Usage
+
+### DeGAUSS template functions
+
+The `use_degauss_template()` function creates the all the files needed
+to build a DeGAUSS container. This includes:
+
+-   `Dockerfile`
+-   `Makefile`
+-   `README.md`
+-   `entrypoint.R`
+-   `.dockerignore`
+-   `.gitignore`
+-   `test/my_address_file_geocoded.csv`
+-   `LICENSE.md` GPL license
+-   `.github/workflows/build-deply.yaml`
+
+These files can then be edited before building the container.
+
+### DeGAUSS helper functions
 
 **Welcome users to DeGAUSS**
 
@@ -49,9 +70,9 @@ qlibrary(dplyr)
 **Read in geocoded data**
 
 ``` r
-(d <- read_lat_lon_csv('tests/my_address_file_geocoded.csv', sf = T, project_to_crs = 5072))
+(d <- read_lat_lon_csv('tests/testthat/my_address_file_geocoded.csv', sf = T, project_to_crs = 5072))
 #> ℹ loading input file...
-#> # A tibble: 5 x 6
+#> # A tibble: 5 × 6
 #>            id   lat   lon start_date end_date  .row
 #>         <dbl> <dbl> <dbl> <chr>      <chr>    <int>
 #> 1 55001310120  NA    NA   6/11/20    6/18/20      1

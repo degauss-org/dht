@@ -1,0 +1,14 @@
+.PHONY: build test shell clean
+
+build:
+	R -e "dht::inflate()"
+	docker build -t {{{name}}} .
+
+test:
+	docker run --rm -v "${PWD}/test":/tmp {{{name}}} my_address_file_geocoded.csv
+
+shell:
+	docker run --rm -it --entrypoint=/bin/bash -v "${PWD}/test":/tmp {{{name}}}
+
+clean:
+	docker system prune -f
