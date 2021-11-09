@@ -9,10 +9,8 @@
 status](https://github.com/degauss-org/dht/workflows/R-CMD-check/badge.svg)](https://github.com/degauss-org/dht/actions)
 <!-- badges: end -->
 
-dht is a collection of functions to assist in building DeGAUSS
-containers. This includes `use_degauss_container`, which creates the
-files necessary to build a DeGAUSS container, as well as several other
-helper functions to be used within DeGAUSS containers.
+`dht` is a collection of functions to assist in building DeGAUSS
+containers.
 
 ## Installation
 
@@ -28,20 +26,57 @@ remotes::install_github("degauss-org/dht")
 
 ### DeGAUSS template functions
 
-The `use_degauss_template()` function creates the all the files needed
-to build a DeGAUSS container. This includes:
+`dht` provides functions that make building a DeGAUSS container more
+accessible.
+
+Use `use_degauss_container()` to create all the files needed to build a
+DeGAUSS container.
+
+Files that **need** to be edited:
+
+-   `entrypoint.R`
+-   `README.md`
+
+Files that **may** need to be edited:
 
 -   `Dockerfile`
--   `Makefile`
--   `README.md`
--   `entrypoint.R`
 -   `.dockerignore`
+
+Files that **do not** need to be edited:
+
+-   `Makefile`
 -   `.gitignore`
 -   `test/my_address_file_geocoded.csv`
 -   `LICENSE.md` GPL license
 -   `.github/workflows/build-deply.yaml`
 
-These files can then be edited before building the container.
+Edit `entrypoint.R` by replacing the example R code with R code that
+completes the specific task to be performed by the container, then run
+`renv::init()` to initiate the `renv` framework and create `renv.lock`.
+Add any geomarker information and addtional details to `README.md`.
+
+If the container requires any other files (e.g., `.rds` datafiles), edit
+`Dockerfile` and `.dockerignore` so that the files are copied to the
+container and not ignored by Docker. For example, if we want to use
+`geomarker_data.rds`, we would make the following changes:
+
+`Dockerfile`
+
+    COPY geomarker_data.rds .   # add the .rds file to be copied to the container
+    COPY entrypoint.R .
+
+`.dockerignore`
+
+    # ignore everything
+    **
+
+    # except what we need
+    !/renv.lock
+    !/entrypoint.R
+    !/geomarker_data.rds      # make sure the .rds file is not ignored
+
+The rest of the DeGAUSS template files come ready-to-use and do not need
+to be edited.
 
 ### DeGAUSS helper functions
 
