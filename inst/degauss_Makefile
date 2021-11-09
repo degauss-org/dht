@@ -1,7 +1,6 @@
 .PHONY: build test shell clean
 
 build:
-	R -e "dht::inflate()"
 	docker build -t {{{name}}} .
 
 test:
