@@ -60,7 +60,7 @@ use_degauss_dockerfile <- function(geomarker = getwd(), ...) {
   geomarker_path <- normalizePath(geomarker, mustWork = TRUE)
 
   if (!fs::file_exists(fs::path_join(c(geomarker_path, "renv.lock")))) {
-    cli::cli_abort("Use renv::init() to initialize renv and create renv.lock.")
+    cli::cli_alert_warning("No {.file renv.lock} file found; be sure to use {.code renv::init()} to initialize a new project.")
   }
 
   dest_path <- fs::path_join(c(geomarker_path, "Dockerfile"))

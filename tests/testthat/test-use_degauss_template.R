@@ -23,7 +23,6 @@ test_that("render_template overwrites an existing file when asked", {
 test_that("use_degauss_dockerfile makes a Dockerfile", {
   path <- fs::path_join(c(fs::path_wd(), "test_geomarker"))
   fs::dir_create(path)
-  fs::file_touch(fs::path_join(c(path, "renv.lock")))
   on.exit(fs::dir_delete(path))
   use_degauss_dockerfile(geomarker = path)
   testthat::expect_true(fs::file_exists(fs::path_join(c(path, "Dockerfile"))))
@@ -104,7 +103,6 @@ test_that("use_degauss_github_actions makes a build-deploy.yaml", {
 test_that("use_degauss_container makes all the files", {
   path <- fs::path_join(c(fs::path_wd(), "test_geomarker"))
   fs::dir_create(path)
-  fs::file_touch(fs::path_join(c(path, "renv.lock")))
   on.exit(fs::dir_delete(path))
   use_degauss_container(geomarker = path)
   testthat::expect_true(fs::file_exists(fs::path_join(c(path, "Makefile"))))
