@@ -1,0 +1,6 @@
+# ignore everything
+**
+
+# except what we need
+!/renv.lock
+!/entrypoint.R

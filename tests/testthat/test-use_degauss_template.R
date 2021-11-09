@@ -1,11 +1,117 @@
-test_that("use_degauss_template_works", {
-  path <- fs::path_join(c(fs::path_wd(), 'tests/test_template'))
+test_that("render_template doesn't overwrite an existing file", {
+  path <- fs::path_join(c(fs::path_wd(), "test_geomarker"))
   fs::dir_create(path)
-  use_degauss_template(path = path)
-  testthat::expect_true(fs::file_exists('Dockerfile'))
-  testthat::expect_true(fs::file_exists('Makefile'))
-  testthat::expect_true(fs::file_exists('README.md'))
-  testthat::expect_true(fs::file_exists('test/my_address_file_geocoded.csv'))
-  testthat::expect_true(fs::file_exists('test_template.R'))
-  fs::dir_delete(path)
+  on.exit(fs::dir_delete(path))
+  testthat::expect_error(
+    {
+      use_degauss_makefile(geomarker = path)
+      use_degauss_makefile(geomarker = path)
+    },
+    regex = "overwrite"
+  )
+})
+
+test_that("render_template overwrites an existing file when asked", {
+  path <- fs::path_join(c(fs::path_wd(), "test_geomarker"))
+  fs::dir_create(path)
+  on.exit(fs::dir_delete(path))
+  use_degauss_makefile(geomarker = path)
+  use_degauss_makefile(geomarker = path, overwrite = TRUE)
+  testthat::expect_true(fs::file_exists(fs::path_join(c(path, "Makefile"))))
+})
+
+test_that("use_degauss_dockerfile makes a Dockerfile", {
+  path <- fs::path_join(c(fs::path_wd(), "test_geomarker"))
+  fs::dir_create(path)
+  on.exit(fs::dir_delete(path))
+  use_degauss_dockerfile(geomarker = path)
+  testthat::expect_true(fs::file_exists(fs::path_join(c(path, "Dockerfile"))))
+})
+
+test_that("use_degauss_makefile makes a Makefile", {
+  path <- fs::path_join(c(fs::path_wd(), "test_geomarker"))
+  fs::dir_create(path)
+  on.exit(fs::dir_delete(path))
+  use_degauss_makefile(geomarker = path)
+  testthat::expect_true(fs::file_exists(fs::path_join(c(path, "Makefile"))))
+})
+
+test_that("use_degauss_readme makes a README.md", {
+  path <- fs::path_join(c(fs::path_wd(), "test_geomarker"))
+  fs::dir_create(path)
+  on.exit(fs::dir_delete(path))
+  use_degauss_readme(geomarker = path)
+  testthat::expect_true(fs::file_exists(fs::path_join(c(path, "README.md"))))
+})
+
+test_that("use_degauss_entrypoint makes a entrypoint.R", {
+  path <- fs::path_join(c(fs::path_wd(), "test_geomarker"))
+  fs::dir_create(path)
+  on.exit(fs::dir_delete(path))
+  use_degauss_entrypoint(geomarker = path)
+  testthat::expect_true(fs::file_exists(fs::path_join(c(path, "entrypoint.R"))))
+})
+
+test_that("use_degauss_gitignore makes a .gitignore", {
+  path <- fs::path_join(c(fs::path_wd(), "test_geomarker"))
+  fs::dir_create(path)
+  on.exit(fs::dir_delete(path))
+  use_degauss_gitignore(geomarker = path)
+  testthat::expect_true(fs::file_exists(fs::path_join(c(path, ".gitignore"))))
+})
+
+test_that("use_degauss_dockerignore makes a .dockerignore", {
+  path <- fs::path_join(c(fs::path_wd(), "test_geomarker"))
+  fs::dir_create(path)
+  on.exit(fs::dir_delete(path))
+  use_degauss_dockerignore(geomarker = path)
+  testthat::expect_true(fs::file_exists(fs::path_join(c(path, ".dockerignore"))))
+})
+
+test_that("use_degauss_license makes a LICENSE.md", {
+  path <- fs::path_join(c(fs::path_wd(), "test_geomarker"))
+  fs::dir_create(path)
+  on.exit(fs::dir_delete(path))
+  use_degauss_license(geomarker = path)
+  testthat::expect_true(fs::file_exists(fs::path_join(c(path, "LICENSE.md"))))
+})
+
+test_that("use_degauss_tests makes a my_address_file_geocoded.csv", {
+  path <- fs::path_join(c(fs::path_wd(), "test_geomarker"))
+  fs::dir_create(path)
+  on.exit(fs::dir_delete(path))
+  use_degauss_tests(geomarker = path)
+  testthat::expect_true(
+    fs::file_exists(fs::path_join(c(
+      path, "test", "my_address_file_geocoded.csv"
+    )))
+  )
+})
+
+test_that("use_degauss_github_actions makes a build-deploy.yaml", {
+  path <- fs::path_join(c(fs::path_wd(), "test_geomarker"))
+  fs::dir_create(path)
+  on.exit(fs::dir_delete(path))
+  use_degauss_github_actions(geomarker = path)
+  testthat::expect_true(
+    fs::file_exists(fs::path_join(c(
+      path, ".github", "workflows", "build-deploy.yaml"
+    )))
+  )
+})
+
+test_that("use_degauss_container makes all the files", {
+  path <- fs::path_join(c(fs::path_wd(), "test_geomarker"))
+  fs::dir_create(path)
+  on.exit(fs::dir_delete(path))
+  use_degauss_container(geomarker = path)
+  testthat::expect_true(fs::file_exists(fs::path_join(c(path, "Makefile"))))
+  testthat::expect_true(fs::file_exists(fs::path_join(c(path, "Dockerfile"))))
+  testthat::expect_true(fs::file_exists(fs::path_join(c(path, "README.md"))))
+  testthat::expect_true(fs::file_exists(fs::path_join(c(path, "entrypoint.R"))))
+  testthat::expect_true(fs::file_exists(fs::path_join(c(path, ".dockerignore"))))
+  testthat::expect_true(fs::file_exists(fs::path_join(c(path, ".gitignore"))))
+  testthat::expect_true(fs::file_exists(fs::path_join(c(path, "LICENSE.md"))))
+  testthat::expect_true(fs::file_exists(fs::path_join(c(path, ".github", "workflows", "build-deploy.yaml"))))
+  testthat::expect_true(fs::file_exists(fs::path_join(c(path, "test", "my_address_file_geocoded.csv"))))
 })
