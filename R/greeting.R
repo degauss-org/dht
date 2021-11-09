@@ -20,5 +20,5 @@ greeting <- function(geomarker_name, version, description) {
   cli::cli_text('For more information about the {geomarker_name} container,
                 visit {.url https://degauss.org/{geomarker_name}/}')
   cli::cli_text('For DeGAUSS troubleshooting, visit {.url https://degauss.org/}')
-  cli::cli_text('To help us improve DeGAUSS, please take our user survey at {.url https://redcap.link/jf4lil0n}')
+  cli::cli_text('To help us improve DeGAUSS, please take our user survey at {.url https://degauss.org/survey}')
 }
