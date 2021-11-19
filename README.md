@@ -36,7 +36,6 @@ to build a DeGAUSS container. This includes:
 -   `README.md`
 -   `entrypoint.R`
 -   `.dockerignore`
--   `.gitignore`
 -   `test/my_address_file_geocoded.csv`
 -   `LICENSE.md` GPL license
 -   `.github/workflows/build-deply.yaml`
@@ -58,7 +57,7 @@ greeting(geomarker_name = "roads", version = "0.1", description = "calculates pr
 #> <https://degauss.org/roads/>
 #> For DeGAUSS troubleshooting, visit <https://degauss.org/>
 #> To help us improve DeGAUSS, please take our user survey at
-#> <https://redcap.link/jf4lil0n>
+#> <https://degauss.org/survey>
 ```
 
 **Call libraries without startup messages**

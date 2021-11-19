@@ -24,7 +24,6 @@
 use_degauss_container <- function(geomarker = getwd(), version = "0.1.0", ...) {
   use_degauss_license(geomarker = geomarker)
   use_degauss_dockerignore(geomarker = geomarker)
-  use_degauss_gitignore(geomarker = geomarker)
   use_degauss_entrypoint(geomarker = geomarker, version = version)
   use_degauss_readme(geomarker = geomarker, version = version)
   use_degauss_dockerfile(geomarker = geomarker)
@@ -113,17 +112,6 @@ use_degauss_entrypoint <- function(geomarker = getwd(), version = "0.1.0", ...) 
       "name" = basename(geomarker_path),
       "version" = version
     ),
-    ...
-  )
-}
-
-use_degauss_gitignore <- function(geomarker = getwd(), ...) {
-  geomarker_path <- normalizePath(geomarker, mustWork = TRUE)
-  dest_path <- fs::path_join(c(geomarker_path, ".gitignore"))
-  render_degauss_template(
-    read_from = "degauss_.gitignore",
-    write_to = dest_path,
-    data = list(),
     ...
   )
 }

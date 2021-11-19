@@ -41,7 +41,6 @@ The `use_degauss_template()` function creates the all the files needed to build 
    * `README.md`
    * `entrypoint.R`
    * `.dockerignore`
-   * `.gitignore`
    * `test/my_address_file_geocoded.csv`
    * `LICENSE.md` GPL license
    * `.github/workflows/build-deply.yaml`
