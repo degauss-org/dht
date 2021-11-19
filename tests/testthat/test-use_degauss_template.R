@@ -44,6 +44,14 @@ test_that("use_degauss_readme makes a README.md", {
   testthat::expect_true(fs::file_exists(fs::path_join(c(path, "README.md"))))
 })
 
+test_that("use_degauss_githook_readme_rmd makes a githook", {
+  path <- fs::path_join(c(fs::path_wd(), "test_geomarker"))
+  fs::dir_create(path)
+  on.exit(fs::dir_delete(path))
+  use_degauss_githook_readme_rmd(geomarker = path)
+  testthat::expect_true(fs::file_exists(fs::path_join(c(path, ".git", "hooks", "pre-commit"))))
+})
+
 test_that("use_degauss_entrypoint makes a entrypoint.R", {
   path <- fs::path_join(c(fs::path_wd(), "test_geomarker"))
   fs::dir_create(path)

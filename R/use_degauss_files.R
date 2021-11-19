@@ -102,6 +102,18 @@ use_degauss_readme <- function(geomarker = getwd(), version = "0.1.0", ...) {
   )
 }
 
+use_degauss_githook_readme_rmd <- function(geomarker = getwd(), ...) {
+  geomarker_path <- normalizePath(geomarker, mustWork = TRUE)
+  hooks_dir <- fs::path_join(c(geomarker_path, ".git", "hooks"))
+  dest_path <- fs::path_join(c(hooks_dir, "pre-commit"))
+  fs::dir_create(hooks_dir)
+  render_degauss_template(
+    read_from = "degauss_readme-rmd-pre-commit.sh",
+    write_to = dest_path,
+    ...
+  )
+}
+
 use_degauss_entrypoint <- function(geomarker = getwd(), version = "0.1.0", ...) {
   geomarker_path <- normalizePath(geomarker, mustWork = TRUE)
   dest_path <- fs::path_join(c(geomarker_path, "entrypoint.R"))
@@ -152,7 +164,7 @@ use_degauss_license <- function(geomarker = getwd(), ...) {
 
 use_degauss_github_actions <- function(geomarker = getwd(), ...) {
   geomarker_path <- normalizePath(geomarker, mustWork = TRUE)
-  gha_dir <- fs::path_join(c(geomarker_path, ".github/workflows/"))
+  gha_dir <- fs::path_join(c(geomarker_path, ".github", "workflows"))
   dest_path <- fs::path_join(c(gha_dir, "build-deploy.yaml"))
   fs::dir_create(gha_dir)
   render_degauss_template(
