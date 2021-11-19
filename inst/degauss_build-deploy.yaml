@@ -1,3 +1,4 @@
+{{=<% %>=}}
 name: Build & Deploy Docker Containers
 on:
   # We'll trigger this workflow when a PR is submitted to make sure
@@ -22,7 +23,7 @@ jobs:
     env:
       registry: ghcr.io
       username: degauss-org
-      repository: {{{name}}}
+      repository: <%name%>
     strategy:
       # Even if one docker container build fails we want the others to continue.
       fail-fast: false

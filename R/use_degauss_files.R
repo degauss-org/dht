@@ -170,7 +170,7 @@ use_degauss_github_actions <- function(geomarker = getwd(), ...) {
   render_degauss_template(
     read_from = "degauss_build-deploy.yaml",
     write_to = dest_path,
-    data = list(),
+    data = list("name" = basename(geomarker_path)),
     ...
   )
 }
