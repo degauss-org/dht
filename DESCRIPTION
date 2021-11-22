@@ -35,7 +35,9 @@ Imports:
     usethis (>= 1.6.1),
     purrr (>= 0.3.4),
     stringr (>= 1.4.0),
-    whisker
+    whisker (>= 0.4),
+    ps (>= 1.6.0),
+    prettyunits
 Depends: 
     R (>= 2.10)
 Config/testthat/edition: 3
