@@ -112,6 +112,7 @@ use_degauss_githook_readme_rmd <- function(geomarker = getwd(), ...) {
     write_to = dest_path,
     ...
   )
+  fs::file_chmod(dest_path, mode = "777")
 }
 
 use_degauss_entrypoint <- function(geomarker = getwd(), version = "0.1.0", ...) {
