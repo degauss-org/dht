@@ -10,7 +10,6 @@
 #'   * `README.md`
 #'   * `entrypoint.R`
 #'   * `.dockerignore`
-#'   * `.gitignore`
 #'   * `test/my_address_file_geocoded.csv`
 #'   * `LICENSE.md` GPL license
 #'   * `.github/workflows/build-deply.yaml`
@@ -44,7 +43,8 @@ render_degauss_template <- function(read_from, write_to, data = list(), overwrit
   cli::cli_alert_success("created {write_to}")
 }
 
-# Dockerfile
+#' @export
+#' @rdname use_degauss_container
 use_degauss_dockerfile <- function(geomarker = getwd(), ...) {
   r_version <- paste(getRversion(), sep = ".")
   if (r_version < "4.0.0") {
@@ -74,7 +74,8 @@ use_degauss_dockerfile <- function(geomarker = getwd(), ...) {
   )
 }
 
-# makefile
+#' @export
+#' @rdname use_degauss_container
 use_degauss_makefile <- function(geomarker = getwd(), ...) {
   geomarker_path <- normalizePath(geomarker, mustWork = TRUE)
   dest_path <- fs::path_join(c(geomarker_path, "Makefile"))
@@ -88,6 +89,8 @@ use_degauss_makefile <- function(geomarker = getwd(), ...) {
   )
 }
 
+#' @export
+#' @rdname use_degauss_container
 use_degauss_readme <- function(geomarker = getwd(), version = "0.1.0", ...) {
   geomarker_path <- normalizePath(geomarker, mustWork = TRUE)
   dest_path <- fs::path_join(c(geomarker_path, "README.md"))
@@ -102,6 +105,8 @@ use_degauss_readme <- function(geomarker = getwd(), version = "0.1.0", ...) {
   )
 }
 
+#' @export
+#' @rdname use_degauss_container
 use_degauss_githook_readme_rmd <- function(geomarker = getwd(), ...) {
   geomarker_path <- normalizePath(geomarker, mustWork = TRUE)
   hooks_dir <- fs::path_join(c(geomarker_path, ".git", "hooks"))
@@ -115,6 +120,8 @@ use_degauss_githook_readme_rmd <- function(geomarker = getwd(), ...) {
   fs::file_chmod(dest_path, mode = "777")
 }
 
+#' @export
+#' @rdname use_degauss_container
 use_degauss_entrypoint <- function(geomarker = getwd(), version = "0.1.0", ...) {
   geomarker_path <- normalizePath(geomarker, mustWork = TRUE)
   dest_path <- fs::path_join(c(geomarker_path, "entrypoint.R"))
@@ -129,6 +136,8 @@ use_degauss_entrypoint <- function(geomarker = getwd(), version = "0.1.0", ...) 
   )
 }
 
+#' @export
+#' @rdname use_degauss_container
 use_degauss_dockerignore <- function(geomarker = getwd(), ...) {
   geomarker_path <- normalizePath(geomarker, mustWork = TRUE)
   dest_path <- fs::path_join(c(geomarker_path, ".dockerignore"))
@@ -141,7 +150,8 @@ use_degauss_dockerignore <- function(geomarker = getwd(), ...) {
   cli::cli_alert_info("don't forget to add any data/files that are needed to build the container")
 }
 
-# tests folder and sample address file
+#' @export
+#' @rdname use_degauss_container
 use_degauss_tests <- function(geomarker = getwd(), ...) {
   geomarker_path <- normalizePath(geomarker, mustWork = TRUE)
   test_dir <- fs::path_join(c(geomarker_path, "test"))
@@ -152,6 +162,8 @@ use_degauss_tests <- function(geomarker = getwd(), ...) {
   )
 }
 
+#' @export
+#' @rdname use_degauss_container
 use_degauss_license <- function(geomarker = getwd(), ...) {
   geomarker_path <- normalizePath(geomarker, mustWork = TRUE)
   dest_path <- fs::path_join(c(geomarker_path, "LICENSE.md"))
@@ -163,6 +175,8 @@ use_degauss_license <- function(geomarker = getwd(), ...) {
   )
 }
 
+#' @export
+#' @rdname use_degauss_container
 use_degauss_github_actions <- function(geomarker = getwd(), ...) {
   geomarker_path <- normalizePath(geomarker, mustWork = TRUE)
   gha_dir <- fs::path_join(c(geomarker_path, ".github", "workflows"))

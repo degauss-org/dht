@@ -2,9 +2,36 @@
 % Please edit documentation in R/use_degauss_files.R
 \name{use_degauss_container}
 \alias{use_degauss_container}
+\alias{use_degauss_dockerfile}
+\alias{use_degauss_makefile}
+\alias{use_degauss_readme}
+\alias{use_degauss_githook_readme_rmd}
+\alias{use_degauss_entrypoint}
+\alias{use_degauss_dockerignore}
+\alias{use_degauss_tests}
+\alias{use_degauss_license}
+\alias{use_degauss_github_actions}
 \title{Use DeGAUSS Container Template}
 \usage{
 use_degauss_container(geomarker = getwd(), version = "0.1.0", ...)
+
+use_degauss_dockerfile(geomarker = getwd(), ...)
+
+use_degauss_makefile(geomarker = getwd(), ...)
+
+use_degauss_readme(geomarker = getwd(), version = "0.1.0", ...)
+
+use_degauss_githook_readme_rmd(geomarker = getwd(), ...)
+
+use_degauss_entrypoint(geomarker = getwd(), version = "0.1.0", ...)
+
+use_degauss_dockerignore(geomarker = getwd(), ...)
+
+use_degauss_tests(geomarker = getwd(), ...)
+
+use_degauss_license(geomarker = getwd(), ...)
+
+use_degauss_github_actions(geomarker = getwd(), ...)
 }
 \arguments{
 \item{geomarker}{path to folder where DeGAUSS container files are to be added;}
@@ -25,7 +52,6 @@ This function calls all of the individual \verb{dht::use_degauss_*()} functions 
 \item \code{README.md}
 \item \code{entrypoint.R}
 \item \code{.dockerignore}
-\item \code{.gitignore}
 \item \code{test/my_address_file_geocoded.csv}
 \item \code{LICENSE.md} GPL license
 \item \code{.github/workflows/build-deply.yaml}
