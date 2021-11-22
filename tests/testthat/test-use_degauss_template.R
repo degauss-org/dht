@@ -114,3 +114,24 @@ test_that("use_degauss_container makes all the files", {
   testthat::expect_true(fs::file_exists(fs::path_join(c(path, ".github", "workflows", "build-deploy.yaml"))))
   testthat::expect_true(fs::file_exists(fs::path_join(c(path, "test", "my_address_file_geocoded.csv"))))
 })
+
+test_that("use_degauss_container errors if a degauss file already exists", {
+  path <- fs::path_join(c(fs::path_wd(), "test_geomarker"))
+  fs::dir_create(path)
+  on.exit(fs::dir_delete(path))
+  testthat::expect_error({
+    use_degauss_container(geomarker = path)
+    use_degauss_container(geomarker = path)
+  },
+  regex = "overwrite")
+})
+
+test_that("use_degauss_container will overwrite existing degauss file if asked", {
+  path <- fs::path_join(c(fs::path_wd(), "test_geomarker"))
+  fs::dir_create(path)
+  on.exit(fs::dir_delete(path))
+  testthat::expect_message({
+    use_degauss_container(geomarker = path)
+    use_degauss_container(geomarker = path, overwrite = TRUE)
+  })
+})

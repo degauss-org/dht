@@ -22,14 +22,14 @@
 #'
 #' @export
 use_degauss_container <- function(geomarker = getwd(), version = "0.1.0", ...) {
-  use_degauss_license(geomarker = geomarker)
-  use_degauss_dockerignore(geomarker = geomarker)
-  use_degauss_entrypoint(geomarker = geomarker, version = version)
-  use_degauss_readme(geomarker = geomarker, version = version)
-  use_degauss_dockerfile(geomarker = geomarker)
-  use_degauss_github_actions(geomarker = geomarker)
-  use_degauss_makefile(geomarker = geomarker)
-  use_degauss_tests(geomarker = geomarker)
+  use_degauss_entrypoint(geomarker = geomarker, version = version, ...)
+  use_degauss_readme(geomarker = geomarker, version = version, ...)
+  use_degauss_dockerfile(geomarker = geomarker, ...)
+  use_degauss_dockerignore(geomarker = geomarker, ...)
+  use_degauss_license(geomarker = geomarker, ...)
+  use_degauss_makefile(geomarker = geomarker, ...)
+  use_degauss_tests(geomarker = geomarker, ...)
+  use_degauss_github_actions(geomarker = geomarker, ...)
 }
 
 render_degauss_template <- function(read_from, write_to, data = list(), overwrite = FALSE) {
