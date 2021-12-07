@@ -1,4 +1,8 @@
 url: http://degauss.org/dht
 template:
-  bootstrap: 3
-
+  bootstrap: 5
+  theme: atom-one-light
+  bslib:
+    bg: "#FFFFFF"
+    fg: "#072B67"
+    primary: "#C2326B"
