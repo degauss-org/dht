@@ -14,28 +14,23 @@ knitr::opts_chunk$set(
 )
 ```
 
-> `dht` contains a group of template functions to create a DeGAUSS container.
-
-## Creating all files needed
+#### Creating all files needed
 
 Use `dht::use_degauss_container()` to create all of the files needed for a DeGAUSS container.
 
-Files that **need** to be edited:
+- Files that **need** to be edited:
+  - `entrypoint.R` (contains R code to be run in the container)
+  - `README.md` (software documentation and example instructions)
 
--   `entrypoint.R` (contains R code to be run in the container)
--   `README.md` (software documentation and example instructions)
+- Files that **may** need to be edited (if any files need to be included in the container):
+  - `Dockerfile` (file used to build container)
+  - `.dockerignore`
 
-Files that **may** need to be edited (if any files need to be included in the container):
-
--   `Dockerfile` (file used to build container)
--   `.dockerignore`
-
-Files that **do not** need to be edited:
-
--   `Makefile` (see below for `Make` targets)
--   `test/my_address_file_geocoded.csv` (test input data file)
--   `LICENSE.md` (GPL license)
--   `.github/workflows/build-deply.yaml` (GitHub Actions continuous integration)
+- Files that **do not** need to be edited:
+  - `Makefile` (see below for `Make` targets)
+  - `test/my_address_file_geocoded.csv` (test input data file)
+  - `LICENSE.md` (GPL license)
+  - `.github/workflows/build-deply.yaml` (GitHub Actions continuous integration)
 
 #### Using R code and data files inside the container
 
@@ -47,15 +42,16 @@ Add any geomarker information and addtional details to `README.md`.
 If the container requires any other files (e.g., `.rds` datafiles), edit
 `Dockerfile` and `.dockerignore` so that the files are copied to the
 container and not ignored by Docker. For example, if we want to use
-`geomarker_data.rds`, we would make the following changes:
+`geomarker_data.rds`, we would make the following changes in `Dockerfile`:
 
-`Dockerfile`
-
-    COPY geomarker_data.rds .   # add the .rds file to be copied to the container
+```sh
     COPY entrypoint.R .
+	COPY geomarker_data.rd
+```
 
-`.dockerignore`
+and in `.dockerignore`:
 
+```sh
     # ignore everything
     **
 
@@ -63,11 +59,12 @@ container and not ignored by Docker. For example, if we want to use
     !/renv.lock
     !/entrypoint.R
     !/geomarker_data.rds      # make sure the .rds file is not ignored
+```
 
 The rest of the DeGAUSS template files come ready-to-use and do not need
 to be edited.
 
-## Using `make` for interactive development
+#### Using `make` for interactive development
 
 The `Makefile` defines several useful `make` targets that can be useful when locally developing and testing:
 
