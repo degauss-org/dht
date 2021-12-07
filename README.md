@@ -9,8 +9,8 @@
 status](https://github.com/degauss-org/dht/workflows/R-CMD-check/badge.svg)](https://github.com/degauss-org/dht/actions)
 <!-- badges: end -->
 
-`dht` (**d**egauss **h**elper **t**ools) is a collection of tools
-designed to help build [DeGAUSS](https://degauss.org) containers.
+`dht` (**d**egauss **h**elper **t**ools) is a collection of tools used
+to develop and run [DeGAUSS](https://degauss.org) containers.
 
 ## Installation
 
@@ -22,9 +22,9 @@ with:
 remotes::install_github("degauss-org/dht")
 ```
 
-## Example Usage
+## Examples
 
-### Creating a DeGAUSS container using the DeGAUSS template
+#### Creating a DeGAUSS container using the DeGAUSS template
 
 `dht::use_degauss_container()` creates all files needed to build a
 DeGAUSS container.
@@ -33,7 +33,7 @@ See the [DeGAUSS Container
 Template](https://degauss.org/dht/articles/template-functions.html)
 vignette for more detailed information on working with these files.
 
-### DeGAUSS helper functions
+#### DeGAUSS helper functions
 
 `dht` also includes a group of helper functions to be used in a DeGAUSS
 `entrypoint.R` script to make common tasks (e.g., reading in data,
