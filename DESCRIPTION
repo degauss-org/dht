@@ -21,7 +21,9 @@ RoxygenNote: 7.1.1
 Suggests: 
     testthat (>= 3.0.0),
     sf (>= 0.8-1),
-    tibble
+    tibble,
+    knitr,
+    rmarkdown
 Imports: 
     cli (>= 2.2.0),
     magrittr,
@@ -41,3 +43,6 @@ Imports:
 Depends: 
     R (>= 2.10)
 Config/testthat/edition: 3
+URL: http://degauss.org/dht
+VignetteBuilder: knitr
+BugReports: https://github.com/degauss-org/dht/issues

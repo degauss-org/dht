@@ -1,0 +1,38 @@
+url: http://degauss.org/dht
+template:
+  bootstrap: 5
+  theme: atom-one-light
+  bslib:
+    bg: "#FFFFFF"
+    fg: "#072B67"
+    primary: "#C2326B"
+reference:
+
+- title: User Interface
+  contents:
+  - greeting
+  - qlibrary
+  - check_ram
+
+- title: Reading and Writing Data
+  contents:
+  - read_lat_lon_csv
+  - check_for_column
+  - write_geomarker_file
+
+- title: Addresses
+  contents:
+  - clean_address
+  - address_is_nonaddress
+  - address_is_po_box
+  - address_is_institutional
+
+- title: Dates
+  contents:
+  - check_dates
+  - expand_dates
+  - check_end_after_start_date
+
+- title: Use DeGAUSS Container Template
+  contents:
+  - use_degauss_container

@@ -4,3 +4,5 @@
 .Ruserdata
 .DS_Store
 dht.Rproj
+docs
+inst/doc
