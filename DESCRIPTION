@@ -45,3 +45,4 @@ Depends:
 Config/testthat/edition: 3
 URL: http://degauss.org/dht
 VignetteBuilder: knitr
+BugReports: https://github.com/degauss-org/dht/issues
