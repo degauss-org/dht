@@ -1,8 +1,8 @@
 ---
-title: "Creating a DeGAUSS Container"
+title: "Developing a New DeGAUSS Container"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{Creating a DeGAUSS Container}
+  %\VignetteIndexEntry{Developing a New DeGAUSS Container}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
