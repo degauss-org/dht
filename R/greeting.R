@@ -1,5 +1,10 @@
 #' display DeGUASS greeting message in console
 #'
+#' if not supplied as arguments, greeting-specific values
+#' (geomarker_name, version, description) are read in from the environment variables
+#' specified in the Dockerfile and made available when running the container;
+#' these include `degauss_name`, `degauss_version`, and `degauss_description`
+#'
 #' @export
 #' @param geomarker_name name of the geomarker, must be the name used in the degauss.org url
 #' @param version container version number as a character string
@@ -13,12 +18,14 @@
 #' as well as links to more information about the specific geomarker,
 #' DeGAUSS in general for troubleshooting, and the DeGUASS user RedCap survey.
 
-greeting <- function(geomarker_name, version, description) {
-  cli::cli_h1('Wecome to DeGAUSS!')
-  cli::cli_alert_info('You are using the {geomarker_name} container, version {version}.', wrap = TRUE)
-  cli::cli_text('This container {description}.')
-  cli::cli_text('For more information about the {geomarker_name} container,
-                visit {.url https://degauss.org/{geomarker_name}/}')
-  cli::cli_text('For DeGAUSS troubleshooting, visit {.url https://degauss.org/}')
-  cli::cli_text('To help us improve DeGAUSS, please take our user survey at {.url https://degauss.org/survey}')
+greeting <- function(geomarker_name = Sys.getenv("degauss_name"),
+                     version = Sys.getenv("degauss_version"),
+                     description = Sys.getenv("degauss_description")) {
+  cli::cli_h1("Wecome to DeGAUSS!")
+  cli::cli_alert_info("You are using the {geomarker_name} container, version {version}.", wrap = TRUE)
+  cli::cli_text("This container {description}.")
+  cli::cli_text("For more information about the {geomarker_name} container,
+                visit {.url https://degauss.org/{geomarker_name}/}")
+  cli::cli_text("For DeGAUSS troubleshooting, visit {.url https://degauss.org/}")
+  cli::cli_text("To help us improve DeGAUSS, please take our user survey at {.url https://degauss.org/survey}")
 }

@@ -4,7 +4,11 @@
 \alias{greeting}
 \title{display DeGUASS greeting message in console}
 \usage{
-greeting(geomarker_name, version, description)
+greeting(
+  geomarker_name = Sys.getenv("degauss_name"),
+  version = Sys.getenv("degauss_version"),
+  description = Sys.getenv("degauss_description")
+)
 }
 \arguments{
 \item{geomarker_name}{name of the geomarker, must be the name used in the degauss.org url}
@@ -14,7 +18,10 @@ greeting(geomarker_name, version, description)
 \item{description}{brief description of the container; finishes the sentence "This container..."}
 }
 \description{
-display DeGUASS greeting message in console
+if not supplied as arguments, greeting-specific values
+(geomarker_name, version, description) are read in from the environment variables
+specified in the Dockerfile and made available when running the container;
+these include \code{degauss_name}, \code{degauss_version}, and \code{degauss_description}
 }
 \details{
 greeting message includes name, version, and brief description of container,
