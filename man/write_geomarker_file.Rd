@@ -4,7 +4,13 @@
 \alias{write_geomarker_file}
 \title{write geomarker output to file}
 \usage{
-write_geomarker_file(d, raw_data = NULL, filename, geomarker_name, version)
+write_geomarker_file(
+  d,
+  raw_data = NULL,
+  filename,
+  geomarker_name = Sys.getenv("degauss_name"),
+  version = Sys.getenv("degauss_version")
+)
 }
 \arguments{
 \item{d}{input nest on .row with added geomarker column(s)}
@@ -14,9 +20,11 @@ nest_df = FALSE in read_lat_lon_csv)}
 
 \item{filename}{name of input file, probably opt$filename if inside container}
 
-\item{geomarker_name}{name of the geomarker, must be the name used in the degauss.org url}
+\item{geomarker_name}{name of the geomarker, must be the name used in the degauss.org url;
+defaults to degauss environment variable \code{degauss_name}}
 
-\item{version}{container version number as a character string}
+\item{version}{container version number as a character string; defaults to degauss environment
+variable \code{degauss_version}}
 }
 \value{
 output file is written to working directory

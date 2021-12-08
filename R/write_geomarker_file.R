@@ -5,8 +5,10 @@
 #' @param raw_data original unnested input data, defaults to NULL (for use when
 #'                 nest_df = FALSE in read_lat_lon_csv)
 #' @param filename name of input file, probably opt$filename if inside container
-#' @param geomarker_name name of the geomarker, must be the name used in the degauss.org url
-#' @param version container version number as a character string
+#' @param geomarker_name name of the geomarker, must be the name used in the degauss.org url;
+#' defaults to degauss environment variable `degauss_name`
+#' @param version container version number as a character string; defaults to degauss environment
+#' variable `degauss_version`
 #' @return output file is written to working directory
 #' @examples
 #' \dontrun{
@@ -15,7 +17,11 @@
 #'            geomarker='roads', version='0.4')
 #' }
 
-write_geomarker_file <- function(d, raw_data = NULL, filename, geomarker_name, version) {
+write_geomarker_file <- function(d,
+                                 raw_data = NULL,
+                                 filename,
+                                 geomarker_name = Sys.getenv("degauss_name"),
+                                 version = Sys.getenv("degauss_version")) {
   if (!is.null(raw_data)) {
     d <- tidyr::unnest(d, cols = c(.rows))
     if('sf' %in% class(d)) d <- sf::st_drop_geometry(d)
