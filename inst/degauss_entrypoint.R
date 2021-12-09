@@ -1,6 +1,6 @@
 #!/usr/local/bin/Rscript
 
-dht::greeting(geomarker_name = "{{{name}}}", version = "{{{version}}}", description = "insert short description here")
+dht::greeting()
 
 dht::qlibrary(dplyr)
 dht::qlibrary(tidyr)
@@ -25,8 +25,4 @@ dht::check_for_column(d$raw_data, "lon", d$raw_data$lon)
 ## add code here to calculate geomarkers
 
 ## merge back on .row after unnesting .rows into .row
-write_geomarker_file(d = d$d,
-                     raw_data = d$raw_data,
-                     filename = opt$filename,
-                     geomarker_name = "{{{name}}}",
-                     version = "{{{version}}}")
+write_geomarker_file(d = d$d, raw_data = d$raw_data, filename = opt$filename)

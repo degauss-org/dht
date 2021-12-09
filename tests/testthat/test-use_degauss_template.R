@@ -24,7 +24,7 @@ test_that("use_degauss_dockerfile makes a Dockerfile", {
   path <- fs::path_join(c(fs::path_wd(), "test_geomarker"))
   fs::dir_create(path)
   on.exit(fs::dir_delete(path))
-  use_degauss_dockerfile(geomarker = path)
+  use_degauss_dockerfile(geomarker = path, version = "0.1")
   testthat::expect_true(fs::file_exists(fs::path_join(c(path, "Dockerfile"))))
 })
 

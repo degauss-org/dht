@@ -15,7 +15,7 @@
 \usage{
 use_degauss_container(geomarker = getwd(), version = "0.1.0", ...)
 
-use_degauss_dockerfile(geomarker = getwd(), ...)
+use_degauss_dockerfile(geomarker = getwd(), version, ...)
 
 use_degauss_makefile(geomarker = getwd(), ...)
 

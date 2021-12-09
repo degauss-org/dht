@@ -23,7 +23,7 @@
 use_degauss_container <- function(geomarker = getwd(), version = "0.1.0", ...) {
   use_degauss_entrypoint(geomarker = geomarker, version = version, ...)
   use_degauss_readme(geomarker = geomarker, version = version, ...)
-  use_degauss_dockerfile(geomarker = geomarker, ...)
+  use_degauss_dockerfile(geomarker = geomarker, version = version, ...)
   use_degauss_dockerignore(geomarker = geomarker, ...)
   use_degauss_license(geomarker = geomarker, ...)
   use_degauss_makefile(geomarker = geomarker, ...)
@@ -45,7 +45,7 @@ render_degauss_template <- function(read_from, write_to, data = list(), overwrit
 
 #' @export
 #' @rdname use_degauss_container
-use_degauss_dockerfile <- function(geomarker = getwd(), ...) {
+use_degauss_dockerfile <- function(geomarker = getwd(), version, ...) {
   r_version <- paste(getRversion(), sep = ".")
   if (r_version < "4.0.0") {
     cli::cli_abort("The r-ver container framework and RSPM repo only work with R versions 4.0 or greater.")
@@ -68,7 +68,9 @@ use_degauss_dockerfile <- function(geomarker = getwd(), ...) {
     write_to = dest_path,
     data = list(
       "r_version" = r_version,
-      "renv_version" = renv_version
+      "renv_version" = renv_version,
+      "name" = basename(geomarker_path),
+      "version" = version
     ),
     ...
   )

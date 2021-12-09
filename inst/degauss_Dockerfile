@@ -1,5 +1,14 @@
 FROM rocker/r-ver:{{{r_version}}}
 
+ENV degauss_name="{{{name}}}"
+ENV degauss_version="{{{version}}}"
+ENV degauss_description="insert short description here that finishes the sentence `This container ...`"
+
+# add labels based on environment variables too
+LABEL "org.degauss.name"="${degauss_name}"
+LABEL "org.degauss.version"="${degauss_version}"
+LABEL "org.degauss.description"="${degauss_description}"
+
 RUN R --quiet -e "install.packages('remotes', repos = c(CRAN = 'https://packagemanager.rstudio.com/all/__linux__/focal/latest'))"
 
 RUN R --quiet -e "remotes::install_github('rstudio/renv@{{{renv_version}}}')"
