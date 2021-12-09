@@ -30,7 +30,7 @@
     
     <a class="navbar-brand me-2" href="index.html">dht</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.3.0</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -45,8 +45,8 @@
 <li class="nav-item dropdown">
   <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown-articles">Articles</a>
   <div class="dropdown-menu" aria-labelledby="dropdown-articles">
+    <a class="dropdown-item" href="articles/developing-degauss.html">Developing a New DeGAUSS Container</a>
     <a class="dropdown-item" href="articles/helper-functions.html">In-Line Helper Functions</a>
-    <a class="dropdown-item" href="articles/template-functions.html">DeGAUSS Container Template</a>
   </div>
 </li>
       </ul>
@@ -73,7 +73,7 @@
 </h1></div>
 <!-- badges: start -->
 
-<p><code>dht</code> (<strong>d</strong>egauss <strong>h</strong>elper <strong>t</strong>ools) is a collection of tools used to develop and run <a href="https://degauss.org" class="external-link">DeGAUSS</a> containers.</p>
+<p>(<strong>d</strong>egauss <strong>h</strong>elper <strong>t</strong>ools) are used to develop and run <a href="https://degauss.org" class="external-link">DeGAUSS</a> containers.</p>
 <div class="section level2">
 <h2 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
 </h2>
@@ -89,12 +89,12 @@
 <h4 id="creating-a-degauss-container-using-the-degauss-template">Creating a DeGAUSS container using the DeGAUSS template<a class="anchor" aria-label="anchor" href="#creating-a-degauss-container-using-the-degauss-template"></a>
 </h4>
 <p><code><a href="reference/use_degauss_container.html">dht::use_degauss_container()</a></code> creates all files needed to build a DeGAUSS container.</p>
-<p>See the <a href="https://degauss.org/dht/articles/template-functions.html" class="external-link">DeGAUSS Container Template</a> vignette for more detailed information on working with these files.</p>
+<p>See the <a href="https://degauss.org/dht/articles/developing-degauss.html" class="external-link">Developing a New DeGAUSS Container</a> vignette for a step-by-step instruction manual on developing a new <a href="https://degauss.org" class="external-link">DeGAUSS</a> container using the tools available in <code>dht</code>.</p>
 </div>
 <div class="section level4">
 <h4 id="degauss-helper-functions">DeGAUSS helper functions<a class="anchor" aria-label="anchor" href="#degauss-helper-functions"></a>
 </h4>
-<p><code>dht</code> also includes a group of helper functions to be used in a DeGAUSS <code>entrypoint.R</code> script to make common tasks (e.g., reading in data, checking that needed columns exist and are of the correct type, etc) more efficient and reproducible.</p>
+<p><code>dht</code> includes a group of helper functions to be used in a DeGAUSS <code>entrypoint.R</code> script to make common tasks (e.g., reading in data, checking that needed columns exist and are of the correct type, etc) more efficient and reproducible.</p>
 <p>For example, <code><a href="reference/read_lat_lon_csv.html">dht::read_lat_lon_csv()</a></code> helps with reading in a csv of geocoded addresses and transforming to an <code>sf</code> object of a specified <code>crs</code>, while also keeping the raw input data.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="http://degauss.org/dht">dht</a></span><span class="op">)</span>

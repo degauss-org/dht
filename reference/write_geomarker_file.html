@@ -10,7 +10,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">dht</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.3.0</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -24,8 +24,8 @@
 <li class="nav-item dropdown">
   <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown-articles">Articles</a>
   <div class="dropdown-menu" aria-labelledby="dropdown-articles">
+    <a class="dropdown-item" href="../articles/developing-degauss.html">Developing a New DeGAUSS Container</a>
     <a class="dropdown-item" href="../articles/helper-functions.html">In-Line Helper Functions</a>
-    <a class="dropdown-item" href="../articles/template-functions.html">DeGAUSS Container Template</a>
   </div>
 </li>
       </ul><form class="form-inline my-2 my-lg-0" role="search">
@@ -55,7 +55,13 @@
 
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">write_geomarker_file</span><span class="op">(</span><span class="va">d</span>, raw_data <span class="op">=</span> <span class="cn">NULL</span>, <span class="va">filename</span>, <span class="va">geomarker_name</span>, <span class="va">version</span><span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">write_geomarker_file</span><span class="op">(</span>
+  <span class="va">d</span>,
+  raw_data <span class="op">=</span> <span class="cn">NULL</span>,
+  <span class="va">filename</span>,
+  geomarker_name <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Sys.getenv.html" class="external-link">Sys.getenv</a></span><span class="op">(</span><span class="st">"degauss_name"</span><span class="op">)</span>,
+  version <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Sys.getenv.html" class="external-link">Sys.getenv</a></span><span class="op">(</span><span class="st">"degauss_version"</span><span class="op">)</span>
+<span class="op">)</span></code></pre></div>
     </div>
 
     <div class="section level2">
@@ -68,9 +74,11 @@ nest_df = FALSE in read_lat_lon_csv)</p></dd>
 <dt>filename</dt>
 <dd><p>name of input file, probably opt$filename if inside container</p></dd>
 <dt>geomarker_name</dt>
-<dd><p>name of the geomarker, must be the name used in the degauss.org url</p></dd>
+<dd><p>name of the geomarker, must be the name used in the degauss.org url;
+defaults to degauss environment variable <code>degauss_name</code></p></dd>
 <dt>version</dt>
-<dd><p>container version number as a character string</p></dd>
+<dd><p>container version number as a character string; defaults to degauss environment
+variable <code>degauss_version</code></p></dd>
 </dl></div>
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
