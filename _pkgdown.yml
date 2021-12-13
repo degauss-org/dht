@@ -33,6 +33,7 @@ reference:
   - expand_dates
   - check_end_after_start_date
 
-- title: Use DeGAUSS Container Template
+- title: Development and Infrastructure
   contents:
   - use_degauss_container
+  - get_env_from_dockerfile
