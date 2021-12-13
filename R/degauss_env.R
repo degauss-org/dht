@@ -18,11 +18,11 @@ get_env_from_dockerfile <- function(dockerfile_path = fs::path_join(c(getwd(), "
                                     env_names = c("degauss_name", "degauss_version", "degauss_description")) {
 
   env_values <-
-    dockerfile_path |>
-    normalizePath(mustWork = TRUE) |>
-    readLines(warn = FALSE) |>
-    stringr::str_subset(pattern = stringr::fixed("ENV ")) |>
-    stringr::str_extract(glue::glue("(?<={env_names}=).*")) |>
+    dockerfile_path %>%
+    normalizePath(mustWork = TRUE) %>%
+    readLines(warn = FALSE) %>%
+    stringr::str_subset(pattern = stringr::fixed("ENV ")) %>%
+    stringr::str_extract(glue::glue("(?<={env_names}=).*")) %>%
     stringr::str_remove_all("[^[:alnum:] _.]")
 
   names(env_values) <- env_names
