@@ -14,9 +14,11 @@ on:
   # you release a new version. You can use "created" here instead of published.
   release:
     types: [published]
+
 jobs:
   deploy-images:
     runs-on: ubuntu-latest
+
     # Define your registry and repository here.
     # These are for the GitHub Container registry, you can also use
     # Quay.io or another OCI registry
@@ -34,6 +36,7 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v2
+
       - name: Set Container Tag Normal
         run: |
           container="${{ env.registry }}/${{ env.username}}/${{ env.repository }}:${{ matrix.dockerfile[1] }}"
@@ -69,9 +72,11 @@ jobs:
           registry: ${{ env.registry }}
           username: ${{ env.username }}
           password: ${{ secrets.GITHUB_TOKEN }}
+
           # Example variables for a non GitHub registry like Quay or Docker Hub
           # username: ${{ secrets.DOCKERHUB_USERNAME }}
           # password: ${{ secrets.DOCKERHUB_TOKEN }}
+
      # Deploy branch container on pull request
       - name: Test Deploy ${{ env.versioned }}
         if: github.event_name == 'pull_request'
