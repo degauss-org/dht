@@ -136,6 +136,7 @@ use_degauss_entrypoint <- function(geomarker = getwd(), version = "0.1.0", ...) 
     ),
     ...
   )
+  fs::file_chmod(dest_path, mode = "777")
 }
 
 #' @export
