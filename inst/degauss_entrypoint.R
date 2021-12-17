@@ -25,4 +25,4 @@ dht::check_for_column(d$raw_data, "lon", d$raw_data$lon)
 ## add code here to calculate geomarkers
 
 ## merge back on .row after unnesting .rows into .row
-write_geomarker_file(d = d$d, raw_data = d$raw_data, filename = opt$filename)
+dht::write_geomarker_file(d = d$d, raw_data = d$raw_data, filename = opt$filename)
