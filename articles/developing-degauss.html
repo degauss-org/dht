@@ -26,7 +26,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">dht</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.3.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.4.1</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -63,7 +63,8 @@
     
   </div>
 </nav><div class="container template-article">
-<script src="developing-degauss_files/accessible-code-block-0.0.1/empty-anchor.js"></script><div class="row">
+
+<div class="row">
   <main id="main"><div class="page-header">
       <img src="" class="logo" alt=""><h1>Developing a New DeGAUSS Container</h1>
             
@@ -114,9 +115,9 @@
 </h4>
 <p>Add any geomarker information and additional details to <code>README.md</code>. Make sure that the version in the example call matches the version of the latest released container.</p>
 <p>Environment variables (<code>degauss_name</code>, <code>degauss_version</code>, and <code>degauss_description</code>) are defined within the <code>Dockerfile</code> so that they will be available to R code running from inside the container. All but <code>degauss_description</code> are automatically defined and this value needs to be edited from</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1"></a><span class="ex">ENV</span> degauss_description=<span class="st">"insert short description here that finishes the sentence </span><span class="kw">`</span><span class="ex">This</span> container ...<span class="kw">`</span><span class="st">"</span></span></code></pre></div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="ex">ENV</span> degauss_description=<span class="st">"insert short description here that finishes the sentence </span><span class="kw">`</span><span class="ex">This</span> container ...<span class="kw">`</span><span class="st">"</span></span></code></pre></div>
 <p>to something specific, like</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1"></a><span class="ex">ENV</span> degauss_description=<span class="st">"assigns census block group for different vintages of census geographies"</span></span></code></pre></div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="ex">ENV</span> degauss_description=<span class="st">"assigns census block group for different vintages of census geographies"</span></span></code></pre></div>
 <p>In the future, the environment variable <code>degauss_version</code> can be edited in the <code>Dockerfile</code> and R code in the container can use it for greetings, writing output files, and other operations that depend on the current version (or name or description).</p>
 </div>
 <div class="section level4">
@@ -130,16 +131,16 @@
 <h3 id="including-files-inside-the-container">Including files inside the container<a class="anchor" aria-label="anchor" href="#including-files-inside-the-container"></a>
 </h3>
 <p>By default, the container will copy in <code>entrypoint.R</code> and <code>renv.lock</code> for use at runtime and ignore anything else in the working directory to automatically speed up build times and keep containers smaller in size. If the container requires any other files (e.g., <code>.rds</code> datafiles), edit <code>Dockerfile</code> and <code>.dockerignore</code> so that the files are copied to the container and not ignored by Docker. For example, if we want to use <code>geomarker_data.rds</code>, we would make the following changes in <code>Dockerfile</code>:</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1"></a>    <span class="ex">COPY</span> entrypoint.R .</span>
-<span id="cb3-2"><a href="#cb3-2"></a>    <span class="ex">COPY</span> geomarker_data.rds    <span class="co"># copy .rds file from host to container when building</span></span></code></pre></div>
+<div class="sourceCode" id="cb3"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>    <span class="ex">COPY</span> entrypoint.R .</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>    <span class="ex">COPY</span> geomarker_data.rds    <span class="co"># copy .rds file from host to container when building</span></span></code></pre></div>
 <p>and in <code>.dockerignore</code>:</p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1"></a>    <span class="co"># ignore everything</span></span>
-<span id="cb4-2"><a href="#cb4-2"></a>    <span class="ex">**</span></span>
-<span id="cb4-3"><a href="#cb4-3"></a></span>
-<span id="cb4-4"><a href="#cb4-4"></a>    <span class="co"># except what we need</span></span>
-<span id="cb4-5"><a href="#cb4-5"></a>    !<span class="ex">/renv.lock</span></span>
-<span id="cb4-6"><a href="#cb4-6"></a>    !<span class="ex">/entrypoint.R</span></span>
-<span id="cb4-7"><a href="#cb4-7"></a>    !<span class="ex">/geomarker_data.rds</span>      <span class="co"># make sure the .rds file is not ignored</span></span></code></pre></div>
+<div class="sourceCode" id="cb4"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>    <span class="co"># ignore everything</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>    <span class="ex">**</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>    <span class="co"># except what we need</span></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>    <span class="ex">!/renv.lock</span></span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>    <span class="ex">!/entrypoint.R</span></span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>    <span class="ex">!/geomarker_data.rds</span>      <span class="co"># make sure the .rds file is not ignored</span></span></code></pre></div>
 </div>
 <div class="section level3">
 <h3 id="tests">Tests<a class="anchor" aria-label="anchor" href="#tests"></a>
