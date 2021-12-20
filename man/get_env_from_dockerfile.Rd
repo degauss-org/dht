@@ -2,20 +2,27 @@
 % Please edit documentation in R/degauss_env.R
 \name{get_env_from_dockerfile}
 \alias{get_env_from_dockerfile}
+\alias{get_env_from_degauss_online}
 \title{get environment variables from a Dockerfile}
 \usage{
 get_env_from_dockerfile(
   dockerfile_path = fs::path_join(c(getwd(), "Dockerfile")),
   env_names = c("degauss_name", "degauss_version", "degauss_description")
 )
+
+get_env_from_degauss_online(name = "fortunes")
 }
 \arguments{
 \item{dockerfile_path}{path to Dockerfile}
 
 \item{env_names}{names of environment variables to extract}
+
+\item{name}{name of DeGAUSS container to download Dockerfile from}
 }
 \description{
-This function looks in a Dockerfile to extract specified environment variables and their values.
+This functions look in a Dockerfile to extract specified environment variables and their values.
+\code{get_env_from_dockerfile} expects a path to a Dockerfile, but \code{get_env_from_degauss_online}
+takes the name of DeGAUSS container that is used to download the corresponding Dockerfile.
 It assumes each \code{ENV} instruction is on its own line and defines only one environment variable.
 The default names of environment variables assumes those used for DeGAUSS metadata.
 }
@@ -24,5 +31,7 @@ The default names of environment variables assumes those used for DeGAUSS metada
 use_degauss_dockerfile(version = "0.1")
 get_env_from_dockerfile()
 get_env_from_dockerfile()["degauss_version"]
+get_env_from_degauss_online("fortunes")
+get_env_from_degauss_online("fortunes")["degauss_version"]
 }
 }

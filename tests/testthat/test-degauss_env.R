@@ -12,3 +12,10 @@ test_that("get_degauss_metadata_from_dockerfile works", {
     )
   )
 })
+
+test_that("can get degauss metadata from online dockerfile", {
+  testthat::expect_equal(
+    get_env_from_degauss_online("fortunes")["degauss_name"],
+    c("degauss_name" = "fortunes")
+  )
+})
