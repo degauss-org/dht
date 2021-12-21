@@ -63,5 +63,20 @@ test_that("check end date after start date if end = start", {
   )
 })
 
+test_that("missing dates (blank) are not allowed", {
+  expect_error(
+    check_dates(c("12/15/2020", "", "06/09/1995"))
+  )
+})
 
+test_that("missing dates (blank space) are not allowed", {
+  expect_error(
+    check_dates(c("12/15/2020", " ", "06/09/1995"))
+  )
+})
 
+test_that("missing dates (NA) are not allowed", {
+  expect_error(
+    check_dates(c("12/15/2020", NA, "06/09/1995"))
+  )
+})
