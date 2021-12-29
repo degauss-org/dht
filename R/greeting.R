@@ -21,11 +21,14 @@
 greeting <- function(geomarker_name = Sys.getenv("degauss_name"),
                      version = Sys.getenv("degauss_version"),
                      description = Sys.getenv("degauss_description")) {
-  cli::cli_h1("Wecome to DeGAUSS!")
-  cli::cli_alert_info("You are using the {geomarker_name} container, version {version}.", wrap = TRUE)
-  cli::cli_text("This container {description}.")
-  cli::cli_text("For more information about the {geomarker_name} container,
-                visit {.url https://degauss.org/{geomarker_name}/}")
-  cli::cli_text("For DeGAUSS troubleshooting, visit {.url https://degauss.org/}")
-  cli::cli_text("To help us improve DeGAUSS, please take our user survey at {.url https://degauss.org/survey}")
+  cli::cli_par()
+  cli::cli_h2("{.emph Welcome to DeGAUSS!}")
+  ## cli::cli_h2("{.url https://degauss.org}")
+  cli::cli_ul(c(
+    "You are using {.pkg {geomarker_name}}, version {version}",
+    "This container {description}",
+    "{.url https://degauss.org/{geomarker_name}}"
+  ))
+  ## cli::cli_rule()
+  cli::cli_end()
 }
