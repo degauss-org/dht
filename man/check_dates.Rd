@@ -4,10 +4,12 @@
 \alias{check_dates}
 \title{check format of dates from DeGUASS container input file}
 \usage{
-check_dates(date)
+check_dates(date, allow_missing = FALSE)
 }
 \arguments{
 \item{date}{vector of dates to be checked for formatting}
+
+\item{allow_missing}{logical. defaults to FALSE, resulting in an error if any dates are missing.}
 }
 \value{
 reformatted vector of dates, or an error if dates could not be reformatted

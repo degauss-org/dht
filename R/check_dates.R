@@ -9,7 +9,7 @@ IsDateSlash <- function(mydate, date.format = "%m/%d/%y") {
     strsplit(mydate, "/") %>%
     purrr::map(nchar) %>%
     purrr::map(max)
-    
+
 
   if (any(max_component_lengths > 2)) {
     return(FALSE)
@@ -22,6 +22,7 @@ IsDateSlash <- function(mydate, date.format = "%m/%d/%y") {
 #'
 #' @export
 #' @param date vector of dates to be checked for formatting
+#' @param allow_missing logical. defaults to FALSE, resulting in an error if any dates are missing.
 #' @return reformatted vector of dates, or an error if dates could not be reformatted
 #' @examples
 #' \dontrun{
@@ -35,8 +36,13 @@ IsDateSlash <- function(mydate, date.format = "%m/%d/%y") {
 #' Any input not recognized by one of the two above formats will cause an error and
 #' the user will be instructed to manually reformat their dates.
 
-check_dates <- function(date) {
+check_dates <- function(date, allow_missing = FALSE) {
   dates_to_print <- date[1:3]
+
+  if(!allow_missing & (any(is.na(date)) | any(date == "") | any(date == " "))) {
+    cli::cli_alert_danger("One or more dates are missing. Dates are required for every input row.")
+    stop(call. = FALSE)
+  }
 
   if(class(date) != 'Date') {
 
