@@ -1,6 +1,6 @@
 Package: dht
 Title: A Collection of Functions to Assist Building DeGAUSS Containers
-Version: 0.4.2
+Version: 0.4.3
 Authors@R: c(
     person(given = "Erika",
            family = "Rasnick",
