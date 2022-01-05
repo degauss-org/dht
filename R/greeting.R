@@ -15,8 +15,7 @@
 #' }
 #' @details
 #' greeting message includes name, version, and brief description of container,
-#' as well as links to more information about the specific geomarker,
-#' DeGAUSS in general for troubleshooting, and the DeGUASS user RedCap survey.
+#' as well as a link to more information about the specific geomarker
 
 greeting <- function(geomarker_name = Sys.getenv("degauss_name"),
                      version = Sys.getenv("degauss_version"),

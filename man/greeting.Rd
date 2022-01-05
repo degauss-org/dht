@@ -25,8 +25,7 @@ these include \code{degauss_name}, \code{degauss_version}, and \code{degauss_des
 }
 \details{
 greeting message includes name, version, and brief description of container,
-as well as links to more information about the specific geomarker,
-DeGAUSS in general for troubleshooting, and the DeGUASS user RedCap survey.
+as well as a link to more information about the specific geomarker
 }
 \examples{
 \dontrun{
