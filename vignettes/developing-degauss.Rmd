@@ -40,13 +40,13 @@ Add any geomarker information and additional details to `README.md`. Make sure t
 Environment variables (`degauss_name`, `degauss_version`, and `degauss_description`) are defined within the `Dockerfile` so that they will be available to R code running from inside the container. All but `degauss_description` are automatically defined and this value needs to be edited from 
 
 ```sh
-ENV degauss_description="insert short description here that finishes the sentence `This container ...`"
+ENV degauss_description="insert short description here that finishes the sentence 'This container returns ...'"
 ```
 
-to something specific, like
+to something specific and ideally *less than 50 characters*, like
 
 ```sh
-ENV degauss_description="assigns census block group for different vintages of census geographies"
+ENV degauss_description="proximity and length of major roads"
 ```
 
 In the future, the environment variable `degauss_version` can be edited in the `Dockerfile` and R code in the container can use it for greetings, writing output files, and other operations that depend on the current version (or name or description).

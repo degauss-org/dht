@@ -2,7 +2,7 @@ FROM rocker/r-ver:{{{r_version}}}
 
 ENV degauss_name="{{{name}}}"
 ENV degauss_version="{{{version}}}"
-ENV degauss_description="insert short description here that finishes the sentence `This container ...`"
+ENV degauss_description="insert short description here that finishes the sentence 'This container returns ...'"
 
 # add labels based on environment variables too
 LABEL "org.degauss.name"="${degauss_name}"
