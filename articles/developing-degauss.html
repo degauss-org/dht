@@ -114,9 +114,9 @@
 </h4>
 <p>Add any geomarker information and additional details to <code>README.md</code>. Make sure that the version in the example call matches the version of the latest released container.</p>
 <p>Environment variables (<code>degauss_name</code>, <code>degauss_version</code>, and <code>degauss_description</code>) are defined within the <code>Dockerfile</code> so that they will be available to R code running from inside the container. All but <code>degauss_description</code> are automatically defined and this value needs to be edited from</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1"></a><span class="ex">ENV</span> degauss_description=<span class="st">"insert short description here that finishes the sentence </span><span class="kw">`</span><span class="ex">This</span> container ...<span class="kw">`</span><span class="st">"</span></span></code></pre></div>
-<p>to something specific, like</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1"></a><span class="ex">ENV</span> degauss_description=<span class="st">"assigns census block group for different vintages of census geographies"</span></span></code></pre></div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1"></a><span class="ex">ENV</span> degauss_description=<span class="st">"insert short description here that finishes the sentence 'This container returns ...'"</span></span></code></pre></div>
+<p>to something specific and ideally <em>less than 50 characters</em>, like</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1"></a><span class="ex">ENV</span> degauss_description=<span class="st">"proximity and length of major roads"</span></span></code></pre></div>
 <p>In the future, the environment variable <code>degauss_version</code> can be edited in the <code>Dockerfile</code> and R code in the container can use it for greetings, writing output files, and other operations that depend on the current version (or name or description).</p>
 </div>
 <div class="section level4">
