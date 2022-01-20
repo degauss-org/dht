@@ -183,11 +183,18 @@ use_degauss_license <- function(geomarker = getwd(), ...) {
 use_degauss_github_actions <- function(geomarker = getwd(), ...) {
   geomarker_path <- normalizePath(geomarker, mustWork = TRUE)
   gha_dir <- fs::path_join(c(geomarker_path, ".github", "workflows"))
-  dest_path <- fs::path_join(c(gha_dir, "build-deploy.yaml"))
   fs::dir_create(gha_dir)
+  dest_path_pr <- fs::path_join(c(gha_dir, "build-deploy-pr.yaml"))
   render_degauss_template(
-    read_from = "degauss_build-deploy.yaml",
-    write_to = dest_path,
+    read_from = "degauss_build-deploy-pr.yaml",
+    write_to = dest_path_pr,
+    data = list("name" = basename(geomarker_path)),
+    ...
+  )
+  dest_path_release <- fs::path_join(c(gha_dir, "build-deploy-release.yaml"))
+  render_degauss_template(
+    read_from = "degauss_build-deploy-release.yaml",
+    write_to = dest_path_release,
     data = list("name" = basename(geomarker_path)),
     ...
   )

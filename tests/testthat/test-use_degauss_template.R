@@ -88,14 +88,26 @@ test_that("use_degauss_tests makes a my_address_file_geocoded.csv", {
   )
 })
 
-test_that("use_degauss_github_actions makes a build-deploy.yaml", {
+test_that("use_degauss_github_actions makes a build-deploy-release.yaml", {
   path <- fs::path_join(c(fs::path_wd(), "test_geomarker"))
   fs::dir_create(path)
   on.exit(fs::dir_delete(path))
   use_degauss_github_actions(geomarker = path)
   testthat::expect_true(
     fs::file_exists(fs::path_join(c(
-      path, ".github", "workflows", "build-deploy.yaml"
+      path, ".github", "workflows", "build-deploy-release.yaml"
+    )))
+  )
+})
+
+test_that("use_degauss_github_actions makes a build-deploy-pr.yaml", {
+  path <- fs::path_join(c(fs::path_wd(), "test_geomarker"))
+  fs::dir_create(path)
+  on.exit(fs::dir_delete(path))
+  use_degauss_github_actions(geomarker = path)
+  testthat::expect_true(
+    fs::file_exists(fs::path_join(c(
+      path, ".github", "workflows", "build-deploy-pr.yaml"
     )))
   )
 })
@@ -111,7 +123,8 @@ test_that("use_degauss_container makes all the files", {
   testthat::expect_true(fs::file_exists(fs::path_join(c(path, "entrypoint.R"))))
   testthat::expect_true(fs::file_exists(fs::path_join(c(path, ".dockerignore"))))
   testthat::expect_true(fs::file_exists(fs::path_join(c(path, "LICENSE.md"))))
-  testthat::expect_true(fs::file_exists(fs::path_join(c(path, ".github", "workflows", "build-deploy.yaml"))))
+  testthat::expect_true(fs::file_exists(fs::path_join(c(path, ".github", "workflows", "build-deploy-release.yaml"))))
+  testthat::expect_true(fs::file_exists(fs::path_join(c(path, ".github", "workflows", "build-deploy-pr.yaml"))))
   testthat::expect_true(fs::file_exists(fs::path_join(c(path, "test", "my_address_file_geocoded.csv"))))
 })
 
