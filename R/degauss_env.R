@@ -26,6 +26,7 @@ get_env_from_dockerfile <- function(dockerfile_path = fs::path_join(c(getwd(), "
     normalizePath(mustWork = TRUE) %>%
     readLines(warn = FALSE) %>%
     stringr::str_subset(pattern = stringr::fixed("ENV ")) %>%
+    stringr::str_subset(pattern = stringr::fixed("#"), negate = TRUE) %>%
     stringr::str_extract(glue::glue("(?<={env_names}=).*")) %>%
     stringr::str_remove_all("[^[:alnum:] _.]")
 
