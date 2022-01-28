@@ -1,6 +1,6 @@
 FROM rocker/r-ver:{{{r_version}}}
 
-# do not change the order or names of these ENV instructions
+# DeGAUSS container metadata
 ENV degauss_name="{{{name}}}"
 ENV degauss_version="{{{version}}}"
 ENV degauss_description="insert short description here that finishes the sentence: This container returns ..."
@@ -8,7 +8,7 @@ ENV degauss_argument=""
 # comment out above and uncomment below to define optional argument
 # ENV degauss_argument="short description of optional argument [default: 'insert_default_value_here']"
 
-# add labels based on environment variables too
+# add OCI labels based on environment variables too
 LABEL "org.degauss.name"="${degauss_name}"
 LABEL "org.degauss.version"="${degauss_version}"
 LABEL "org.degauss.description"="${degauss_description}"
