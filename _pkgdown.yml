@@ -36,5 +36,4 @@ reference:
 - title: Development and Infrastructure
   contents:
   - use_degauss_container
-  - get_env_from_dockerfile
-  - get_env_from_degauss_online
+  - get_degauss_env_dockerfile
