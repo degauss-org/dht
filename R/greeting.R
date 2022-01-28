@@ -8,7 +8,7 @@
 #' @export
 #' @param geomarker_name name of the geomarker, must be the name used in the degauss.org url
 #' @param version container version number as a character string
-#' @param description brief description of the container; finishes the sentence "This container..."
+#' @param description brief description of the container; finishes the sentence "This container returns..."
 #' @examples
 #' \dontrun{
 #' greeting('roads', '0.4', 'returns proximity and length of nearby major roadways')
@@ -25,7 +25,7 @@ greeting <- function(geomarker_name = Sys.getenv("degauss_name"),
   ## cli::cli_h2("{.url https://degauss.org}")
   cli::cli_ul(c(
     "You are using {.pkg {geomarker_name}}, version {version}",
-    "This container {description}",
+    "This container returns {description}",
     "{.url https://degauss.org/{geomarker_name}}"
   ))
   ## cli::cli_rule()
