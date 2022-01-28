@@ -15,7 +15,7 @@ greeting(
 
 \item{version}{container version number as a character string}
 
-\item{description}{brief description of the container; finishes the sentence "This container..."}
+\item{description}{brief description of the container; finishes the sentence "This container returns..."}
 }
 \description{
 if not supplied as arguments, greeting-specific values
