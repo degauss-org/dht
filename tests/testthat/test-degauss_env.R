@@ -8,8 +8,7 @@ test_that("get_degauss_metadata_from_dockerfile works", {
     c(
       "degauss_name" = "test_geomarker",
       "degauss_version" = "0.1",
-      "degauss_description" = "insert short description here that finishes the sentence: This container returns ...",
-      "degauss_argument" = ""
+      "degauss_description" = "insert short description here that finishes the sentence: This container returns ..."
     )
   )
 })
