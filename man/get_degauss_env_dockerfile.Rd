@@ -24,7 +24,8 @@ These functions look in a Dockerfile to extract environment variables correspond
 They look for ENV instructions where the name begins with "degauss_";
 for example "degauss_name", or "degauss_version".
 \code{get_degauss_env_dockerfile} expects a path to a Dockerfile, but \code{get_degauss_env_online}
-takes the name of DeGAUSS container that is used to download the corresponding Dockerfile.
+takes the name of DeGAUSS container that is used to download the
+corresponding Dockerfile (from the master branch of the github repository).
 It assumes each \code{ENV} instruction is on its own line and defines only one environment variable.
 }
 \examples{

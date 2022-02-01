@@ -4,7 +4,9 @@
 #' They look for ENV instructions where the name begins with "degauss_";
 #' for example "degauss_name", or "degauss_version".
 #' `get_degauss_env_dockerfile` expects a path to a Dockerfile, but `get_degauss_env_online`
-#' takes the name of DeGAUSS container that is used to download the corresponding Dockerfile.
+#' takes the name of DeGAUSS container that is used to download the
+#' corresponding Dockerfile (from the master branch of the github repository).
+
 #' It assumes each `ENV` instruction is on its own line and defines only one environment variable.
 #'
 #' @param dockerfile_path path to Dockerfile
@@ -46,7 +48,7 @@ get_degauss_env_dockerfile <- function(dockerfile_path = fs::path_join(c(getwd()
 get_degauss_env_online <- function(name = "fortunes") {
   withr::with_tempfile("df", {
     utils::download.file(
-      glue::glue("https://raw.githubusercontent.com/degauss-org/{name}/main/Dockerfile"),
+      glue::glue("https://raw.githubusercontent.com/degauss-org/{name}/master/Dockerfile"),
       df,
       quiet = TRUE
     )
