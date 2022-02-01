@@ -2,9 +2,10 @@
 
 dht::greeting()
 
-dht::qlibrary(dplyr)
-dht::qlibrary(tidyr)
-dht::qlibrary(sf)
+## load libraries without messages or warnings
+withr::with_message_sink("/dev/null", library(dplyr))
+withr::with_message_sink("/dev/null", library(tidyr))
+withr::with_message_sink("/dev/null", library(sf))
 
 doc <- "
       Usage:
