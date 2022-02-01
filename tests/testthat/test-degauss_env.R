@@ -21,18 +21,6 @@ test_that("can get degauss metadata from online dockerfile", {
   )
 })
 
-degauss_core_library <-
-  c(
-    "geocoder", "census_block_group", "st_census_tract",
-    "dep_index", "roads", "aadt", "greenspace", "nlcd",
-    "pm", "narr", "drivetime"
-  )
-
 test_that("can get degauss metadata online for core library", {
-  testthat::expect_length(
-    {
-      purrr::map(degauss_core_library, get_degauss_env_online)
-    },
-    length(degauss_core_library)
-  )
+  testthat::expect_equal(nrow(get_available_images()), 11)
 })
