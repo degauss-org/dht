@@ -18,7 +18,16 @@
 
 read_lat_lon_csv <- function(filename, nest_df=FALSE, sf_out=FALSE, project_to_crs=NULL) {
   cli::cli_alert_info('loading input file...', wrap = TRUE)
-  raw_data <- suppressMessages(readr::read_csv(filename))
+
+  raw_data <- 
+    readr::read_csv(
+      filename,
+      col_types = readr::cols(
+        lat = readr::col_double(),
+        lon = readr::col_double()
+      )
+    )
+
   raw_data$.row <- seq_len(nrow(raw_data))
 
   if(nest_df) {
