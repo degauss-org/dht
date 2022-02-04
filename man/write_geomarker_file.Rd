@@ -9,7 +9,8 @@ write_geomarker_file(
   raw_data = NULL,
   filename,
   geomarker_name = Sys.getenv("degauss_name"),
-  version = Sys.getenv("degauss_version")
+  version = Sys.getenv("degauss_version"),
+  argument = NULL
 )
 }
 \arguments{
@@ -20,11 +21,13 @@ nest_df = FALSE in read_lat_lon_csv)}
 
 \item{filename}{name of input file, probably opt$filename if inside container}
 
-\item{geomarker_name}{name of the geomarker, must be the name used in the degauss.org url;
-defaults to degauss environment variable \code{degauss_name}}
+\item{geomarker_name}{name of the geomarker; defaults to degauss environment variable \code{degauss_name}}
 
 \item{version}{container version number as a character string; defaults to degauss environment
 variable \code{degauss_version}}
+
+\item{argument}{optional information to append after the image version number that was specified using a degauss argument;
+for example, a selected buffer radius, care site, or geocoding threshold}
 }
 \value{
 output file is written to working directory
