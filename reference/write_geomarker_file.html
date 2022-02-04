@@ -60,7 +60,8 @@
   raw_data <span class="op">=</span> <span class="cn">NULL</span>,
   <span class="va">filename</span>,
   geomarker_name <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Sys.getenv.html" class="external-link">Sys.getenv</a></span><span class="op">(</span><span class="st">"degauss_name"</span><span class="op">)</span>,
-  version <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Sys.getenv.html" class="external-link">Sys.getenv</a></span><span class="op">(</span><span class="st">"degauss_version"</span><span class="op">)</span>
+  version <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Sys.getenv.html" class="external-link">Sys.getenv</a></span><span class="op">(</span><span class="st">"degauss_version"</span><span class="op">)</span>,
+  argument <span class="op">=</span> <span class="cn">NULL</span>
 <span class="op">)</span></code></pre></div>
     </div>
 
@@ -74,11 +75,13 @@ nest_df = FALSE in read_lat_lon_csv)</p></dd>
 <dt>filename</dt>
 <dd><p>name of input file, probably opt$filename if inside container</p></dd>
 <dt>geomarker_name</dt>
-<dd><p>name of the geomarker, must be the name used in the degauss.org url;
-defaults to degauss environment variable <code>degauss_name</code></p></dd>
+<dd><p>name of the geomarker; defaults to degauss environment variable <code>degauss_name</code></p></dd>
 <dt>version</dt>
 <dd><p>container version number as a character string; defaults to degauss environment
 variable <code>degauss_version</code></p></dd>
+<dt>argument</dt>
+<dd><p>optional information to append after the image version number that was specified using a degauss argument;
+for example, a selected buffer radius, care site, or geocoding threshold</p></dd>
 </dl></div>
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
