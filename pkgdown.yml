@@ -4,7 +4,7 @@ pkgdown_sha: ~
 articles:
   developing-degauss: developing-degauss.html
   helper-functions: helper-functions.html
-last_built: 2022-02-04T03:39Z
+last_built: 2022-02-09T03:19Z
 urls:
   reference: http://degauss.org/dht/reference
   article: http://degauss.org/dht/articles
