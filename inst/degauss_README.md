@@ -11,7 +11,7 @@ If `my_address_file_geocoded.csv` is a file in the current working directory wit
 docker run --rm -v $PWD:/tmp ghcr.io/degauss-org/{{{name}}}:{{{version}}} my_address_file_geocoded.csv
 ```
 
-will produce `my_address_file_geocoded_{{{name}}}_v{{{version}}}.csv` with added columns:
+will produce `my_address_file_geocoded_{{{name}}}_{{{version}}}.csv` with added columns:
 
 - **`this_geomarker`**: a definition of this geomarker
 - **`that_geomarker`**: a definition of that geomarker
@@ -19,6 +19,7 @@ will produce `my_address_file_geocoded_{{{name}}}_v{{{version}}}.csv` with added
 ### Optional Argument
 
 - If this DeGAUSS container takes an optional argument, describe its usage and effects here.
+- Be sure to also update the example output file name with the argument value.
 
 ## Geomarker Methods
 
