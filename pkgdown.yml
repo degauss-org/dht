@@ -2,9 +2,10 @@ pandoc: 2.7.3
 pkgdown: 2.0.2
 pkgdown_sha: ~
 articles:
+  degauss-metadata-specification: degauss-metadata-specification.html
   developing-degauss: developing-degauss.html
   helper-functions: helper-functions.html
-last_built: 2022-02-09T03:24Z
+last_built: 2022-02-09T04:27Z
 urls:
   reference: http://degauss.org/dht/reference
   article: http://degauss.org/dht/articles
