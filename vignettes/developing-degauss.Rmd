@@ -55,6 +55,33 @@ completes the specific task to be performed by the container.
 When ready to build the container, run
 `renv::init()` to initiate the `renv` framework and create `renv.lock`. Subsequent builds can update `renv.lock` by using `renv::snapshot()`.
 
+#### Adding required system dependencies
+
+R packages, especially spatial packages, often depend on external system dependencies.  These will need to be installed using `RUN` instructions in the Dockerfile. For example, the {sf} package for R requires `gdal` and other programs, each of which require different install processes depending on the operating system.  Since these R packages will always be running inside of a Docker container running Ubuntu 20.04, we can use [`remotes::system_requirements()`](https://remotes.r-lib.org/reference/system_requirements.html) to get the specific required install instructions for {sf}:
+
+```R
+remotes::system_requirements("ubuntu-20.04", package = "sf")
+# "apt-get install -y libudunits2-dev" "apt-get install -y libssl-dev"
+# "apt-get install -y libgdal-dev"     "apt-get install -y gdal-bin"
+# "apt-get install -y libgeos-dev"     "apt-get install -y libproj-dev"
+
+```
+
+These system requirements could be translated to `RUN` instructions for the Dockerfile to make sure they are available before the R packages that require them are installed:
+
+
+```sh
+RUN apt-get update \
+    && apt-get install -yqq --no-install-recommends \
+    libudunits2-dev \
+	libssl-dev \
+    libgdal-dev \
+	gdal-bin \
+    libgeos-dev \
+    libproj-dev \
+    && apt-get clean
+```
+
 ### Including files inside the container
 
 By default, the container will copy in `entrypoint.R` and `renv.lock` for use at runtime and ignore anything else in the working directory to automatically speed up build times and keep containers smaller in size. If the container requires any other files (e.g., `.rds` datafiles), edit
