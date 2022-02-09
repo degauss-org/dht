@@ -1,0 +1,23 @@
+---
+title: "DeGAUSS Metadata Specifications"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{DeGAUSS Metadata Specifications}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+## Metadata Elements
+
+The below list contains the names of supported metadata elements captured using environment variables defined using `ENV` instructions inside the Dockerfile:
+
+- **`degauss_name`**: name of DeGAUSS container (use only lower case letters and underscores)
+- **`degauss_version`**: version number corresponding to GitHub release and latest version of container available from the GitHub Container Registry
+- **`degauss_description`**: a short (< 50 characters) description that finishes the sentence "This container returns ..."
+- **`degauss_argument`**: name and default value of any argument `short argument description [default: x]`
+
+## Defining Metadata Environment Variables in the Dockerfile
+
+- The template Dockerfile from {dht} (`dht::use_degauss_dockerfile()`) comes with the above four (but with commented out `ENV` instructions for specifying an optional command line argument)
+- Each `ENV` must be on its own line and only define one variable at a time
+- In general, any `ENV` instruction that begins with `degauss_` can/will be read in by `dht::get_degauss_env_dockerfile()` or `dht::get_degauss_env_online()`

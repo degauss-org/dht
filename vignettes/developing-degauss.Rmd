@@ -7,12 +7,6 @@ vignette: >
   %\VignetteEncoding{UTF-8}
 ---
 
-```{r, include = FALSE}
-knitr::opts_chunk$set(
-  collapse = TRUE,
-  comment = "#>"
-)
-```
 The following guide is a step-by-step instruction manual for developing a [DeGAUSS](https://degauss.org) container using tools available in the [`dht` R package](https://degauss.org/dht).
 
 ### Creating all files needed
@@ -26,7 +20,7 @@ Within an empty directory, use `dht::use_degauss_container()` to create all of t
   - `.github/workflows/build-deply.yaml` (GitHub Actions continuous integration)
   - `.dockerignore` (edit to include files other than entrypoint.R in the image)
 
-- Files that **need** to be edited:
+- However, some files **must** be edited:
   - `Dockerfile` (`degauss_description` environment variable)
   - `entrypoint.R` (contains R code to be run in the container)
   - `README.md` (software documentation and example instructions)
@@ -37,7 +31,9 @@ Within an empty directory, use `dht::use_degauss_container()` to create all of t
 
 Add any geomarker information and additional details to `README.md`. Make sure that the version in the example call matches the version of the latest released container. 
 
-Environment variables (`degauss_name`, `degauss_version`, and `degauss_description`) are defined within the `Dockerfile` so that they will be available to R code running from inside the container. All but `degauss_description` are automatically defined and this value needs to be edited from 
+Within the `Dockerfile`, `ENV` instructions are used to define environment variables that capture metadata about the DeGAUSS container, including the name (`degauss_name`), version (`degauss_version`), and a short description (`degauss_description`). These environment variables will be available to R code running from inside the container. Other {dht} functions rely on the specific names of these environment variables, including `get_degauss_env_dockerfile()`, `get_degauss_env_online()`, and `get_available_images()`
+
+When creating a new DeGAUSS container, all but `degauss_description` are automatically defined and this value needs to be edited from 
 
 ```sh
 ENV degauss_description="insert short description here that finishes the sentence 'This container returns ...'"
@@ -49,8 +45,7 @@ to something specific and ideally *less than 50 characters*, like
 ENV degauss_description="proximity and length of major roads"
 ```
 
-In the future, the environment variable `degauss_version` can be edited in the `Dockerfile` and R code in the container can use it for greetings, writing output files, and other operations that depend on the current version (or name or description).
-
+When releasing new version of the container in the future, the environment variable `degauss_version` can be edited in the `Dockerfile` and R code in the container can use it for greetings, writing output files, and other operations that depend on the current version (or name or description).
 
 #### Using R code and data files inside the container
 
