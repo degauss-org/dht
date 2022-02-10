@@ -56,6 +56,8 @@ get_degauss_env_online <- function(name = "fortunes") {
   })
 }
 
+#' @export
+#' @rdname get_degauss_env_dockerfile
 get_available_images <- function() {
   c(
     "geocoder", "census_block_group", "st_census_tract",
