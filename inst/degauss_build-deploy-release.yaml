@@ -1,3 +1,4 @@
+{{=<% %>=}}
 name: build-deploy-release
 on:
   release:
@@ -8,7 +9,7 @@ jobs:
     env:
       registry: ghcr.io
       username: degauss-org
-      repository: {{{name}}}
+      repository: <%name%>
     strategy:
       fail-fast: false
     steps:
