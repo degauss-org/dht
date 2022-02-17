@@ -1,7 +1,7 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
-# dht
+# dht <img src="man/figures/logo.png" align="right" height="139" />
 
 <!-- badges: start -->
 
@@ -9,7 +9,7 @@
 status](https://github.com/degauss-org/dht/workflows/R-CMD-check/badge.svg)](https://github.com/degauss-org/dht/actions)
 <!-- badges: end -->
 
-(**d**egauss **h**elper **t**ools) are used to develop and run
+**d**egauss **h**elper **t**ools are used to develop and run
 [DeGAUSS](https://degauss.org) containers.
 
 ## Installation
