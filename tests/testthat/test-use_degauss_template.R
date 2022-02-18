@@ -68,12 +68,12 @@ test_that("use_degauss_dockerignore makes a .dockerignore", {
   testthat::expect_true(fs::file_exists(fs::path_join(c(path, ".dockerignore"))))
 })
 
-test_that("use_degauss_license makes a LICENSE.md", {
+test_that("use_degauss_license makes LICENSE", {
   path <- fs::path_join(c(fs::path_wd(), "test_geomarker"))
   fs::dir_create(path)
   on.exit(fs::dir_delete(path))
   use_degauss_license(geomarker = path)
-  testthat::expect_true(fs::file_exists(fs::path_join(c(path, "LICENSE.md"))))
+  testthat::expect_true(fs::file_exists(fs::path_join(c(path, "LICENSE"))))
 })
 
 test_that("use_degauss_tests makes a my_address_file_geocoded.csv", {
@@ -122,7 +122,7 @@ test_that("use_degauss_container makes all the files", {
   testthat::expect_true(fs::file_exists(fs::path_join(c(path, "README.md"))))
   testthat::expect_true(fs::file_exists(fs::path_join(c(path, "entrypoint.R"))))
   testthat::expect_true(fs::file_exists(fs::path_join(c(path, ".dockerignore"))))
-  testthat::expect_true(fs::file_exists(fs::path_join(c(path, "LICENSE.md"))))
+  testthat::expect_true(fs::file_exists(fs::path_join(c(path, "LICENSE"))))
   testthat::expect_true(fs::file_exists(fs::path_join(c(path, ".github", "workflows", "build-deploy-release.yaml"))))
   testthat::expect_true(fs::file_exists(fs::path_join(c(path, ".github", "workflows", "build-deploy-pr.yaml"))))
   testthat::expect_true(fs::file_exists(fs::path_join(c(path, "test", "my_address_file_geocoded.csv"))))

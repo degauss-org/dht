@@ -11,7 +11,7 @@
 #'   * `entrypoint.R`
 #'   * `.dockerignore`
 #'   * `test/my_address_file_geocoded.csv`
-#'   * `LICENSE.md` GPL license
+#'   * `LICENSE` GPL license
 #'   * `.github/workflows/build-deply.yaml`
 #'
 #' @param geomarker path to folder where DeGAUSS container files are to be added;
@@ -169,9 +169,9 @@ use_degauss_tests <- function(geomarker = getwd(), ...) {
 #' @rdname use_degauss_container
 use_degauss_license <- function(geomarker = getwd(), ...) {
   geomarker_path <- normalizePath(geomarker, mustWork = TRUE)
-  dest_path <- fs::path_join(c(geomarker_path, "LICENSE.md"))
+  dest_path <- fs::path_join(c(geomarker_path, "LICENSE"))
   render_degauss_template(
-    read_from = "degauss_LICENSE.md",
+    read_from = "degauss_LICENSE",
     write_to = dest_path,
     data = list(),
     ...

@@ -53,7 +53,7 @@ This function calls all of the individual \verb{dht::use_degauss_*()} functions 
 \item \code{entrypoint.R}
 \item \code{.dockerignore}
 \item \code{test/my_address_file_geocoded.csv}
-\item \code{LICENSE.md} GPL license
+\item \code{LICENSE} GPL license
 \item \code{.github/workflows/build-deply.yaml}
 }
 }
