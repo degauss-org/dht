@@ -13,6 +13,7 @@ reference:
   - greeting
   - qlibrary
   - check_ram
+  - degauss_colors
 
 - title: Reading and Writing Data
   contents:
