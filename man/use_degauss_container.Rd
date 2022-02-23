@@ -34,12 +34,12 @@ use_degauss_license(geomarker = getwd(), ...)
 use_degauss_github_actions(geomarker = getwd(), ...)
 }
 \arguments{
-\item{geomarker}{path to folder where DeGAUSS container files are to be added;}
+\item{geomarker}{path to folder where DeGAUSS container files are to be added;
+defaults to the current working directory}
 
 \item{version}{string of version number used in freshly created README and entrypoint.R; defaults to "0.1.0"}
 
-\item{...}{arguments passed to render_degauss_template (overwrite)
-defaults to the current working directory}
+\item{...}{arguments passed to render_degauss_template (overwrite)}
 }
 \description{
 Creates all the necessary files to create a DeGAUSS container.
@@ -54,6 +54,7 @@ This function calls all of the individual \verb{dht::use_degauss_*()} functions 
 \item \code{.dockerignore}
 \item \code{test/my_address_file_geocoded.csv}
 \item \code{LICENSE} GPL license
-\item \code{.github/workflows/build-deply.yaml}
+\item \code{.github/workflows/build-deploy-pr.yaml}
+\item \code{.github/workflows/build-deploy-release.yaml}
 }
 }

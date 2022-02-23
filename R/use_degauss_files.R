@@ -1,4 +1,4 @@
-#' Use DeGAUSS Container Template
+#' use DeGAUSS container template
 #'
 #' @description
 #' Creates all the necessary files to create a DeGAUSS container.
@@ -12,12 +12,13 @@
 #'   * `.dockerignore`
 #'   * `test/my_address_file_geocoded.csv`
 #'   * `LICENSE` GPL license
-#'   * `.github/workflows/build-deply.yaml`
+#'   * `.github/workflows/build-deploy-pr.yaml`
+#'   * `.github/workflows/build-deploy-release.yaml`
 #'
 #' @param geomarker path to folder where DeGAUSS container files are to be added;
+#' defaults to the current working directory
 #' @param version string of version number used in freshly created README and entrypoint.R; defaults to "0.1.0"
 #' @param ... arguments passed to render_degauss_template (overwrite)
-#' defaults to the current working directory
 #'
 #' @export
 use_degauss_container <- function(geomarker = getwd(), version = "0.1.0", ...) {

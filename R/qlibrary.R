@@ -13,5 +13,6 @@
 #' }
 #'
 qlibrary <- function(...) {
+  .Deprecated("withr::with_message_sink('/dev/null', library(...)")
   suppressPackageStartupMessages(suppressWarnings(library(...)))
 }

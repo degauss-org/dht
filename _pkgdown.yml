@@ -9,9 +9,10 @@ template:
 reference:
 
 - title: User Interface
+  description: |
+    These functions are used to interact with DeGAUSS container users.
   contents:
   - greeting
-  - qlibrary
   - check_ram
   - degauss_colors
 
@@ -22,6 +23,8 @@ reference:
   - write_geomarker_file
 
 - title: Addresses
+  description: |
+    Tools for cleaning addresses and detecting different common patterns.
   contents:
   - clean_address
   - address_is_nonaddress
@@ -29,12 +32,21 @@ reference:
   - address_is_institutional
 
 - title: Dates
+  description: |
+    Validating and calculating dates.
   contents:
   - check_dates
-  - expand_dates
   - check_end_after_start_date
+  - expand_dates
 
 - title: Development and Infrastructure
   contents:
   - use_degauss_container
   - get_degauss_env_dockerfile
+
+- title: Deprecated
+  description: |
+    Functions that are still supported but no longer receive active
+    development, as better solutions now exist.
+  contents:
+    - qlibrary
