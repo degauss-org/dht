@@ -26,11 +26,12 @@ check for specified columns and corresponding column types
 \examples{
 \dontrun{
 d <- tibble::tribble(
-      ~'id', ~'value',
-      '123', 123,
-      '456', 456
-    )
-check_for_column(d, 'id', d$id, 'double')
-check_for_column(d, 'id2', d$id2, 'double')
+  ~"id", ~"value",
+  "123", 123,
+  "456", 456
+)
+check_for_column(d, "id", d$id, "double")
+check_for_column(d, "id2", d$id2, "double")
 }
+
 }

@@ -21,9 +21,9 @@ expand dates between start_date and end_date
 \examples{
 \dontrun{
 d <- data.frame(
-start_date = check_dates(c('1/1/21', '1/2/21', '1/3/21')),
-end_date = check_dates(c('1/7/21', '1/8/21', '1/9/21'))
+  start_date = check_dates(c("1/1/21", "1/2/21", "1/3/21")),
+  end_date = check_dates(c("1/7/21", "1/8/21", "1/9/21"))
 )
-expand_dates(d, by = 'day')
+expand_dates(d, by = "day")
 }
 }

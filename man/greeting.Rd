@@ -2,7 +2,7 @@
 % Please edit documentation in R/greeting.R
 \name{greeting}
 \alias{greeting}
-\title{display DeGUASS greeting message in console}
+\title{display DeGAUSS greeting message in console}
 \usage{
 greeting(
   geomarker_name = Sys.getenv("degauss_name"),
@@ -29,6 +29,6 @@ as well as a link to more information about the specific geomarker
 }
 \examples{
 \dontrun{
-greeting('roads', '0.4', 'returns proximity and length of nearby major roadways')
+greeting("roads", "0.4", "returns proximity and length of nearby major roadways")
 }
 }

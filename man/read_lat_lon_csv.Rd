@@ -31,8 +31,11 @@ read in and format input file for DeGAUSS container
 }
 \examples{
 \dontrun{
-d <- read_lat_lon_csv(filename = 'test/my_address_file_geocoded.csv')
-d <- read_lat_lon_csv(filename = 'test/my_address_file_geocoded.csv',
-                      sf_out = TRUE, project_to_crs = 5072)
+d <- read_lat_lon_csv(filename = "test/my_address_file_geocoded.csv")
+d <- read_lat_lon_csv(
+  filename = "test/my_address_file_geocoded.csv",
+  sf_out = TRUE, project_to_crs = 5072
+)
 }
+
 }

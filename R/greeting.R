@@ -1,4 +1,4 @@
-#' display DeGUASS greeting message in console
+#' display DeGAUSS greeting message in console
 #'
 #' if not supplied as arguments, greeting-specific values
 #' (geomarker_name, version, description) are read in from the environment variables
@@ -11,7 +11,7 @@
 #' @param description brief description of the container; finishes the sentence "This container returns..."
 #' @examples
 #' \dontrun{
-#' greeting('roads', '0.4', 'returns proximity and length of nearby major roadways')
+#' greeting("roads", "0.4", "returns proximity and length of nearby major roadways")
 #' }
 #' @details
 #' greeting message includes name, version, and brief description of container,

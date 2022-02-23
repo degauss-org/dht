@@ -9,7 +9,6 @@
 #' degauss_colors(2)
 #' degauss_colors(1:4)
 #' plot(1:6, rep(1, 6), col = degauss_colors(1:6), pch = 19, cex = 10)
-
 degauss_colors <- function(n) {
   stopifnot(n > 0, n < 7)
   colors <- c("#072B67", "#469FC2", "#C2326B", "#E0E5E7", "#6C4370", "#83C3C3")

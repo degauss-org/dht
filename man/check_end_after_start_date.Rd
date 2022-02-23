@@ -16,8 +16,8 @@ check that end_date occurs after start_date
 }
 \examples{
 \dontrun{
-start_date <- check_dates(c('1/1/21', '1/2/21', '1/3/21'))
-end_date <- check_dates(c('1/7/21', '1/8/21', '1/9/20'))
+start_date <- check_dates(c("1/1/21", "1/2/21", "1/3/21"))
+end_date <- check_dates(c("1/7/21", "1/8/21", "1/9/20"))
 check_end_after_start_date(start_date, end_date)
 }
 }

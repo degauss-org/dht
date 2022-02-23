@@ -11,25 +11,22 @@
 #' @examples
 #' \dontrun{
 #' d <- tibble::tribble(
-#'       ~'id', ~'value',
-#'       '123', 123,
-#'       '456', 456
-#'     )
-#' check_for_column(d, 'id', d$id, 'double')
-#' check_for_column(d, 'id2', d$id2, 'double')
+#'   ~"id", ~"value",
+#'   "123", 123,
+#'   "456", 456
+#' )
+#' check_for_column(d, "id", d$id, "double")
+#' check_for_column(d, "id2", d$id2, "double")
 #' }
-
-check_for_column <- function(d, column_name, column, column_type=NULL) {
-  if (! column_name %in% names(d)) {
-    cli::cli_alert_danger('no column called {column_name} found in the input file', wrap = TRUE)
+#'
+check_for_column <- function(d, column_name, column, column_type = NULL) {
+  if (!column_name %in% names(d)) {
+    cli::cli_alert_danger("no column called {column_name} found in the input file", wrap = TRUE)
     stop(call. = FALSE)
   }
-  if(!is.null(column_type)) {
+  if (!is.null(column_type)) {
     if (class(column) != column_type) {
-      cli::cli_alert_warning('{column_name} is of type {class(column)}, not {column_type}', wrap = TRUE)
+      cli::cli_alert_warning("{column_name} is of type {class(column)}, not {column_type}", wrap = TRUE)
     }
   }
 }
-
-
-

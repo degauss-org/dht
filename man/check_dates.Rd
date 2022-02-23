@@ -2,7 +2,7 @@
 % Please edit documentation in R/check_dates.R
 \name{check_dates}
 \alias{check_dates}
-\title{check format of dates from DeGUASS container input file}
+\title{check format of dates from DeGAUSS container input file}
 \usage{
 check_dates(date, allow_missing = FALSE)
 }
@@ -15,7 +15,7 @@ check_dates(date, allow_missing = FALSE)
 reformatted vector of dates, or an error if dates could not be reformatted
 }
 \description{
-check format of dates from DeGUASS container input file
+check format of dates from DeGAUSS container input file
 }
 \details{
 ISO formatted dates (e.g., "\%Y-\%m-\%d" or 2021-01-01) will stay the same
@@ -26,7 +26,7 @@ the user will be instructed to manually reformat their dates.
 }
 \examples{
 \dontrun{
-date <- c('1/1/21', '1/2/21', '1/3/21')
+date <- c("1/1/21", "1/2/21", "1/3/21")
 check_dates(date)
 }
 }

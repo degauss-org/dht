@@ -11,15 +11,17 @@
 #' If sf_out=TRUE the second is an sf object.
 #' @examples
 #' \dontrun{
-#' d <- read_lat_lon_csv(filename = 'test/my_address_file_geocoded.csv')
-#' d <- read_lat_lon_csv(filename = 'test/my_address_file_geocoded.csv',
-#'                       sf_out = TRUE, project_to_crs = 5072)
+#' d <- read_lat_lon_csv(filename = "test/my_address_file_geocoded.csv")
+#' d <- read_lat_lon_csv(
+#'   filename = "test/my_address_file_geocoded.csv",
+#'   sf_out = TRUE, project_to_crs = 5072
+#' )
 #' }
+#'
+read_lat_lon_csv <- function(filename, nest_df = FALSE, sf_out = FALSE, project_to_crs = NULL) {
+  cli::cli_alert_info("loading input file...", wrap = TRUE)
 
-read_lat_lon_csv <- function(filename, nest_df=FALSE, sf_out=FALSE, project_to_crs=NULL) {
-  cli::cli_alert_info('loading input file...', wrap = TRUE)
-
-  raw_data <- 
+  raw_data <-
     readr::read_csv(
       filename,
       col_types = readr::cols(
@@ -30,7 +32,7 @@ read_lat_lon_csv <- function(filename, nest_df=FALSE, sf_out=FALSE, project_to_c
 
   raw_data$.row <- seq_len(nrow(raw_data))
 
-  if(nest_df) {
+  if (nest_df) {
     d <-
       raw_data %>%
       dplyr::select(.row, lat, lon) %>%
@@ -38,14 +40,15 @@ read_lat_lon_csv <- function(filename, nest_df=FALSE, sf_out=FALSE, project_to_c
       dplyr::group_by(lat, lon) %>%
       tidyr::nest(.rows = c(.row))
 
-    if(sf_out) {
-      if (!requireNamespace("sf", quietly = TRUE))
+    if (sf_out) {
+      if (!requireNamespace("sf", quietly = TRUE)) {
         stop("reading input data as an sf object requires the sf package; install that first")
-      cli::cli_alert_info('converting input to sf object...', wrap = TRUE)
-      d <- sf::st_as_sf(d, coords = c('lon', 'lat'), crs = 4326)
+      }
+      cli::cli_alert_info("converting input to sf object...", wrap = TRUE)
+      d <- sf::st_as_sf(d, coords = c("lon", "lat"), crs = 4326)
 
-      if(!is.null(project_to_crs)) {
-        cli::cli_alert_info('projecting input...', wrap = TRUE)
+      if (!is.null(project_to_crs)) {
+        cli::cli_alert_info("projecting input...", wrap = TRUE)
         d <- sf::st_transform(d, project_to_crs)
       }
     }

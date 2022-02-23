@@ -1,6 +1,6 @@
 test_that("check slash dates", {
   expect_identical(
-    check_dates(c('1/1/21', '1/2/21', '1/3/21')),
+    check_dates(c("1/1/21", "1/2/21", "1/3/21")),
     as.Date(c("2021-01-01", "2021-01-02", "2021-01-03"))
   )
 })
@@ -26,8 +26,8 @@ test_that("check ambiguous dates", {
 
 
 test_that("check end date after start date", {
-  start_date <- check_dates(c('1/1/21', '1/2/21', '1/3/21'))
-  end_date <- check_dates(c('1/7/21', '1/8/21', '1/9/20'))
+  start_date <- check_dates(c("1/1/21", "1/2/21", "1/3/21"))
+  end_date <- check_dates(c("1/7/21", "1/8/21", "1/9/20"))
   expect_error(
     check_end_after_start_date(start_date, end_date)
   )
@@ -35,23 +35,26 @@ test_that("check end date after start date", {
 
 test_that("check end date after start date", {
   d <- data.frame(
-    start_date = check_dates(c('1/1/21', '1/2/21', '1/3/21')),
-    end_date = check_dates(c('1/3/21', '1/4/21', '1/5/21'))
+    start_date = check_dates(c("1/1/21", "1/2/21", "1/3/21")),
+    end_date = check_dates(c("1/3/21", "1/4/21", "1/5/21"))
   )
   expect_equal(
-    expand_dates(d, by = 'day'),
+    expand_dates(d, by = "day"),
     tibble::tibble(
-      start_date = rep(check_dates(c('1/1/21', '1/2/21', '1/3/21')), each = 3),
-      end_date = rep(check_dates(c('1/3/21', '1/4/21', '1/5/21')), each = 3),
-      date = as.Date(c('2021-01-01', '2021-01-02', '2021-01-03',
-                       '2021-01-02', '2021-01-03', '2021-01-04',
-                       '2021-01-03', '2021-01-04', '2021-01-05')))
+      start_date = rep(check_dates(c("1/1/21", "1/2/21", "1/3/21")), each = 3),
+      end_date = rep(check_dates(c("1/3/21", "1/4/21", "1/5/21")), each = 3),
+      date = as.Date(c(
+        "2021-01-01", "2021-01-02", "2021-01-03",
+        "2021-01-02", "2021-01-03", "2021-01-04",
+        "2021-01-03", "2021-01-04", "2021-01-05"
+      ))
+    )
   )
 })
 
 test_that("check end date after start date if end = start", {
-  start_date <- check_dates(c('1/1/21'))
-  end_date <- check_dates(c('1/1/21'))
+  start_date <- check_dates(c("1/1/21"))
+  end_date <- check_dates(c("1/1/21"))
   expect_silent(
     check_end_after_start_date(start_date, end_date)
   )

@@ -19,4 +19,5 @@ and it is recommended to use something like
 \dontrun{
 qlibrary(dplyr)
 }
+
 }

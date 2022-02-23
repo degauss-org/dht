@@ -132,11 +132,13 @@ test_that("use_degauss_container errors if a degauss file already exists", {
   path <- fs::path_join(c(fs::path_wd(), "test_geomarker"))
   fs::dir_create(path)
   on.exit(fs::dir_delete(path))
-  testthat::expect_error({
-    use_degauss_container(geomarker = path)
-    use_degauss_container(geomarker = path)
-  },
-  regex = "overwrite")
+  testthat::expect_error(
+    {
+      use_degauss_container(geomarker = path)
+      use_degauss_container(geomarker = path)
+    },
+    regex = "overwrite"
+  )
 })
 
 test_that("use_degauss_container will overwrite existing degauss file if asked", {

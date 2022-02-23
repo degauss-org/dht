@@ -20,10 +20,9 @@
 #' get_degauss_env_online("fortunes")
 #' get_degauss_env_online("fortunes")["degauss_version"]
 #' }
-
+#'
 #' @export
 get_degauss_env_dockerfile <- function(dockerfile_path = fs::path_join(c(getwd(), "Dockerfile"))) {
-
   env_text <-
     dockerfile_path %>%
     normalizePath(mustWork = TRUE) %>%

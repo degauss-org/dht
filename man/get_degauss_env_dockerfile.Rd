@@ -39,4 +39,5 @@ get_degauss_env_dockerfile()["degauss_version"]
 get_degauss_env_online("fortunes")
 get_degauss_env_online("fortunes")["degauss_version"]
 }
+
 }

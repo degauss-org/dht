@@ -38,7 +38,9 @@ write geomarker output to file
 \examples{
 \dontrun{
 write_geomarker_file(d$d, d$raw_data,
-           filename='test/my_address_file_geocoded.csv',
-           geomarker='roads', version='0.4')
+  filename = "test/my_address_file_geocoded.csv",
+  geomarker = "roads", version = "0.4"
+)
 }
+
 }
