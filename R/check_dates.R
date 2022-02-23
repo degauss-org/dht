@@ -55,8 +55,11 @@ check_dates <- function(date, allow_missing = FALSE) {
       return(date)
     } else
     {
-      cli::cli_alert_danger('Your dates are not properly formatted. Here are the first 3 dates in your data. \n{print(dates_to_print)}', wrap = TRUE)
-      cli::cli_alert_info("Dates must be formatted as YYYY-MM-DD or MM/DD/YY. For help, please see Excel formatting tips in the DeGAUSS wiki.", wrap = TRUE)
+      cli::cli_alert_danger("Some dates are formatted ambiguously. Here are the first 3 dates in your data: {print(dates_to_print)}", wrap = TRUE)
+
+      cli::cli_alert_info("Dates must be formatted as YYYY-MM-DD or MM/DD/YY")
+      cli::cli_alert_info("More information at https://degauss.org/troubleshooting.html#Microsoft_Excel")
+
       stop(call. = FALSE)
     }
   }

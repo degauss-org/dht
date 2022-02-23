@@ -25,12 +25,6 @@ test_that("check ambiguous dates", {
 })
 
 
-test_that("check ambiguous dates", {
-  expect_error(
-    check_dates(c("jan 1", "jan 2", "jan 3"))
-  )
-})
-
 test_that("check end date after start date", {
   start_date <- check_dates(c('1/1/21', '1/2/21', '1/3/21'))
   end_date <- check_dates(c('1/7/21', '1/8/21', '1/9/20'))
