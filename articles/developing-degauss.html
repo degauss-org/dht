@@ -50,7 +50,7 @@
   <div class="dropdown-menu" aria-labelledby="dropdown-articles">
     <a class="dropdown-item" href="../articles/degauss-metadata-specification.html">DeGAUSS Metadata Specifications</a>
     <a class="dropdown-item" href="../articles/developing-degauss.html">Developing a New DeGAUSS Container</a>
-    <a class="dropdown-item" href="../articles/helper-functions.html">In-Line Helper Functions</a>
+    <a class="dropdown-item" href="../articles/helper-functions.html">Helper Functions</a>
   </div>
 </li>
       </ul>
@@ -86,60 +86,84 @@
     
     
 <p>The following guide is a step-by-step instruction manual for developing a <a href="https://degauss.org" class="external-link">DeGAUSS</a> container using tools available in the <a href="https://degauss.org/dht" class="external-link"><code>dht</code> R package</a>.</p>
-<div class="section level3">
-<h3 id="creating-all-files-needed">Creating all files needed<a class="anchor" aria-label="anchor" href="#creating-all-files-needed"></a>
-</h3>
+<div class="section level2">
+<h2 id="creating-all-files-needed">Creating all files needed<a class="anchor" aria-label="anchor" href="#creating-all-files-needed"></a>
+</h2>
 <p>Within an empty directory, use <code><a href="../reference/use_degauss_container.html">dht::use_degauss_container()</a></code> to create all of the files needed for a DeGAUSS container. Note that the name of this initially empty directory will be used as the name of the geomarker in the documentation, code, and image repository; it is a good idea to only use lower case letters and underscores (e.g., <code>census_block_group</code>) to comply with container naming conventions.</p>
-<ul>
-<li>Most of the added files will <em>usually</em> not need to be edited:
-<ul>
-<li>
-<code>Makefile</code> (see below for <code>Make</code> targets)</li>
-<li>
-<code>test/my_address_file_geocoded.csv</code> (test input data file)</li>
-<li>
-<code>LICENSE.md</code> (GPL license)</li>
-<li>
-<code>.github/workflows/build-deply.yaml</code> (GitHub Actions continuous integration)</li>
-<li>
-<code>.dockerignore</code> (edit to include files other than entrypoint.R in the image)</li>
-</ul>
-</li>
-<li>However, some files <strong>must</strong> be edited:
-<ul>
-<li>
-<code>Dockerfile</code> (<code>degauss_description</code> environment variable)</li>
-<li>
-<code>entrypoint.R</code> (contains R code to be run in the container)</li>
-<li>
-<code>README.md</code> (software documentation and example instructions)</li>
-</ul>
-</li>
-</ul>
+<p>Most of the added files will <em>usually</em> not need to be edited:</p>
+<table class="table">
+<colgroup>
+<col width="50%">
+<col width="50%">
+</colgroup>
+<tbody>
+<tr class="odd">
+<td align="right"><code>Makefile</code></td>
+<td align="left">see <a href="#using-make-for-interactive-development"><code>Make</code> targets</a>
+</td>
+</tr>
+<tr class="even">
+<td align="right"><code>test/my_address_file_geocoded.csv</code></td>
+<td align="left">test input data file</td>
+</tr>
+<tr class="odd">
+<td align="right"><code>LICENSE.md</code></td>
+<td align="left">GPL license</td>
+</tr>
+<tr class="even">
+<td align="right"><code>.github/workflows/build-deploy-pr.yaml</code></td>
+<td align="left">GitHub Actions continuous integration for pull requests</td>
+</tr>
+<tr class="odd">
+<td align="right"><code>.github/workflows/build-deploy-release.yaml</code></td>
+<td align="left">GitHub Actions continuous integration for releases</td>
+</tr>
+<tr class="even">
+<td align="right"><code>.dockerignore</code></td>
+<td align="left">edit to include files other than entrypoint.R in the image</td>
+</tr>
+</tbody>
+</table>
+<p>However, some files <strong>must</strong> be edited:</p>
+<table class="table"><tbody>
+<tr class="odd">
+<td align="right"><code>Dockerfile</code></td>
+<td align="left">
+<code>degauss_description</code> environment variable</td>
+</tr>
+<tr class="even">
+<td align="right"><code>entrypoint.R</code></td>
+<td align="left">contains R code to be run in the container</td>
+</tr>
+<tr class="odd">
+<td align="right"><code>README.md</code></td>
+<td align="left">software documentation and example instructions</td>
+</tr>
+</tbody></table>
 </div>
+<div class="section level2">
+<h2 id="editing-files-to-add-r-code-and-documentation">Editing files to add R code and documentation<a class="anchor" aria-label="anchor" href="#editing-files-to-add-r-code-and-documentation"></a>
+</h2>
 <div class="section level3">
-<h3 id="editing-files-to-add-r-code-and-documentation">Editing files to add R code and documentation<a class="anchor" aria-label="anchor" href="#editing-files-to-add-r-code-and-documentation"></a>
+<h3 id="documentation">Documentation<a class="anchor" aria-label="anchor" href="#documentation"></a>
 </h3>
-<div class="section level4">
-<h4 id="documentation">Documentation<a class="anchor" aria-label="anchor" href="#documentation"></a>
-</h4>
-<p>Add any geomarker information and additional details to <code>README.md</code>. Make sure that the version in the example call matches the version of the latest released container.</p>
-<p>Within the <code>Dockerfile</code>, <code>ENV</code> instructions are used to define environment variables that capture metadata about the DeGAUSS container, including the name (<code>degauss_name</code>), version (<code>degauss_version</code>), and a short description (<code>degauss_description</code>). These environment variables will be available to R code running from inside the container. Other {dht} functions rely on the specific names of these environment variables, including <code><a href="../reference/get_degauss_env_dockerfile.html">get_degauss_env_dockerfile()</a></code>, <code><a href="../reference/get_degauss_env_dockerfile.html">get_degauss_env_online()</a></code>, and <code><a href="../reference/get_degauss_env_dockerfile.html">get_available_images()</a></code></p>
+<p>Fill out the “Using”, “Geomarker Methods”, and “Geomarker Data” sections in <code>README.md</code>, as applicable. <em>Make sure that the version in the example call matches the version of the latest released container.</em></p>
+<p>Within the <code>Dockerfile</code>, <code>ENV</code> instructions are used to define <a href="./degauss-metadata-specification.html">environment variables that capture metadata</a> about the DeGAUSS container, including the name (<code>degauss_name</code>), version (<code>degauss_version</code>), and a short description (<code>degauss_description</code>). These environment variables will be available to R code running from inside the container and can be used for <code><a href="../reference/greeting.html">dht::greeting()</a></code> as well as other {dht} functions that read and write geomarker data. Outside of a DeGAUSS container, these are also used by <code><a href="../reference/get_degauss_env_dockerfile.html">get_degauss_env_dockerfile()</a></code>, <code><a href="../reference/get_degauss_env_dockerfile.html">get_degauss_env_online()</a></code>, and <code><a href="../reference/get_degauss_env_dockerfile.html">get_available_images()</a></code>.</p>
 <p>When creating a new DeGAUSS container, all but <code>degauss_description</code> are automatically defined and this value needs to be edited from</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1"></a><span class="ex">ENV</span> degauss_description=<span class="st">"insert short description here that finishes the sentence 'This container returns ...'"</span></span></code></pre></div>
-<p>to something specific and ideally <em>less than 50 characters</em>, like</p>
+<p>to something specific and short (ideally <em>less than 50 characters</em>) that finishes the sentence “This container returns …”, like</p>
 <div class="sourceCode" id="cb2"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1"></a><span class="ex">ENV</span> degauss_description=<span class="st">"proximity and length of major roads"</span></span></code></pre></div>
-<p>When releasing new version of the container in the future, the environment variable <code>degauss_version</code> can be edited in the <code>Dockerfile</code> and R code in the container can use it for greetings, writing output files, and other operations that depend on the current version (or name or description).</p>
+<p>When releasing a new version of the DeGAUSS container in the future, the environment variable <code>degauss_version</code> can be edited in the <code>Dockerfile</code> and R code in the container can use it for greetings, writing output files, and other operations that depend on the current version (or name or description). This prevents the need for manually changing the version number in several different locations for each new release.</p>
 </div>
-<div class="section level4">
-<h4 id="using-r-code-and-data-files-inside-the-container">Using R code and data files inside the container<a class="anchor" aria-label="anchor" href="#using-r-code-and-data-files-inside-the-container"></a>
-</h4>
+<div class="section level3">
+<h3 id="using-r-code-and-data-files-inside-the-container">Using R code and data files inside the container<a class="anchor" aria-label="anchor" href="#using-r-code-and-data-files-inside-the-container"></a>
+</h3>
 <p>Edit <code>entrypoint.R</code> by replacing the example R code with R code that completes the specific task to be performed by the container.</p>
 <p>When ready to build the container, run <code><a href="https://rstudio.github.io/renv/reference/init.html" class="external-link">renv::init()</a></code> to initiate the <code>renv</code> framework and create <code>renv.lock</code>. Subsequent builds can update <code>renv.lock</code> by using <code><a href="https://rstudio.github.io/renv/reference/snapshot.html" class="external-link">renv::snapshot()</a></code>.</p>
 </div>
-<div class="section level4">
-<h4 id="adding-required-system-dependencies">Adding required system dependencies<a class="anchor" aria-label="anchor" href="#adding-required-system-dependencies"></a>
-</h4>
+<div class="section level3">
+<h3 id="adding-required-system-dependencies">Adding required system dependencies<a class="anchor" aria-label="anchor" href="#adding-required-system-dependencies"></a>
+</h3>
 <p>R packages, especially spatial packages, often depend on external system dependencies. These will need to be installed using <code>RUN</code> instructions in the Dockerfile. For example, the {sf} package for R requires <code>gdal</code> and other programs, each of which require different install processes depending on the operating system. Since these R packages will always be running inside of a Docker container running Ubuntu 20.04, we can use <a href="https://remotes.r-lib.org/reference/system_requirements.html" class="external-link"><code>remotes::system_requirements()</code></a> to get the specific required install instructions for {sf}:</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu">remotes</span><span class="fu">::</span><span class="fu">system_requirements</span><span class="op">(</span><span class="st">"ubuntu-20.04"</span>, package <span class="op">=</span> <span class="st">"sf"</span><span class="op">)</span>
@@ -158,9 +182,9 @@
 <span id="cb4-9"><a href="#cb4-9"></a>    <span class="kw">&amp;&amp;</span> <span class="ex">apt-get</span> clean</span></code></pre></div>
 </div>
 </div>
-<div class="section level3">
-<h3 id="including-files-inside-the-container">Including files inside the container<a class="anchor" aria-label="anchor" href="#including-files-inside-the-container"></a>
-</h3>
+<div class="section level2">
+<h2 id="including-files-inside-the-container">Including files inside the container<a class="anchor" aria-label="anchor" href="#including-files-inside-the-container"></a>
+</h2>
 <p>By default, the container will copy in <code>entrypoint.R</code> and <code>renv.lock</code> for use at runtime and ignore anything else in the working directory to automatically speed up build times and keep containers smaller in size. If the container requires any other files (e.g., <code>.rds</code> datafiles), edit <code>Dockerfile</code> and <code>.dockerignore</code> so that the files are copied to the container and not ignored by Docker. For example, if we want to use <code>geomarker_data.rds</code>, we would make the following changes in <code>Dockerfile</code>:</p>
 <div class="sourceCode" id="cb5"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1"></a>    <span class="ex">COPY</span> entrypoint.R .</span>
 <span id="cb5-2"><a href="#cb5-2"></a>    <span class="ex">COPY</span> geomarker_data.rds    <span class="co"># copy .rds file from host to container when building</span></span></code></pre></div>
@@ -173,14 +197,14 @@
 <span id="cb6-6"><a href="#cb6-6"></a>    !<span class="ex">/entrypoint.R</span></span>
 <span id="cb6-7"><a href="#cb6-7"></a>    !<span class="ex">/geomarker_data.rds</span>      <span class="co"># make sure the .rds file is not ignored</span></span></code></pre></div>
 </div>
-<div class="section level3">
-<h3 id="tests">Tests<a class="anchor" aria-label="anchor" href="#tests"></a>
-</h3>
+<div class="section level2">
+<h2 id="tests">Tests<a class="anchor" aria-label="anchor" href="#tests"></a>
+</h2>
 <p>A <code>test</code> directory is added with an example geocoded address file (<code>test/my_address_file_geocoded.csv</code>) and is useful for interactive development and automated testing (see below).</p>
 </div>
-<div class="section level3">
-<h3 id="using-make-for-interactive-development">Using <code>make</code> for interactive development<a class="anchor" aria-label="anchor" href="#using-make-for-interactive-development"></a>
-</h3>
+<div class="section level2">
+<h2 id="using-make-for-interactive-development">Using <code>make</code> for interactive development<a class="anchor" aria-label="anchor" href="#using-make-for-interactive-development"></a>
+</h2>
 <p>The <code>Makefile</code> defines several useful <code>make</code> targets that can be useful when locally developing and testing:</p>
 <ul>
 <li>
@@ -193,7 +217,8 @@
 <code>make clean</code> is equivalent to <code>docker system prune -f</code>, which cleans up any stopped containers or dangling image layers</li>
 </ul>
 </div>
-  </main>
+  </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
+    </nav></aside>
 </div>
 
 

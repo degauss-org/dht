@@ -54,7 +54,7 @@
   <div class="dropdown-menu" aria-labelledby="dropdown-articles">
     <a class="dropdown-item" href="articles/degauss-metadata-specification.html">DeGAUSS Metadata Specifications</a>
     <a class="dropdown-item" href="articles/developing-degauss.html">Developing a New DeGAUSS Container</a>
-    <a class="dropdown-item" href="articles/helper-functions.html">In-Line Helper Functions</a>
+    <a class="dropdown-item" href="articles/helper-functions.html">Helper Functions</a>
   </div>
 </li>
       </ul>
@@ -81,7 +81,6 @@
 <img src="logo.png" class="logo" alt=""><h1 id="dht-">dht <a class="anchor" aria-label="anchor" href="#dht-"></a>
 </h1>
 </div>
-<!-- badges: start -->
 
 <p><strong>d</strong>egauss <strong>h</strong>elper <strong>t</strong>ools are used to develop and run <a href="https://degauss.org" class="external-link">DeGAUSS</a> containers.</p>
 <div class="section level2">
@@ -93,33 +92,14 @@
 <span class="fu">remotes</span><span class="fu">::</span><span class="fu">install_github</span><span class="op">(</span><span class="st">"degauss-org/dht"</span><span class="op">)</span></code></pre></div>
 </div>
 <div class="section level2">
-<h2 id="examples">Examples<a class="anchor" aria-label="anchor" href="#examples"></a>
+<h2 id="using">Using<a class="anchor" aria-label="anchor" href="#using"></a>
 </h2>
-<div class="section level4">
-<h4 id="creating-a-degauss-container-using-the-degauss-template">Creating a DeGAUSS container using the DeGAUSS template<a class="anchor" aria-label="anchor" href="#creating-a-degauss-container-using-the-degauss-template"></a>
-</h4>
-<p><code><a href="reference/use_degauss_container.html">dht::use_degauss_container()</a></code> creates all files needed to build a DeGAUSS container.</p>
-<p>See the <a href="https://degauss.org/dht/articles/developing-degauss.html" class="external-link">Developing a New DeGAUSS Container</a> vignette for a step-by-step instruction manual on developing a new <a href="https://degauss.org" class="external-link">DeGAUSS</a> container using the tools available in <code>dht</code>.</p>
-</div>
-<div class="section level4">
-<h4 id="degauss-helper-functions">DeGAUSS helper functions<a class="anchor" aria-label="anchor" href="#degauss-helper-functions"></a>
-</h4>
-<p><code>dht</code> includes a group of helper functions to be used in a DeGAUSS <code>entrypoint.R</code> script to make common tasks (e.g., reading in data, checking that needed columns exist and are of the correct type, etc) more efficient and reproducible.</p>
-<p>For example, <code><a href="reference/read_lat_lon_csv.html">dht::read_lat_lon_csv()</a></code> helps with reading in a csv of geocoded addresses and transforming to an <code>sf</code> object of a specified <code>crs</code>, while also keeping the raw input data.</p>
-<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="http://degauss.org/dht">dht</a></span><span class="op">)</span>
-<span class="op">(</span><span class="va">d</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/read_lat_lon_csv.html">read_lat_lon_csv</a></span><span class="op">(</span><span class="st">'tests/testthat/my_address_file_geocoded.csv'</span>, sf <span class="op">=</span> <span class="cn">T</span>, project_to_crs <span class="op">=</span> <span class="fl">5072</span><span class="op">)</span><span class="op">)</span>
-<span class="co">#&gt; ℹ loading input file...</span>
-<span class="co">#&gt; # A tibble: 5 × 6</span>
-<span class="co">#&gt;            id   lat   lon start_date end_date  .row</span>
-<span class="co">#&gt;         &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;chr&gt;      &lt;chr&gt;    &lt;int&gt;</span>
-<span class="co">#&gt; 1 55001310120  NA    NA   6/11/20    6/18/20      1</span>
-<span class="co">#&gt; 2 55000100280  39.2 -84.6 3/1/17     3/8/17       2</span>
-<span class="co">#&gt; 3 55000100281  39.3 -84.5 1/30/12    2/6/12       3</span>
-<span class="co">#&gt; 4 55000100282  39.2 -84.4 12/1/20    12/8/20      4</span>
-<span class="co">#&gt; 5 55000100283  39.2 -84.4 4/8/19     4/15/19      5</span></code></pre></div>
-<p>For more examples, see the <a href="https://degauss.org/dht/articles/helper-functions.html" class="external-link">In-Line Helper Functions</a> vignette.</p>
-</div>
+<p>Please see the articles for example usage and best practices:</p>
+<ul>
+<li><a href="articles/helper-functions.html">Helper Functions</a></li>
+<li><a href="articles/developing-degauss.html">Developing a New DeGAUSS Container</a></li>
+<li><a href="articles/degauss-metadata-specification.html">DeGAUSS Metadata Specifications</a></li>
+</ul>
 </div>
 </div>
   </main><aside class="col-md-3"><div class="links">
