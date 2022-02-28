@@ -1,6 +1,6 @@
 Package: dht
 Title: A Collection of Functions to Assist Building DeGAUSS Containers
-Version: 0.4.3
+Version: 1.0.0
 Authors@R: c(
     person(given = "Erika",
            family = "Rasnick",
@@ -10,9 +10,7 @@ Authors@R: c(
            family = "Brokamp",
            role = c("aut"))
            )
-Description: dht is a helper package to assist in building DeGAUSS containers. Functionality
-             includes displaying a greeting message, reading in lat/lon data, checking for 
-             column names and types, and writing output.
+Description: degauss helper tools are used to develop and run DeGAUSS containers.
 License: GPL (>= 3)
 Encoding: UTF-8
 LazyData: true
