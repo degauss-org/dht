@@ -11,7 +11,7 @@
 \alias{use_degauss_tests}
 \alias{use_degauss_license}
 \alias{use_degauss_github_actions}
-\title{Use DeGAUSS Container Template}
+\title{use DeGAUSS container template}
 \usage{
 use_degauss_container(geomarker = getwd(), version = "0.1.0", ...)
 

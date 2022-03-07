@@ -32,6 +32,21 @@ test_that("is institutional", {
   )
 })
 
+test_that("is JFS", {
+  expect_true(
+    all(
+      address_is_institutional(c(
+        "222 East Central Parkway",
+        "222 East Central Pkwy",
+        "222 East Central Pky",
+        "222 E Central Parkway",
+        "222 E Central Pkwy",
+        "222 E Central Pky"
+      ))
+    )
+  )
+})
+
 
 test_that("check slash dates", {
   expect_identical(
