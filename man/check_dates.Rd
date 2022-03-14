@@ -18,15 +18,14 @@ reformatted vector of dates, or an error if dates could not be reformatted
 check format of dates from DeGAUSS container input file
 }
 \details{
-ISO formatted dates (e.g., "\%Y-\%m-\%d" or 2021-01-01) will stay the same
-U.S. standard slash formatted dates (common to Microsoft Excel; e.g., "\%m/\%d/\%y" or 1/1/21)
+ISO formatted dates (i.e., "\%Y-\%m-\%d" or YYYY-MM-DD) will stay the same
+U.S. standard slash formatted dates (common to Microsoft Excel;
+e.g., "\%m/\%d/\%y" or MM/DD/YY, "\%m/\%d/\%Y" or MM/DD/YYYY)
 will be reformatted to ISO format
-Any input not recognized by one of the two above formats will cause an error and
-the user will be instructed to manually reformat their dates.
+Any unrecognized input will cause an error and
+the user will be instructed to reformat their dates.
 }
 \examples{
-\dontrun{
 date <- c("1/1/21", "1/2/21", "1/3/21")
 check_dates(date)
-}
 }

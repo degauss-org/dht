@@ -1,28 +1,3 @@
-IsDateISO <- function(mydate, date.format = "%Y-%m-%d") {
-  tryCatch(!is.na(as.Date(mydate, date.format)),
-    error = function(err) {
-      FALSE
-    }
-  )
-}
-
-IsDateSlash <- function(mydate, date.format = "%m/%d/%y") {
-  max_component_lengths <-
-    strsplit(mydate, "/") %>%
-    purrr::map(nchar) %>%
-    purrr::map(max)
-
-
-  if (any(max_component_lengths > 2)) {
-    return(FALSE)
-  }
-  tryCatch(!is.na(as.Date(mydate, date.format)),
-    error = function(err) {
-      FALSE
-    }
-  )
-}
-
 #' check format of dates from DeGAUSS container input file
 #'
 #' @export
@@ -30,45 +5,60 @@ IsDateSlash <- function(mydate, date.format = "%m/%d/%y") {
 #' @param allow_missing logical. defaults to FALSE, resulting in an error if any dates are missing.
 #' @return reformatted vector of dates, or an error if dates could not be reformatted
 #' @examples
-#' \dontrun{
 #' date <- c("1/1/21", "1/2/21", "1/3/21")
 #' check_dates(date)
-#' }
 #' @details
-#' ISO formatted dates (e.g., "%Y-%m-%d" or 2021-01-01) will stay the same
-#' U.S. standard slash formatted dates (common to Microsoft Excel; e.g., "%m/%d/%y" or 1/1/21)
+#' ISO formatted dates (i.e., "%Y-%m-%d" or YYYY-MM-DD) will stay the same
+#' U.S. standard slash formatted dates (common to Microsoft Excel;
+#' e.g., "%m/%d/%y" or MM/DD/YY, "%m/%d/%Y" or MM/DD/YYYY)
 #' will be reformatted to ISO format
-#' Any input not recognized by one of the two above formats will cause an error and
-#' the user will be instructed to manually reformat their dates.
-
+#' Any unrecognized input will cause an error and
+#' the user will be instructed to reformat their dates.
 check_dates <- function(date, allow_missing = FALSE) {
-  dates_to_print <- date[1:3]
 
-  if (!allow_missing & (any(is.na(date)) | any(date == "") | any(date == " "))) {
-    cli::cli_alert_danger("One or more dates are missing. Dates are required for every input row.")
-    stop(call. = FALSE)
+  date[date == ""] <- NA
+
+  if (class(date) == "character") {
+    date[date == " "] <- NA
   }
 
-  if (class(date) != "Date") {
-    if (!FALSE %in% IsDateISO(date)) {
-      date <- as.Date(date, format = "%Y-%m-%d")
-      return(date)
-    } else if (!FALSE %in% IsDateSlash(date)) {
-      date <- as.Date(date, format = "%m/%d/%y")
-      return(date)
-    } else {
-      cli::cli_alert_danger("Some dates are formatted ambiguously. Here are the first 3 dates in your data: {print(dates_to_print)}", wrap = TRUE)
-
-      cli::cli_alert_info("Dates must be formatted as YYYY-MM-DD or MM/DD/YY")
-      cli::cli_alert_info("More information at https://degauss.org/troubleshooting.html#Microsoft_Excel")
-
-      stop(call. = FALSE)
-    }
+  if (!allow_missing & any(is.na(date))) {
+    cli::cli_abort(c(
+      "One or more dates are missing.",
+      "Dates are required for every input row."
+    ))
   }
 
   if (class(date) == "Date") {
     return(date)
   }
+
+  has_dash <- all(grepl("-", stats::na.omit(date), fixed = TRUE))
+  has_slash <- all(grepl("/", stats::na.omit(date), fixed = TRUE))
+
+  if (has_dash) {
+    return(as.Date(date, format = "%Y-%m-%d"))
+  }
+
+  if (has_slash) {
+    max_component_length <-
+      strsplit(stats::na.omit(date), "/") |>
+      purrr::map(nchar) |>
+      purrr::map(max)
+
+    if (any(max_component_length == 4)) {
+      return(as.Date(date, format = "%m/%d/%Y"))
+    }
+    if (all(max_component_length == 2)) {
+      return(as.Date(date, format = "%m/%d/%y"))
+    }
+  }
+  cli::cli_abort(c(
+    "Some dates are formatted ambiguously.",
+    "Here are the first 3 dates in your data: {date[1:3]}",
+    "Dates must be formatted as YYYY-MM-DD, MM/DD/YY, or MM/DD/YYYY",
+    "More information at https://degauss.org/troubleshooting.html#Microsoft_Excel"
+  ))
 }
 
 #' check that end_date occurs after start_date
