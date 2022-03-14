@@ -10,7 +10,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">dht</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.0.1</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.0.2</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -72,19 +72,19 @@
     </div>
     <div class="section level2">
     <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
-    <p>ISO formatted dates (e.g., "%Y-%m-%d" or 2021-01-01) will stay the same
-U.S. standard slash formatted dates (common to Microsoft Excel; e.g., "%m/%d/%y" or 1/1/21)
+    <p>ISO formatted dates (i.e., "%Y-%m-%d" or YYYY-MM-DD) will stay the same
+U.S. standard slash formatted dates (common to Microsoft Excel;
+e.g., "%m/%d/%y" or MM/DD/YY, "%m/%d/%Y" or MM/DD/YYYY)
 will be reformatted to ISO format
-Any input not recognized by one of the two above formats will cause an error and
-the user will be instructed to manually reformat their dates.</p>
+Any unrecognized input will cause an error and
+the user will be instructed to reformat their dates.</p>
     </div>
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span></span>
-<span class="r-in"><span class="va">date</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"1/1/21"</span>, <span class="st">"1/2/21"</span>, <span class="st">"1/3/21"</span><span class="op">)</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="va">date</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"1/1/21"</span>, <span class="st">"1/2/21"</span>, <span class="st">"1/3/21"</span><span class="op">)</span></span>
 <span class="r-in"><span class="fu">check_dates</span><span class="op">(</span><span class="va">date</span><span class="op">)</span></span>
-<span class="r-in"><span class="op">}</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "2021-01-01" "2021-01-02" "2021-01-03"</span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
