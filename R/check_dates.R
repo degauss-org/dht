@@ -42,8 +42,8 @@ check_dates <- function(date, allow_missing = FALSE) {
 
   if (has_slash) {
     max_component_length <-
-      strsplit(stats::na.omit(date), "/") |>
-      purrr::map(nchar) |>
+      strsplit(stats::na.omit(date), "/") %>%
+      purrr::map(nchar) %>%
       purrr::map(max)
 
     if (any(max_component_length == 4)) {
