@@ -60,7 +60,10 @@ get_degauss_env_online <- function(name = "fortunes") {
 #' @param badges return markdown code for DeGAUSS version and automated build?
 get_core_images <- function(badges = FALSE) {
 
-  cli::cli_alert_info("downloading information about core image library...")
+  if (interactive()) {
+    cli::cli_alert_info("downloading information about core image library...")
+    cli::cli_alert_success("find more non-core images at {.url https://degauss.org/available_images}")
+  }
 
   core_images <- c(
     "geocoder", "census_block_group", "st_census_tract",
@@ -68,10 +71,14 @@ get_core_images <- function(badges = FALSE) {
     "pm", "narr", "drivetime"
   )
 
-  core_images_info <- purrr::map_dfr(
-    cli::cli_progress_along(core_images),
-    ~ get_degauss_env_online(core_images[.x])
-  )
+  if (interactive()) {
+    core_images_info <- purrr::map_dfr(
+      cli::cli_progress_along(core_images),
+      ~ get_degauss_env_online(core_images[.x])
+    )
+  } else {
+  core_images_info <- purrr::map_dfr(core_images, get_degauss_env_online)
+  }
 
   if (badges) {
     core_images_info <-
@@ -92,7 +99,6 @@ get_core_images <- function(badges = FALSE) {
       )
   }
 
-  cli::cli_alert_success("find more non-core images at {.url https://degauss.org/available_images}")
   return(core_images_info)
 
 
