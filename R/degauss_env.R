@@ -57,7 +57,7 @@ get_degauss_env_online <- function(name = "fortunes") {
 
 #' @export
 #' @rdname get_degauss_env_dockerfile
-get_available_images <- function() {
+get_core_images <- function() {
   c(
     "geocoder", "census_block_group", "st_census_tract",
     "dep_index", "roads", "aadt", "greenspace", "nlcd",
@@ -79,3 +79,27 @@ get_available_images <- function() {
       )
     )
 }
+
+## Sys.setenv("GITHUB_PAT" = "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")
+# list all packages avail on gh and get version, description, and links
+## get_avail_images <- function() {
+##   all_pkgs <- gh::gh("/orgs/degauss-org/packages", package_type = "container", visibility = "public")
+
+##   d <-
+##     tibble(
+##       name = purrr::map_chr(all_pkgs, "name"),
+##       container_url = purrr::map_chr(all_pkgs, "html_url"),
+##       code_url = purrr::map_chr(all_pkgs, c("repository", "html_url")),
+##       gh_description = purrr::map_chr(all_pkgs, c("repository", "description"))
+##     )
+
+##   d$releases <-
+##     glue::glue("GET /repos/degauss-org/{d$name}/releases") |>
+##     purrr::map(~ unlist(gh::gh(.)))
+
+##   d$latest_release_name <- purrr::map_chr(d$releases, "name")
+##   d$latest_release_url <- purrr::map_chr(d$releases, "html_url")
+##   d$releases <- NULL
+
+##   d
+## }

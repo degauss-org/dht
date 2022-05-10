@@ -22,5 +22,5 @@ test_that("can get degauss metadata from online dockerfile", {
 })
 
 test_that("can get degauss metadata online for core library", {
-  testthat::expect_equal(nrow(get_available_images()), 11)
+  testthat::expect_equal(nrow(get_core_images()), 11)
 })

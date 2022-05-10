@@ -3,7 +3,7 @@
 \name{get_degauss_env_dockerfile}
 \alias{get_degauss_env_dockerfile}
 \alias{get_degauss_env_online}
-\alias{get_available_images}
+\alias{get_core_images}
 \title{get environment variables from a Dockerfile}
 \usage{
 get_degauss_env_dockerfile(
@@ -12,7 +12,7 @@ get_degauss_env_dockerfile(
 
 get_degauss_env_online(name = "fortunes")
 
-get_available_images()
+get_core_images()
 }
 \arguments{
 \item{dockerfile_path}{path to Dockerfile}
