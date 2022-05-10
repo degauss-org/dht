@@ -47,7 +47,7 @@ get_degauss_env_dockerfile <- function(dockerfile_path = fs::path_join(c(getwd()
 get_degauss_env_online <- function(name = "fortunes") {
   withr::with_tempfile("df", {
     utils::download.file(
-      glue::glue("https://raw.githubusercontent.com/degauss-org/{name}/master/Dockerfile"),
+      glue::glue("https://github.com/degauss-org/{name}/raw/HEAD/Dockerfile"),
       df,
       quiet = TRUE
     )
