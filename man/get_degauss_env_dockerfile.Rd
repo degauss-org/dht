@@ -12,12 +12,14 @@ get_degauss_env_dockerfile(
 
 get_degauss_env_online(name = "fortunes")
 
-get_core_images()
+get_core_images(badges = FALSE)
 }
 \arguments{
 \item{dockerfile_path}{path to Dockerfile}
 
 \item{name}{name of DeGAUSS container to download Dockerfile from}
+
+\item{badges}{return markdown code for DeGAUSS version and automated build?}
 }
 \value{
 named vector of DeGAUSS metatdata elements

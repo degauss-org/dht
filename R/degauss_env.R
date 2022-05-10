@@ -57,30 +57,49 @@ get_degauss_env_online <- function(name = "fortunes") {
 
 #' @export
 #' @rdname get_degauss_env_dockerfile
-get_core_images <- function() {
-  c(
+#' @param badges return markdown code for DeGAUSS version and automated build?
+get_core_images <- function(badges = FALSE) {
+
+  cli::cli_alert_info("downloading information about core image library...")
+
+  core_images <- c(
     "geocoder", "census_block_group", "st_census_tract",
     "dep_index", "roads", "aadt", "greenspace", "nlcd",
     "pm", "narr", "drivetime"
-  ) %>%
-    purrr::map_dfr(get_degauss_env_online) %>%
-    dplyr::mutate(
-      url = glue::glue("https://degauss.org/{degauss_name}"),
-      badge_release_code = glue::glue(
-        "[![](https://img.shields.io/github/v/release/degauss-org/{degauss_name}",
-        "?color=469FC2&label=version&sort=semver)]",
-        "(https://github.com/degauss-org/{degauss_name}/releases)"
-      ),
-      badge_build_code = glue::glue(
-        "[![container build status](https://github.com/degauss-org/{degauss_name}",
-        "/workflows/build-deploy-release/badge.svg)]",
-        "(https://github.com/degauss-org/{degauss_name}/",
-        "actions/workflows/build-deploy-release.yaml)"
+  )
+
+  core_images_info <- purrr::map_dfr(
+    cli::cli_progress_along(core_images),
+    ~ get_degauss_env_online(core_images[.x])
+  )
+
+  if (badges) {
+    core_images_info <-
+      core_images_info %>%
+      dplyr::mutate(
+        url = glue::glue("https://degauss.org/{degauss_name}"),
+        badge_release_code = glue::glue(
+          "[![](https://img.shields.io/github/v/release/degauss-org/{degauss_name}",
+          "?color=469FC2&label=version&sort=semver)]",
+          "(https://github.com/degauss-org/{degauss_name}/releases)"
+        ),
+        badge_build_code = glue::glue(
+          "[![container build status](https://github.com/degauss-org/{degauss_name}",
+          "/workflows/build-deploy-release/badge.svg)]",
+          "(https://github.com/degauss-org/{degauss_name}/",
+          "actions/workflows/build-deploy-release.yaml)"
+        )
       )
-    )
+  }
+
+  cli::cli_alert_success("find more non-core images at {.url https://degauss.org/available_images}")
+  return(core_images_info)
+
+
 }
 
 # list all packages avail on gh and get version, description, and links
+# TODO this doesn't work without a github PAT
 ## get_avail_images <- function() {
 ##   all_pkgs <- gh::gh("/orgs/degauss-org/packages", package_type = "container", visibility = "public")
 
