@@ -80,7 +80,6 @@ get_core_images <- function() {
     )
 }
 
-## Sys.setenv("GITHUB_PAT" = "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")
 # list all packages avail on gh and get version, description, and links
 ## get_avail_images <- function() {
 ##   all_pkgs <- gh::gh("/orgs/degauss-org/packages", package_type = "container", visibility = "public")
