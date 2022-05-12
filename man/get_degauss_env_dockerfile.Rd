@@ -4,7 +4,7 @@
 \alias{get_degauss_env_dockerfile}
 \alias{get_degauss_env_online}
 \alias{get_core_images}
-\title{get environment variables from a Dockerfile}
+\title{get DeGAUSS metadata online or from a Dockerfile}
 \usage{
 get_degauss_env_dockerfile(
   dockerfile_path = fs::path_join(c(getwd(), "Dockerfile"))
@@ -22,16 +22,21 @@ get_core_images(badges = FALSE)
 \item{badges}{return markdown code for DeGAUSS version and automated build?}
 }
 \value{
-named vector of DeGAUSS metatdata elements
+named vector or data.frame of DeGAUSS metatdata
 }
 \description{
-These functions look in a Dockerfile to extract environment variables corresponding to DeGAUSS container metadata.
-They look for ENV instructions where the name begins with "degauss_";
-for example "degauss_name", or "degauss_version".
-\code{get_degauss_env_dockerfile} expects a path to a Dockerfile, but \code{get_degauss_env_online}
-takes the name of DeGAUSS container that is used to download the
-corresponding Dockerfile (from the master branch of the github repository).
-It assumes each \code{ENV} instruction is on its own line and defines only one environment variable.
+These functions look in a Dockerfile (locally or online) to extract
+environment variables corresponding to DeGAUSS image metadata.
+}
+\details{
+\code{get_core_images()} can be used to get metadata on DeGAUSS images
+that are in the core library listed at https://degauss.org/available_images
+
+Metadata on DeGAUSS images are defined using environment variables.
+Specifically within a Dockerfile, this is defined as
+\code{ENV} instructions where the name of the environment variable begins with \code{degauss_},
+for example "degauss_name", or "degauss_version". It is assumed that each \code{ENV}
+instruction is on its own line and defines only one environment variable.
 }
 \examples{
 \dontrun{
@@ -41,5 +46,6 @@ get_degauss_env_dockerfile()["degauss_version"]
 get_degauss_env_online("fortunes")
 get_degauss_env_online("fortunes")["degauss_version"]
 }
+get_core_images(badges = TRUE)
 
 }

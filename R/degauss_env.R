@@ -1,17 +1,22 @@
-#' get environment variables from a Dockerfile
+#' get DeGAUSS metadata online or from a Dockerfile
 #'
-#' These functions look in a Dockerfile to extract environment variables corresponding to DeGAUSS container metadata.
-#' They look for ENV instructions where the name begins with "degauss_";
-#' for example "degauss_name", or "degauss_version".
-#' `get_degauss_env_dockerfile` expects a path to a Dockerfile, but `get_degauss_env_online`
-#' takes the name of DeGAUSS container that is used to download the
-#' corresponding Dockerfile (from the master branch of the github repository).
-
-#' It assumes each `ENV` instruction is on its own line and defines only one environment variable.
+#' These functions look in a Dockerfile (locally or online) to extract
+#' environment variables corresponding to DeGAUSS image metadata.
+#' 
+#' `get_core_images()` can be used to get metadata on DeGAUSS images
+#' that are in the core library listed at https://degauss.org/available_images
+#' 
+#' @details
+#' Metadata on DeGAUSS images are defined using environment variables.
+#' Specifically within a Dockerfile, this is defined as
+#' `ENV` instructions where the name of the environment variable begins with `degauss_`,
+#' for example "degauss_name", or "degauss_version". It is assumed that each `ENV`
+#' instruction is on its own line and defines only one environment variable.
 #'
 #' @param dockerfile_path path to Dockerfile
 #' @param name name of DeGAUSS container to download Dockerfile from
-#' @return named vector of DeGAUSS metatdata elements
+#' @param badges return markdown code for DeGAUSS version and automated build?
+#' @return named vector or data.frame of DeGAUSS metatdata
 #' @examples
 #' \dontrun{
 #' use_degauss_dockerfile(version = "0.1")
@@ -20,6 +25,7 @@
 #' get_degauss_env_online("fortunes")
 #' get_degauss_env_online("fortunes")["degauss_version"]
 #' }
+#' get_core_images(badges = TRUE)
 #'
 #' @export
 get_degauss_env_dockerfile <- function(dockerfile_path = fs::path_join(c(getwd(), "Dockerfile"))) {
@@ -57,12 +63,10 @@ get_degauss_env_online <- function(name = "fortunes") {
 
 #' @export
 #' @rdname get_degauss_env_dockerfile
-#' @param badges return markdown code for DeGAUSS version and automated build?
 get_core_images <- function(badges = FALSE) {
-
   if (interactive()) {
-    cli::cli_alert_info("downloading information about core image library...")
-    cli::cli_alert_success("find more non-core images at {.url https://degauss.org/available_images}")
+    cli::cli_alert_info("downloading latest information about images in core library...")
+    cli::cli_alert_success("find more at {.url https://degauss.org/available_images}")
   }
 
   core_images <- c(
@@ -77,7 +81,7 @@ get_core_images <- function(badges = FALSE) {
       ~ get_degauss_env_online(core_images[.x])
     )
   } else {
-  core_images_info <- purrr::map_dfr(core_images, get_degauss_env_online)
+    core_images_info <- purrr::map_dfr(core_images, get_degauss_env_online)
   }
 
   if (badges) {
@@ -102,7 +106,8 @@ get_core_images <- function(badges = FALSE) {
   return(core_images_info)
 }
 
-#' creates a [DeGAUSS command](https://degauss.org/using_degauss.html#DeGAUSS_Commands) with the supplied DeGAUSS image name, version, input file name, and optional argument.
+#' creates a [DeGAUSS command](https://degauss.org/using_degauss.html#DeGAUSS_Commands)
+#' with the supplied DeGAUSS image name, version, input file name, and optional argument.
 #'
 #' @param image name of DeGAUSS image
 #' @param version version of DeGAUSS image
@@ -129,28 +134,30 @@ make_degauss_command <- function(input_file = "my_address_file_geocoded.csv", im
 }
 
 
-#' @rdname get_degauss_env_dockerfile
+#' create data for use in DeGAUSS menu
+#'
+#' @param core_images_info a data.frame of info about the DeGAUSS core image
+#' library created with `get_core_images()`
+#' @return data.frame of information about core images with arguments
+#' separated into names and default values as well as an added example DeGAUSS command
 #' @examples
-#' create_degauss_menu_data()
+#' dht:::create_degauss_menu_data()
+#' @export
 create_degauss_menu_data <- function(core_images_info = get_core_images()) {
-  d <-
-    core_images_info %>%
+  core_images_info %>%
     dplyr::transmute(
       name = degauss_name,
       version = degauss_version,
       description = degauss_description,
       argument = gsub("(.*?) \\[default: .*?\\].*", "\\1", degauss_argument, perl = TRUE),
       argument_default = gsub(".*?\\[default: (.*?)\\].*", "\\1", degauss_argument, perl = TRUE),
-      uri = glue::glue("ghcr.io/degauss-org/{degauss_name}:{degauss_version}"),
       url = glue::glue("https://degauss.org/{degauss_name}")
-    )
-
-  d %>%
-    dplyr::mutate(
-      degauss_cmd =
-        purrr::pmap_chr(
-          list(image = name, version = version, argument = argument_default),
-          make_degauss_command
-        )
-    )
+    ) %>%
+  dplyr::mutate(
+    degauss_cmd =
+      purrr::pmap_chr(
+        list(image = name, version = version, argument = argument_default),
+        make_degauss_command
+      )
+  )
 }

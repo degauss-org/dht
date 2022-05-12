@@ -43,6 +43,8 @@ reference:
   contents:
   - use_degauss_container
   - get_degauss_env_dockerfile
+  - create_degauss_menu_data
+  - make_degauss_command
 
 - title: Deprecated
   description: |

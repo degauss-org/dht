@@ -2,7 +2,8 @@
 % Please edit documentation in R/degauss_env.R
 \name{make_degauss_command}
 \alias{make_degauss_command}
-\title{creates a \href{https://degauss.org/using_degauss.html#DeGAUSS_Commands}{DeGAUSS command} with the supplied DeGAUSS image name, version, input file name, and optional argument.}
+\title{creates a \href{https://degauss.org/using_degauss.html#DeGAUSS_Commands}{DeGAUSS command}
+with the supplied DeGAUSS image name, version, input file name, and optional argument.}
 \usage{
 make_degauss_command(
   input_file = "my_address_file_geocoded.csv",
@@ -24,7 +25,8 @@ make_degauss_command(
 DeGAUSS command as a character string
 }
 \description{
-creates a \href{https://degauss.org/using_degauss.html#DeGAUSS_Commands}{DeGAUSS command} with the supplied DeGAUSS image name, version, input file name, and optional argument.
+creates a \href{https://degauss.org/using_degauss.html#DeGAUSS_Commands}{DeGAUSS command}
+with the supplied DeGAUSS image name, version, input file name, and optional argument.
 }
 \examples{
 make_degauss_command(image = "geocoder", version = "3.2.0")
