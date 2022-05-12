@@ -100,30 +100,57 @@ get_core_images <- function(badges = FALSE) {
   }
 
   return(core_images_info)
-
-
 }
 
-# list all packages avail on gh and get version, description, and links
-# TODO this doesn't work without a github PAT
-## get_avail_images <- function() {
-##   all_pkgs <- gh::gh("/orgs/degauss-org/packages", package_type = "container", visibility = "public")
+#' creates a [DeGAUSS command](https://degauss.org/using_degauss.html#DeGAUSS_Commands) with the supplied DeGAUSS image name, version, input file name, and optional argument.
+#'
+#' @param image name of DeGAUSS image
+#' @param version version of DeGAUSS image
+#' @param input_file name of input file
+#' @param argument optional argument
+#' @return DeGAUSS command as a character string
+#' @examples
+#' make_degauss_command(image = "geocoder", version = "3.2.0")
+#' make_degauss_command(image = "geocoder", version = "3.2.0", argument = "0.4")
+#' @export
+make_degauss_command <- function(input_file = "my_address_file_geocoded.csv", image, version, argument = NA) {
+  degauss_cmd <-
+    glue::glue(
+      "docker run --rm",
+      "-v $PWD:/tmp",
+      "ghcr.io/degauss-org/{image}:{version}",
+      "{input_file}",
+      .sep = " "
+    )
 
-##   d <-
-##     tibble(
-##       name = purrr::map_chr(all_pkgs, "name"),
-##       container_url = purrr::map_chr(all_pkgs, "html_url"),
-##       code_url = purrr::map_chr(all_pkgs, c("repository", "html_url")),
-##       gh_description = purrr::map_chr(all_pkgs, c("repository", "description"))
-##     )
+  if (!is.na(argument)) degauss_cmd <- glue::glue(degauss_cmd, "{argument}", .sep = " ")
 
-##   d$releases <-
-##     glue::glue("GET /repos/degauss-org/{d$name}/releases") |>
-##     purrr::map(~ unlist(gh::gh(.)))
+  degauss_cmd
+}
 
-##   d$latest_release_name <- purrr::map_chr(d$releases, "name")
-##   d$latest_release_url <- purrr::map_chr(d$releases, "html_url")
-##   d$releases <- NULL
 
-##   d
-## }
+#' @rdname get_degauss_env_dockerfile
+#' @examples
+#' create_degauss_menu_data()
+create_degauss_menu_data <- function(core_images_info = get_core_images()) {
+  d <-
+    core_images_info %>%
+    dplyr::transmute(
+      name = degauss_name,
+      version = degauss_version,
+      description = degauss_description,
+      argument = gsub("(.*?) \\[default: .*?\\].*", "\\1", degauss_argument, perl = TRUE),
+      argument_default = gsub(".*?\\[default: (.*?)\\].*", "\\1", degauss_argument, perl = TRUE),
+      uri = glue::glue("ghcr.io/degauss-org/{degauss_name}:{degauss_version}"),
+      url = glue::glue("https://degauss.org/{degauss_name}")
+    )
+
+  d %>%
+    dplyr::mutate(
+      degauss_cmd =
+        purrr::pmap_chr(
+          list(image = name, version = version, argument = argument_default),
+          make_degauss_command
+        )
+    )
+}
