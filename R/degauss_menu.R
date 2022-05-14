@@ -1,31 +1,3 @@
-#' creates a [DeGAUSS command](https://degauss.org/using_degauss.html#DeGAUSS_Commands)
-#' with the supplied DeGAUSS image name, version, input file name, and optional argument.
-#'
-#' @param image name of DeGAUSS image
-#' @param version version of DeGAUSS image
-#' @param input_file name of input file
-#' @param argument optional argument
-#' @return DeGAUSS command as a character string
-#' @examples
-#' make_degauss_command(image = "geocoder", version = "3.2.0")
-#' make_degauss_command(image = "geocoder", version = "3.2.0", argument = "0.4")
-#' @export
-make_degauss_command <- function(input_file = "my_address_file_geocoded.csv", image, version, argument = NA) {
-  degauss_cmd <-
-    glue::glue(
-      "docker run --rm",
-      "-v $PWD:/tmp",
-      "ghcr.io/degauss-org/{image}:{version}",
-      "{input_file}",
-      .sep = " "
-    )
-
-  if (!is.na(argument)) degauss_cmd <- glue::glue(degauss_cmd, "{argument}", .sep = " ")
-
-  degauss_cmd
-}
-
-
 #' create data for use in DeGAUSS menu
 #'
 #' @param core_lib_env a data.frame of info about the DeGAUSS core image
@@ -52,4 +24,31 @@ create_degauss_menu_data <- function(core_lib_env = get_degauss_core_lib_env()) 
         make_degauss_command
       )
   )
+}
+
+#' creates a [DeGAUSS command](https://degauss.org/using_degauss.html#DeGAUSS_Commands)
+#' with the supplied DeGAUSS image name, version, input file name, and optional argument.
+#'
+#' @param image name of DeGAUSS image
+#' @param version version of DeGAUSS image
+#' @param input_file name of input file
+#' @param argument optional argument
+#' @return DeGAUSS command as a character string
+#' @examples
+#' make_degauss_command(image = "geocoder", version = "3.2.0")
+#' make_degauss_command(image = "geocoder", version = "3.2.0", argument = "0.4")
+#' @export
+make_degauss_command <- function(input_file = "my_address_file_geocoded.csv", image, version, argument = NA) {
+  degauss_cmd <-
+    glue::glue(
+      "docker run --rm",
+      "-v $PWD:/tmp",
+      "ghcr.io/degauss-org/{image}:{version}",
+      "{input_file}",
+      .sep = " "
+    )
+
+  if (!is.na(argument)) degauss_cmd <- glue::glue(degauss_cmd, "{argument}", .sep = " ")
+
+  degauss_cmd
 }
