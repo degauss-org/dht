@@ -7,7 +7,7 @@
 core_lib_images(geocoder = TRUE)
 }
 \arguments{
-\item{geocoder}{logical; include "geocoder"? in core image list?}
+\item{geocoder}{logical; include "geocoder" in core image list?}
 }
 \value{
 names of DeGAUSS images in the core library as a character vector

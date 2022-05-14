@@ -35,7 +35,7 @@ instruction is on its own line and defines only one environment variable.
 use_degauss_dockerfile(version = "0.1")
 get_degauss_env_dockerfile()
 get_degauss_env_dockerfile()["degauss_version"]
+}
 get_degauss_env_online("fortunes")
 get_degauss_env_online("fortunes")["degauss_version"]
-}
 }

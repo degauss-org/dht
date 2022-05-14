@@ -18,9 +18,9 @@
 #' use_degauss_dockerfile(version = "0.1")
 #' get_degauss_env_dockerfile()
 #' get_degauss_env_dockerfile()["degauss_version"]
+#' }
 #' get_degauss_env_online("fortunes")
 #' get_degauss_env_online("fortunes")["degauss_version"]
-#' }
 #' @export
 get_degauss_env_dockerfile <- function(dockerfile_path = fs::path_join(c(getwd(), "Dockerfile"))) {
   env_text <-
@@ -78,7 +78,7 @@ get_degauss_core_lib_env <- function(...) {
 
 #' list the DeGAUSS images in the core library
 #'
-#' @param geocoder logical; include "geocoder"? in core image list?
+#' @param geocoder logical; include "geocoder" in core image list?
 #' @return names of DeGAUSS images in the core library as a character vector
 #' @examples
 #' core_lib_images()
