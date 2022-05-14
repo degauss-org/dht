@@ -57,50 +57,22 @@ get_degauss_env_online <- function(name = "fortunes") {
 
 #' get DeGAUSS metadata on all images in the [core library](https://degauss.org/available_images)
 #'
-#' @param badges return markdown code for DeGAUSS version and automated build badges?
-#' @param ... further arguments passed to `core_lib_images()`
+#' @param ... arguments passed to `core_lib_images()`
 #' @return data.frame of DeGAUSS metatdata
 #' @examples
-#' get_degauss_core_lib_env(badges = TRUE)
+#' get_degauss_core_lib_env(geocoder = FALSE)
 #'
 #' @export
-get_degauss_core_lib_env <- function(..., badges = FALSE) {
-  if (interactive()) {
-    cli::cli_alert_info("downloading latest information about images in core library...")
-    cli::cli_alert_success("find more at {.url https://degauss.org/available_images}")
-  }
-
+get_degauss_core_lib_env <- function(...) {
+  cli::cli_alert_info("downloading latest information about images in core library...")
+  cli::cli_alert_success("find more at {.url https://degauss.org/available_images}")
   core_images <- core_lib_images(...)
-
-  if (interactive()) {
-    core_images_info <- purrr::map_dfr(
-      cli::cli_progress_along(core_images,
-                              name = "downloading latest information about images in core library..."),
-      ~ get_degauss_env_online(core_images[.x])
-    )
-  } else {
-    core_images_info <- purrr::map_dfr(core_images, get_degauss_env_online)
-  }
-
-  if (badges) {
-    core_images_info <-
-      core_images_info %>%
-      dplyr::mutate(
-        url = glue::glue("https://degauss.org/{degauss_name}"),
-        badge_release_code = glue::glue(
-          "[![](https://img.shields.io/github/v/release/degauss-org/{degauss_name}",
-          "?color=C2326B&label=version&sort=semver)]",
-          "(https://github.com/degauss-org/{degauss_name}/releases)"
-        ),
-        badge_build_code = glue::glue(
-          "[![container build status](https://github.com/degauss-org/{degauss_name}",
-          "/workflows/build-deploy-release/badge.svg)]",
-          "(https://github.com/degauss-org/{degauss_name}/",
-          "actions/workflows/build-deploy-release.yaml)"
-        )
-      )
-  }
-
+  core_images_info <- purrr::map_dfr(
+    cli::cli_progress_along(core_images,
+      name = "downloading latest information about images in core library..."
+    ),
+    ~ get_degauss_env_online(core_images[.x])
+  )
   return(core_images_info)
 }
 

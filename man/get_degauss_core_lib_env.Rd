@@ -4,12 +4,10 @@
 \alias{get_degauss_core_lib_env}
 \title{get DeGAUSS metadata on all images in the \href{https://degauss.org/available_images}{core library}}
 \usage{
-get_degauss_core_lib_env(..., badges = FALSE)
+get_degauss_core_lib_env(...)
 }
 \arguments{
-\item{...}{further arguments passed to \code{core_lib_images()}}
-
-\item{badges}{return markdown code for DeGAUSS version and automated build badges?}
+\item{...}{arguments passed to \code{core_lib_images()}}
 }
 \value{
 data.frame of DeGAUSS metatdata
@@ -18,6 +16,6 @@ data.frame of DeGAUSS metatdata
 get DeGAUSS metadata on all images in the \href{https://degauss.org/available_images}{core library}
 }
 \examples{
-get_degauss_core_lib_env(badges = TRUE)
+get_degauss_core_lib_env(geocoder = FALSE)
 
 }

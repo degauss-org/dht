@@ -35,41 +35,19 @@
 ---
 
     Code
-      suppressMessages(get_degauss_core_lib_env(badges = TRUE))
+      suppressMessages(get_degauss_core_lib_env(geocoder = FALSE))
     Output
-      # A tibble: 11 x 7
-         degauss_name       degauss_version degauss_description degauss_argument url  
-         <chr>              <chr>           <chr>               <chr>            <glu>
-       1 geocoder           3.2.0           geocodes            valid_geocode_s~ http~
-       2 census_block_group 0.5.1           census block group~ census year [de~ http~
-       3 st_census_tract    0.2.0           census tract ident~ <NA>             http~
-       4 dep_index          0.2.0           census tract-level~ <NA>             http~
-       5 roads              0.2.1           proximity and leng~ buffer radius i~ http~
-       6 aadt               0.2.0           average annual dai~ buffer radius i~ http~
-       7 greenspace         0.3.0           enhanced vegetatio~ <NA>             http~
-       8 nlcd               0.2.0           land cover (imperv~ buffer radius i~ http~
-       9 pm                 0.2.0           daily PM2.5         <NA>             http~
-      10 narr               0.3.0           daily weather data~ optional --all ~ http~
-      11 drivetime          1.1.0           distance and drive~ care_site [defa~ http~
-      # ... with 2 more variables: badge_release_code <glue>, badge_build_code <glue>
-
-# create degauss menu data
-
-    Code
-      suppressMessages(create_degauss_menu_data())
-    Output
-      # A tibble: 11 x 7
-         name          version description argument argument_default url   degauss_cmd
-         <chr>         <chr>   <chr>       <chr>    <chr>            <glu> <chr>      
-       1 geocoder      3.2.0   geocodes    valid_g~ 0.5              http~ docker run~
-       2 census_block~ 0.5.1   census blo~ census ~ 2010             http~ docker run~
-       3 st_census_tr~ 0.2.0   census tra~ <NA>     <NA>             http~ docker run~
-       4 dep_index     0.2.0   census tra~ <NA>     <NA>             http~ docker run~
-       5 roads         0.2.1   proximity ~ buffer ~ 400              http~ docker run~
-       6 aadt          0.2.0   average an~ buffer ~ 400              http~ docker run~
-       7 greenspace    0.3.0   enhanced v~ <NA>     <NA>             http~ docker run~
-       8 nlcd          0.2.0   land cover~ buffer ~ 400              http~ docker run~
-       9 pm            0.2.0   daily PM2.5 <NA>     <NA>             http~ docker run~
-      10 narr          0.3.0   daily weat~ optiona~ no_flag_returns~ http~ docker run~
-      11 drivetime     1.1.0   distance a~ care_si~ none             http~ docker run~
+      # A tibble: 10 x 4
+         degauss_name       degauss_version degauss_description       degauss_argument
+         <chr>              <chr>           <chr>                     <chr>           
+       1 census_block_group 0.5.1           census block group and t~ census year [de~
+       2 st_census_tract    0.2.0           census tract identifiers~ <NA>            
+       3 dep_index          0.2.0           census tract-level depri~ <NA>            
+       4 roads              0.2.1           proximity and length of ~ buffer radius i~
+       5 aadt               0.2.0           average annual daily tra~ buffer radius i~
+       6 greenspace         0.3.0           enhanced vegetation index <NA>            
+       7 nlcd               0.2.0           land cover (imperviousne~ buffer radius i~
+       8 pm                 0.2.0           daily PM2.5               <NA>            
+       9 narr               0.3.0           daily weather data (temp~ optional --all ~
+      10 drivetime          1.1.0           distance and drive time ~ care_site [defa~
 
