@@ -33,6 +33,6 @@ dht::get_degauss_env_online("fortunes")
 or get a table of information about the images in the core library
 
 ```{r}
-core_info <- dht::get_degauss_core_lib_env(badges = TRUE)
+core_info <- dht::get_degauss_core_lib_env()
 knitr::kable(core_info)
 ```
