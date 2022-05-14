@@ -3,7 +3,6 @@
 \name{get_degauss_env_dockerfile}
 \alias{get_degauss_env_dockerfile}
 \alias{get_degauss_env_online}
-\alias{get_core_images}
 \title{get DeGAUSS metadata online or from a Dockerfile}
 \usage{
 get_degauss_env_dockerfile(
@@ -11,27 +10,20 @@ get_degauss_env_dockerfile(
 )
 
 get_degauss_env_online(name = "fortunes")
-
-get_core_images(badges = FALSE)
 }
 \arguments{
 \item{dockerfile_path}{path to Dockerfile}
 
 \item{name}{name of DeGAUSS container to download Dockerfile from}
-
-\item{badges}{return markdown code for DeGAUSS version and automated build?}
 }
 \value{
-named vector or data.frame of DeGAUSS metatdata
+named vector of DeGAUSS metatdata
 }
 \description{
 These functions look in a Dockerfile (locally or online) to extract
 environment variables corresponding to DeGAUSS image metadata.
 }
 \details{
-\code{get_core_images()} can be used to get metadata on DeGAUSS images
-that are in the core library listed at https://degauss.org/available_images
-
 Metadata on DeGAUSS images are defined using environment variables.
 Specifically within a Dockerfile, this is defined as
 \code{ENV} instructions where the name of the environment variable begins with \code{degauss_},
@@ -46,6 +38,4 @@ get_degauss_env_dockerfile()["degauss_version"]
 get_degauss_env_online("fortunes")
 get_degauss_env_online("fortunes")["degauss_version"]
 }
-get_core_images(badges = TRUE)
-
 }

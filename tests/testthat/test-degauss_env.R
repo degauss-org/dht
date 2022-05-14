@@ -19,8 +19,8 @@ test_that("can get degauss metadata from online dockerfile", {
 })
 
 test_that("can get degauss metadata online for core library", {
-  expect_snapshot(suppressMessages(get_core_images()))
-  expect_snapshot(suppressMessages(get_core_images(badges = TRUE)))
+  expect_snapshot(suppressMessages(get_degauss_core_lib_env()))
+  expect_snapshot(suppressMessages(get_degauss_core_lib_env(badges = TRUE)))
 })
 
 test_that("can make degauss command", {

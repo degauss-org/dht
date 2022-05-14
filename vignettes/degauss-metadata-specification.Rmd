@@ -30,9 +30,9 @@ Get information about one single DeGAUSS image:
 dht::get_degauss_env_online("fortunes")
 ```
 
-or get a table of information about the "core" images 
+or get a table of information about the images in the core library
 
 ```{r}
-core_info <- dht::get_core_images(badges = TRUE)
+core_info <- dht::get_degauss_core_lib_env(badges = TRUE)
 knitr::kable(core_info)
-``` 
+```

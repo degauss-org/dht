@@ -42,7 +42,10 @@ reference:
 - title: Development and Infrastructure
   contents:
   - use_degauss_container
+  - get_degauss_core_lib_env
   - get_degauss_env_dockerfile
+  - get_degauss_env_online
+  - core_lib_images
   - create_degauss_menu_data
   - make_degauss_command
 

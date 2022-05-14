@@ -3,9 +3,6 @@
 #' These functions look in a Dockerfile (locally or online) to extract
 #' environment variables corresponding to DeGAUSS image metadata.
 #' 
-#' `get_core_images()` can be used to get metadata on DeGAUSS images
-#' that are in the core library listed at https://degauss.org/available_images
-#' 
 #' @details
 #' Metadata on DeGAUSS images are defined using environment variables.
 #' Specifically within a Dockerfile, this is defined as
@@ -15,8 +12,7 @@
 #'
 #' @param dockerfile_path path to Dockerfile
 #' @param name name of DeGAUSS container to download Dockerfile from
-#' @param badges return markdown code for DeGAUSS version and automated build?
-#' @return named vector or data.frame of DeGAUSS metatdata
+#' @return named vector of DeGAUSS metatdata
 #' @examples
 #' \dontrun{
 #' use_degauss_dockerfile(version = "0.1")
@@ -25,8 +21,6 @@
 #' get_degauss_env_online("fortunes")
 #' get_degauss_env_online("fortunes")["degauss_version"]
 #' }
-#' get_core_images(badges = TRUE)
-#'
 #' @export
 get_degauss_env_dockerfile <- function(dockerfile_path = fs::path_join(c(getwd(), "Dockerfile"))) {
   env_text <-
@@ -61,23 +55,27 @@ get_degauss_env_online <- function(name = "fortunes") {
   })
 }
 
+#' get DeGAUSS metadata on all images in the [core library](https://degauss.org/available_images)
+#'
+#' @param badges return markdown code for DeGAUSS version and automated build badges?
+#' @param ... further arguments passed to `core_lib_images()`
+#' @return data.frame of DeGAUSS metatdata
+#' @examples
+#' get_degauss_core_lib_env(badges = TRUE)
+#'
 #' @export
-#' @rdname get_degauss_env_dockerfile
-get_core_images <- function(badges = FALSE) {
+get_degauss_core_lib_env <- function(..., badges = FALSE) {
   if (interactive()) {
     cli::cli_alert_info("downloading latest information about images in core library...")
     cli::cli_alert_success("find more at {.url https://degauss.org/available_images}")
   }
 
-  core_images <- c(
-    "geocoder", "census_block_group", "st_census_tract",
-    "dep_index", "roads", "aadt", "greenspace", "nlcd",
-    "pm", "narr", "drivetime"
-  )
+  core_images <- core_lib_images(...)
 
   if (interactive()) {
     core_images_info <- purrr::map_dfr(
-      cli::cli_progress_along(core_images),
+      cli::cli_progress_along(core_images,
+                              name = "downloading latest information about images in core library..."),
       ~ get_degauss_env_online(core_images[.x])
     )
   } else {
@@ -91,7 +89,7 @@ get_core_images <- function(badges = FALSE) {
         url = glue::glue("https://degauss.org/{degauss_name}"),
         badge_release_code = glue::glue(
           "[![](https://img.shields.io/github/v/release/degauss-org/{degauss_name}",
-          "?color=469FC2&label=version&sort=semver)]",
+          "?color=C2326B&label=version&sort=semver)]",
           "(https://github.com/degauss-org/{degauss_name}/releases)"
         ),
         badge_build_code = glue::glue(
@@ -106,58 +104,20 @@ get_core_images <- function(badges = FALSE) {
   return(core_images_info)
 }
 
-#' creates a [DeGAUSS command](https://degauss.org/using_degauss.html#DeGAUSS_Commands)
-#' with the supplied DeGAUSS image name, version, input file name, and optional argument.
+#' list the DeGAUSS images in the core library
 #'
-#' @param image name of DeGAUSS image
-#' @param version version of DeGAUSS image
-#' @param input_file name of input file
-#' @param argument optional argument
-#' @return DeGAUSS command as a character string
+#' @param geocoder logical; include "geocoder"? in core image list?
+#' @return names of DeGAUSS images in the core library as a character vector
 #' @examples
-#' make_degauss_command(image = "geocoder", version = "3.2.0")
-#' make_degauss_command(image = "geocoder", version = "3.2.0", argument = "0.4")
+#' core_lib_images()
+#' core_lib_images(geocoder = FALSE)
 #' @export
-make_degauss_command <- function(input_file = "my_address_file_geocoded.csv", image, version, argument = NA) {
-  degauss_cmd <-
-    glue::glue(
-      "docker run --rm",
-      "-v $PWD:/tmp",
-      "ghcr.io/degauss-org/{image}:{version}",
-      "{input_file}",
-      .sep = " "
-    )
-
-  if (!is.na(argument)) degauss_cmd <- glue::glue(degauss_cmd, "{argument}", .sep = " ")
-
-  degauss_cmd
-}
-
-
-#' create data for use in DeGAUSS menu
-#'
-#' @param core_images_info a data.frame of info about the DeGAUSS core image
-#' library created with `get_core_images()`
-#' @return data.frame of information about core images with arguments
-#' separated into names and default values as well as an added example DeGAUSS command
-#' @examples
-#' dht:::create_degauss_menu_data()
-#' @export
-create_degauss_menu_data <- function(core_images_info = get_core_images()) {
-  core_images_info %>%
-    dplyr::transmute(
-      name = degauss_name,
-      version = degauss_version,
-      description = degauss_description,
-      argument = gsub("(.*?) \\[default: .*?\\].*", "\\1", degauss_argument, perl = TRUE),
-      argument_default = gsub(".*?\\[default: (.*?)\\].*", "\\1", degauss_argument, perl = TRUE),
-      url = glue::glue("https://degauss.org/{degauss_name}")
-    ) %>%
-  dplyr::mutate(
-    degauss_cmd =
-      purrr::pmap_chr(
-        list(image = name, version = version, argument = argument_default),
-        make_degauss_command
-      )
+core_lib_images <- function(geocoder = TRUE) {
+  out <- c(
+    "census_block_group", "st_census_tract",
+    "dep_index", "roads", "aadt", "greenspace", "nlcd",
+    "pm", "narr", "drivetime"
   )
+  if (geocoder) out <- c("geocoder", out)
+  out
 }

@@ -15,7 +15,7 @@
 # can get degauss metadata online for core library
 
     Code
-      suppressMessages(get_core_images())
+      suppressMessages(get_degauss_core_lib_env())
     Output
       # A tibble: 11 x 4
          degauss_name       degauss_version degauss_description       degauss_argument
@@ -35,7 +35,7 @@
 ---
 
     Code
-      suppressMessages(get_core_images(badges = TRUE))
+      suppressMessages(get_degauss_core_lib_env(badges = TRUE))
     Output
       # A tibble: 11 x 7
          degauss_name       degauss_version degauss_description degauss_argument url  
