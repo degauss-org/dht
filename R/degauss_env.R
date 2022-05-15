@@ -86,9 +86,9 @@ get_degauss_core_lib_env <- function(...) {
 #' @export
 core_lib_images <- function(geocoder = TRUE) {
   out <- c(
-    "census_block_group", "st_census_tract",
-    "dep_index", "roads", "aadt", "greenspace", "nlcd",
-    "pm", "narr", "drivetime"
+    "census_block_group", "dep_index",
+     "greenspace", "roads", "aadt", "nlcd", "drivetime",
+    "st_census_tract", "pm", "narr"
   )
   if (geocoder) out <- c("geocoder", out)
   out
