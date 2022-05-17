@@ -52,3 +52,17 @@ make_degauss_command <- function(input_file = "my_address_file_geocoded.csv", im
 
   degauss_cmd
 }
+
+#' DeGAUSS Menu
+#'
+#' Run an interactive shiny application to create instructions
+#' for running multiple DeGAUSS containers.  At launch, it will
+#' download the latest information about DeGAUSS images in
+#' the core library.  After selection and setting options,
+#' copy (or save to file) bash code used to run a DeGAUSS pipeline.
+#' @return NULL
+#' @export
+degauss_menu <- function() {
+  # TODO suggest shiny and ask to install if not available
+  shiny::runApp(system.file("degauss-menu", package = "dht"))
+}
