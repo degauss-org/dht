@@ -21,7 +21,8 @@ Suggests:
     sf (>= 0.8-1),
     tibble,
     knitr,
-    rmarkdown
+    rmarkdown,
+    shiny
 Imports: 
     cli (>= 2.2.0),
     magrittr,

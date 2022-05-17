@@ -64,5 +64,8 @@ make_degauss_command <- function(input_file = "my_address_file_geocoded.csv", im
 #' @export
 degauss_menu <- function() {
   # TODO suggest shiny and ask to install if not available
+  if (!requireNamespace("shiny", quietly = TRUE)) {
+    cli::cli_abort("please install {.pkg shiny} to run degauss menu")
+  }
   shiny::runApp(system.file("degauss-menu", package = "dht"))
 }
