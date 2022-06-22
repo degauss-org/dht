@@ -13,7 +13,6 @@ ui <- dashboardPage(
     color = dht::degauss_colors(5)
   ),
   body = dashboardBody(
-
     box(
       title = "Input File",
       textInput("input_filename", "Geocoded filename", value = "my_address_file_geocoded.csv"),
@@ -21,24 +20,16 @@ ui <- dashboardPage(
       width = 6
     ),
     box(DT::dataTableOutput("core_lib_images_table"),
-        title = "DeGAUSS Core Library",
-        width = 12
-        ),
+      title = "DeGAUSS Core Library",
+      width = 12
+    ),
     box(
       verbatimTextOutput("degauss_cmd", placeholder = TRUE),
       title = "DeGAUSS command(s)",
       width = 12
     )
-
   )
 )
-
-# TODO add checkbox option that will derive geocoded filename from the output of the degauss geocoding command
-# TODO better way to have output DeGAUSS commands; html widget with a copy button like on gh?
-# TODO fix the default argument for narr; make it "" for a blank or non-use of the optional flag
-# TODO can we leave the default of "none" for drivetime, or let it error with an empty value?
-# TODO add function in package to run this app, suggest and check for shiny installation first
-
 
 server <- function(input, output, session) {
 
