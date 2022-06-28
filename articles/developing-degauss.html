@@ -75,7 +75,7 @@
 
 
 <script src="developing-degauss_files/accessible-code-block-0.0.1/empty-anchor.js"></script><div class="row">
-  <main id="main"><div class="page-header">
+  <main id="main" class="col-md-9"><div class="page-header">
       <img src="../logo.png" class="logo" alt=""><h1>Developing a New DeGAUSS Container</h1>
             
       
@@ -166,10 +166,10 @@
 </h3>
 <p>R packages, especially spatial packages, often depend on external system dependencies. These will need to be installed using <code>RUN</code> instructions in the Dockerfile. For example, the {sf} package for R requires <code>gdal</code> and other programs, each of which require different install processes depending on the operating system. Since these R packages will always be running inside of a Docker container running Ubuntu 20.04, we can use <a href="https://remotes.r-lib.org/reference/system_requirements.html" class="external-link"><code>remotes::system_requirements()</code></a> to get the specific required install instructions for {sf}:</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu">remotes</span><span class="fu">::</span><span class="fu">system_requirements</span><span class="op">(</span><span class="st">"ubuntu-20.04"</span>, package <span class="op">=</span> <span class="st">"sf"</span><span class="op">)</span>
-<span class="co"># "apt-get install -y libudunits2-dev" "apt-get install -y libssl-dev"</span>
-<span class="co"># "apt-get install -y libgdal-dev"     "apt-get install -y gdal-bin"</span>
-<span class="co"># "apt-get install -y libgeos-dev"     "apt-get install -y libproj-dev"</span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu">remotes</span><span class="fu">::</span><span class="fu">system_requirements</span><span class="op">(</span><span class="st">"ubuntu-20.04"</span>, package <span class="op">=</span> <span class="st">"sf"</span><span class="op">)</span></span>
+<span><span class="co"># "apt-get install -y libudunits2-dev" "apt-get install -y libssl-dev"</span></span>
+<span><span class="co"># "apt-get install -y libgdal-dev"     "apt-get install -y gdal-bin"</span></span>
+<span><span class="co"># "apt-get install -y libgeos-dev"     "apt-get install -y libproj-dev"</span></span></code></pre></div>
 <p>These system requirements could be translated to <code>RUN</code> instructions for the Dockerfile to make sure they are available before the R packages that require them are installed:</p>
 <div class="sourceCode" id="cb4"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1"></a><span class="ex">RUN</span> apt-get update \</span>
 <span id="cb4-2"><a href="#cb4-2"></a>    <span class="kw">&amp;&amp;</span> <span class="ex">apt-get</span> install -yqq --no-install-recommends \</span>
@@ -230,7 +230,7 @@
 
 <div class="pkgdown-footer-right">
   <p></p>
-<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.2.</p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.5.</p>
 </div>
 
     </footer>

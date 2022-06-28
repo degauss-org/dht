@@ -56,43 +56,52 @@
 
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">read_lat_lon_csv</span><span class="op">(</span>
-  <span class="va">filename</span>,
-  nest_df <span class="op">=</span> <span class="cn">FALSE</span>,
-  sf_out <span class="op">=</span> <span class="cn">FALSE</span>,
-  project_to_crs <span class="op">=</span> <span class="cn">NULL</span>
-<span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">read_lat_lon_csv</span><span class="op">(</span></span>
+<span>  <span class="va">filename</span>,</span>
+<span>  nest_df <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  sf_out <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  project_to_crs <span class="op">=</span> <span class="cn">NULL</span></span>
+<span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div class="section level2">
     <h2 id="arguments">Arguments<a class="anchor" aria-label="anchor" href="#arguments"></a></h2>
     <dl><dt>filename</dt>
 <dd><p>name of input file, probably opt$filename if inside container</p></dd>
+
+
 <dt>nest_df</dt>
 <dd><p>logical. If TRUE, data is nested on lat/lon. Defaults to FALSE.</p></dd>
+
+
 <dt>sf_out</dt>
 <dd><p>logical. If TRUE, data is converted as an sf object. Defaults to FALSE.</p></dd>
+
+
 <dt>project_to_crs</dt>
 <dd><p>(optional) if sf_out=TRUE, the crs to which input data is projected. If unspecified
 and sf_out=TRUE, the crs defaults to 4326.</p></dd>
+
 </dl></div>
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
-    <p>a list with two elements. The first is the raw_data as it is read in from the input file.
+    
+
+<p>a list with two elements. The first is the raw_data as it is read in from the input file.
 The second is a tibble nested on lat and lon to prevent duplication of geomarker computations.
 If sf_out=TRUE the second is an sf object.</p>
     </div>
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span></span>
-<span class="r-in"><span class="va">d</span> <span class="op">&lt;-</span> <span class="fu">read_lat_lon_csv</span><span class="op">(</span>filename <span class="op">=</span> <span class="st">"test/my_address_file_geocoded.csv"</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">d</span> <span class="op">&lt;-</span> <span class="fu">read_lat_lon_csv</span><span class="op">(</span></span>
-<span class="r-in">  filename <span class="op">=</span> <span class="st">"test/my_address_file_geocoded.csv"</span>,</span>
-<span class="r-in">  sf_out <span class="op">=</span> <span class="cn">TRUE</span>, project_to_crs <span class="op">=</span> <span class="fl">5072</span></span>
-<span class="r-in"><span class="op">)</span></span>
-<span class="r-in"><span class="op">}</span></span>
-<span class="r-in"></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span></span></span>
+<span class="r-in"><span><span class="va">d</span> <span class="op">&lt;-</span> <span class="fu">read_lat_lon_csv</span><span class="op">(</span>filename <span class="op">=</span> <span class="st">"test/my_address_file_geocoded.csv"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">d</span> <span class="op">&lt;-</span> <span class="fu">read_lat_lon_csv</span><span class="op">(</span></span></span>
+<span class="r-in"><span>  filename <span class="op">=</span> <span class="st">"test/my_address_file_geocoded.csv"</span>,</span></span>
+<span class="r-in"><span>  sf_out <span class="op">=</span> <span class="cn">TRUE</span>, project_to_crs <span class="op">=</span> <span class="fl">5072</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">}</span></span></span>
+<span class="r-in"><span></span></span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
@@ -104,7 +113,7 @@ If sf_out=TRUE the second is an sf object.</p>
 </div>
 
 <div class="pkgdown-footer-right">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.2.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.5.</p>
 </div>
 
     </footer></div>
