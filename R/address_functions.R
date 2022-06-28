@@ -37,7 +37,7 @@ address_is_po_box <- function(address) {
 #' @param address character vector of address text
 #' @return logical vector; TRUE when address contains some text
 #'         indicating Cincinnati Children's Hospital, Ronald
-#'         McDonald House, or Cincinnati Jobs and Family Services.
+#'         McDonald House, or Jobs and Family Services for Hamilton and Butler Counties in Ohio.
 address_is_institutional <- function(address) {
   cli::cli_alert_info("flagging known Cincinnati foster & institutional addresses...", wrap = TRUE)
   institutional_strings <- c(
@@ -56,7 +56,14 @@ address_is_institutional <- function(address) {
     "222 Central Pky",
     "3333 Burnet Ave",
     "3333 Burnet Avenue",
-    "3333 Burnet Av"
+    "3333 Burnet Av",
+    "315 High St",
+    "244 Dayton St",
+    "19 S Front St",
+    "19 South Front St",
+    "300 N Fair Ave",
+    "300 North Fair Ave",
+    "898 Walnut St"
   )
   inst_foster_addr <- purrr::map(address, ~ stringr::str_detect(.x, stringr::coll(institutional_strings, ignore_case = TRUE)))
   missing_address <- c(which(is.na(address)), which(address == ""))

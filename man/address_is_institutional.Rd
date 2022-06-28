@@ -12,7 +12,7 @@ address_is_institutional(address)
 \value{
 logical vector; TRUE when address contains some text
 indicating Cincinnati Children's Hospital, Ronald
-McDonald House, or Cincinnati Jobs and Family Services.
+McDonald House, or Jobs and Family Services for Hamilton and Butler Counties in Ohio.
 }
 \description{
 check if address is a known Cincinnati institutional address

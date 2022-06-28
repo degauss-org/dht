@@ -41,7 +41,11 @@ test_that("is JFS", {
         "222 East Central Pky",
         "222 E Central Parkway",
         "222 E Central Pkwy",
-        "222 E Central Pky"
+        "222 E Central Pky",
+        "315 High St, Hamilton, OH 45011",
+        "244 Dayton St, Hamilton OH 45011",
+        "19 S Front St, Hamilton OH 45011",
+        "898 Walnut St, Cincinnati OH 45202"
       ))
     )
   )
