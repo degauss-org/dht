@@ -10,7 +10,7 @@ ui <- dashboardPage(
   sidebar = dashboardSidebar(disable = TRUE),
   preloader = list(
     html = tagList(spin_refresh(), h3("Loading DeGAUSS Menu...")),
-    color = dht::degauss_colors(5)
+    color = degauss_colors(5)#dht::degauss_colors(5)
   ),
   body = dashboardBody(
     box(
@@ -35,11 +35,12 @@ server <- function(input, output, session) {
 
   d <-
     get_degauss_core_lib_env(geocoder = FALSE) %>%
-    dht::create_degauss_menu_data()
+    create_degauss_menu_data()#dht::create_degauss_menu_data()
 
   output$core_lib_images_table <-
     DT::renderDataTable(
-      dplyr::select(d, -degauss_cmd),
+      dplyr::select(d, -degauss_cmd) %>%
+        transform(url = paste0("<a href='", url, "'>", url, "</a>")),
       escape = FALSE,
       options = list(autoWidth = TRUE)
     )
