@@ -24,12 +24,15 @@ ui <- dashboardPage(
       title = "DeGAUSS Core Library",
       width = 12
     ),
-    box(
-      verbatimTextOutput("degauss_cmd", placeholder = TRUE),
-      title = "DeGAUSS command(s)",
-      width = 12
-    ),
-    
+    rclipboard::rclipboardSetup(),
+    fluidRow(
+      box(
+        verbatimTextOutput("degauss_cmd", placeholder = TRUE),
+        title = "DeGAUSS command(s)",
+        width = 10
+      ),
+      uiOutput("clip", width = 2)
+      ),
     tags$head(tags$style(HTML("#core_lib_images_table {cursor:pointer;}")))
   )
 )
@@ -48,21 +51,31 @@ server <- function(input, output, session) {
       options = list(autoWidth = TRUE)
       )
 
+  selected_cmd <- reactive({
+    ifelse(length(input$core_lib_images_table_rows_selected),
+           d %>%
+             ## dplyr::filter(name %in% input$selected_images) %>%
+             dplyr::slice(input$core_lib_images_table_rows_selected) %>%
+             dplyr::pull(degauss_cmd) %>%
+             gsub("my_address_file_geocoded.csv",
+                  input$input_filename,
+                  .,
+                  fixed = TRUE), 
+           "")
+    })
+  
   output$degauss_cmd <- renderText({
-    .r <- input$core_lib_images_table_rows_selected
-    if (length(.r)) {
-      d %>%
-        ## dplyr::filter(name %in% input$selected_images) %>%
-        dplyr::slice(input$core_lib_images_table_rows_selected) %>%
-        dplyr::pull(degauss_cmd) %>%
-        gsub("my_address_file_geocoded.csv",
-             input$input_filename,
-             .,
-             fixed = TRUE)
-    }
-    },
-    sep = "\n"
-  )
+    selected_cmd()
+  })
+  
+  output$clip <- renderUI({
+    rclipboard::rclipButton(
+      inputId = "clipbtn",
+      label = "Copy Docker Command",
+      clipText = selected_cmd(),
+      icon = icon("clipboard")
+    )
+  })
 }
 
 shinyApp(ui, server)
