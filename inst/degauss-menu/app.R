@@ -48,7 +48,8 @@ server <- function(input, output, session) {
       dplyr::select(d, -degauss_cmd) %>%
         transform(url = paste0("<a href='", url, "'>", url, "</a>")),
       escape = FALSE,
-      options = list(autoWidth = TRUE)
+      options = list(autoWidth = TRUE),
+      selection = "single"
       )
 
   selected_cmd <- reactive({
