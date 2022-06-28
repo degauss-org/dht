@@ -1,13 +1,14 @@
 #' create data for use in DeGAUSS menu
 #'
 #' @param core_lib_env a data.frame of info about the DeGAUSS core image
+#' @param ... arguments passed to make_degauss_command (platform)
 #' library created with `get_degauss_core_lib_env()`
 #' @return data.frame of information about core images with arguments
 #' separated into names and default values as well as an added example DeGAUSS command
 #' @examples
 #' dht:::create_degauss_menu_data()
 #' @export
-create_degauss_menu_data <- function(core_lib_env = get_degauss_core_lib_env()) {
+create_degauss_menu_data <- function(core_lib_env = get_degauss_core_lib_env(), ...) {
   core_lib_env %>%
     dplyr::transmute(
       name = degauss_name,
@@ -21,7 +22,7 @@ create_degauss_menu_data <- function(core_lib_env = get_degauss_core_lib_env()) 
     degauss_cmd =
       purrr::pmap_chr(
         list(image = name, version = version, argument = argument_default),
-        make_degauss_command
+        make_degauss_command, ...
       )
   )
 }

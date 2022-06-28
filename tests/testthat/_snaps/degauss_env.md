@@ -30,7 +30,7 @@
        8 drivetime          1.1.0           distance and drive time ~ care_site [defa~
        9 st_census_tract    0.2.0           census tract identifiers~ <NA>            
       10 pm                 0.2.0           daily PM2.5               <NA>            
-      11 narr               0.3.0           daily weather data (temp~ optional --all ~
+      11 narr               0.4.0           daily weather data (temp~ NARR variables ~
 
 ---
 
@@ -49,5 +49,5 @@
        7 drivetime          1.1.0           distance and drive time ~ care_site [defa~
        8 st_census_tract    0.2.0           census tract identifiers~ <NA>            
        9 pm                 0.2.0           daily PM2.5               <NA>            
-      10 narr               0.3.0           daily weather data (temp~ optional --all ~
+      10 narr               0.4.0           daily weather data (temp~ NARR variables ~
 

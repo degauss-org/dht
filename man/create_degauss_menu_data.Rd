@@ -4,10 +4,12 @@
 \alias{create_degauss_menu_data}
 \title{create data for use in DeGAUSS menu}
 \usage{
-create_degauss_menu_data(core_lib_env = get_degauss_core_lib_env())
+create_degauss_menu_data(core_lib_env = get_degauss_core_lib_env(), ...)
 }
 \arguments{
-\item{core_lib_env}{a data.frame of info about the DeGAUSS core image
+\item{core_lib_env}{a data.frame of info about the DeGAUSS core image}
+
+\item{...}{arguments passed to make_degauss_command (platform)
 library created with \code{get_degauss_core_lib_env()}}
 }
 \value{
