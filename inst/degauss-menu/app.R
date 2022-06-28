@@ -12,6 +12,7 @@ ui <- dashboardPage(
     html = tagList(spin_refresh(), h3("Loading DeGAUSS Menu...")),
     color = degauss_colors(5)#dht::degauss_colors(5)
   ),
+  
   body = dashboardBody(
     box(
       title = "Input File",
@@ -27,7 +28,9 @@ ui <- dashboardPage(
       verbatimTextOutput("degauss_cmd", placeholder = TRUE),
       title = "DeGAUSS command(s)",
       width = 12
-    )
+    ),
+    
+    tags$head(tags$style(HTML("#core_lib_images_table {cursor:pointer;}")))
   )
 )
 
@@ -43,7 +46,7 @@ server <- function(input, output, session) {
         transform(url = paste0("<a href='", url, "'>", url, "</a>")),
       escape = FALSE,
       options = list(autoWidth = TRUE)
-    )
+      )
 
   output$degauss_cmd <- renderText({
     .r <- input$core_lib_images_table_rows_selected
