@@ -43,6 +43,7 @@ reference:
   contents:
   - use_degauss_container
   - get_degauss_env_dockerfile
+  - use_degauss_compose
 
 - title: Deprecated
   description: |

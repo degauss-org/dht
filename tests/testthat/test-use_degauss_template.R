@@ -150,3 +150,11 @@ test_that("use_degauss_container will overwrite existing degauss file if asked",
     use_degauss_container(geomarker = path, overwrite = TRUE)
   })
 })
+
+test_that("degauss compose", {
+  use_degauss_compose()
+  on.exit(fs::file_delete("compose.yaml"))
+  testthat::expect_true(
+    fs::file_exists("compose.yaml")
+  )
+})

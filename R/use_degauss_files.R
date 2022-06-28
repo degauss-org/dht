@@ -200,3 +200,18 @@ use_degauss_github_actions <- function(geomarker = getwd(), ...) {
     ...
   )
 }
+
+#' use DeGAUSS compose file
+#'
+#' @description creates a docker-compose yaml file in current working directory
+#' @param ... arguments passed to render_degauss_template (overwrite)
+use_degauss_compose <- function(...) {
+  path <- normalizePath(getwd(), mustWork = TRUE)
+  dest_path <- fs::path_join(c(path, "compose.yaml"))
+  render_degauss_template(
+    read_from = "degauss_compose.yaml",
+    write_to = dest_path,
+    data = list(),
+    ...
+  )
+}
