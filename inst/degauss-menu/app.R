@@ -10,8 +10,9 @@ ui <- dashboardPage(
   sidebar = dashboardSidebar(disable = TRUE),
   preloader = list(
     html = tagList(spin_refresh(), h3("Loading DeGAUSS Menu...")),
-    color = dht::degauss_colors(5)
+    color = degauss_colors(5)#dht::degauss_colors(5)
   ),
+  
   body = dashboardBody(
     box(
       title = "Input File",
@@ -27,7 +28,14 @@ ui <- dashboardPage(
       verbatimTextOutput("degauss_cmd", placeholder = TRUE),
       title = "DeGAUSS command(s)",
       width = 12
+<<<<<<< HEAD
+    ),
+
+    tags$head(tags$style(HTML("#core_lib_images_table {cursor:pointer;}")))
+    
+=======
     )
+>>>>>>> c1486a0419128d877bb8a701dcee8a12bfbc3681
   )
 )
 
@@ -35,13 +43,15 @@ server <- function(input, output, session) {
 
   d <-
     get_degauss_core_lib_env(geocoder = FALSE) %>%
-    dht::create_degauss_menu_data()
+    create_degauss_menu_data()#dht::create_degauss_menu_data()
 
   output$core_lib_images_table <-
     DT::renderDataTable(
+      DT::datatable(
       dplyr::select(d, -degauss_cmd),
       escape = FALSE,
       options = list(autoWidth = TRUE)
+      )
     )
 
   output$degauss_cmd <- renderText({
