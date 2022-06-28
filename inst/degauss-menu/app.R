@@ -28,14 +28,9 @@ ui <- dashboardPage(
       verbatimTextOutput("degauss_cmd", placeholder = TRUE),
       title = "DeGAUSS command(s)",
       width = 12
-<<<<<<< HEAD
     ),
-
-    tags$head(tags$style(HTML("#core_lib_images_table {cursor:pointer;}")))
     
-=======
-    )
->>>>>>> c1486a0419128d877bb8a701dcee8a12bfbc3681
+    tags$head(tags$style(HTML("#core_lib_images_table {cursor:pointer;}")))
   )
 )
 
