@@ -9,7 +9,8 @@ make_degauss_command(
   input_file = "my_address_file_geocoded.csv",
   image,
   version,
-  argument = NA
+  argument = NA,
+  platform = "unix"
 )
 }
 \arguments{
@@ -20,6 +21,8 @@ make_degauss_command(
 \item{version}{version of DeGAUSS image}
 
 \item{argument}{optional argument}
+
+\item{platform}{shell program; one of "unix", "cmd", "powershell"}
 }
 \value{
 DeGAUSS command as a character string

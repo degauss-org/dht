@@ -33,16 +33,30 @@ create_degauss_menu_data <- function(core_lib_env = get_degauss_core_lib_env()) 
 #' @param version version of DeGAUSS image
 #' @param input_file name of input file
 #' @param argument optional argument
+#' @param platform shell program; one of "unix", "cmd", "powershell"
 #' @return DeGAUSS command as a character string
 #' @examples
 #' make_degauss_command(image = "geocoder", version = "3.2.0")
 #' make_degauss_command(image = "geocoder", version = "3.2.0", argument = "0.4")
 #' @export
-make_degauss_command <- function(input_file = "my_address_file_geocoded.csv", image, version, argument = NA) {
+make_degauss_command <- function(input_file = "my_address_file_geocoded.csv",
+                                 image,
+                                 version,
+                                 argument = NA,
+                                 platform = "unix") {
+
+  stopifnot(platform %in% c("unix", "cmd", "powershell"))
+
+  host_dir <- dplyr::case_when(
+    platform == "unix" ~ "$PWD",
+    platform == "cmd" ~ "%cd%",
+    platform == "powershell" ~ "${{pwd}}"
+  )
+
   degauss_cmd <-
     glue::glue(
       "docker run --rm",
-      "-v $PWD:/tmp",
+      "-v {host_dir}:/tmp",
       "ghcr.io/degauss-org/{image}:{version}",
       "{input_file}",
       .sep = " "
