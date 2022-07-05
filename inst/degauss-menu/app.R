@@ -2,14 +2,55 @@
 library(shiny)
 library(bs4Dash)
 library(waiter)
+library(fresh)
+
+theme <- create_theme(
+  bs4dash_vars(
+    navbar_light_color = degauss_colors(2),
+    navbar_light_active_color = "#FFF",
+    navbar_light_hover_color = "#FFF",
+    card_bg = "#FFF"
+  ),
+  bs4dash_yiq(
+    contrasted_threshold = 1,
+    text_dark = "#FFF",
+    text_light = "black"
+  ),
+  bs4dash_layout(
+    main_bg = degauss_colors(6)
+  ),
+  bs4dash_sidebar_light(
+    bg = degauss_colors(2),
+    header_color = degauss_colors(1)
+  ),
+  bs4dash_status(
+    primary = degauss_colors(1),
+    success = degauss_colors(3)
+  ),
+  bs4dash_color(
+    gray_900 = degauss_colors(1), white = degauss_colors(4)
+  )
+)
 
 
 ui <- function(request) {
   bs4Dash::dashboardPage(
     
-  title = "DeGAUSS Menu",
-  header = dashboardHeader(htmltools::h3("DeGAUSS Menu"), compact = TRUE),
+    freshTheme = theme,
+    
+    dark = NULL,
+    
+    title = "DeGAUSS Menu",
+    
+    header = dashboardHeader(htmltools::h3("DeGAUSS Menu"), compact = TRUE),
+  
   sidebar = dashboardSidebar(
+    
+    minified = FALSE,
+    
+    skin = "light",
+    
+    sidebarHeader("Selections"),
     
     checkboxGroupInput(inputId = "want", label = "What do you want?",
                        choices = c("Census geography" = "census", "Area material deprivation" = "depind",
@@ -28,25 +69,32 @@ ui <- function(request) {
   
   body = dashboardBody(
     
+    rclipboard::rclipboardSetup(),
+    
     box(
       title = "Input File",
       textInput("input_filename", "Geocoded filename", value = "my_address_file_geocoded.csv"),
       bookmarkButton("Copy URL to save app state"),
-      width = 6
+      width = 6,
+      status = 'primary',
+      solidHeader = TRUE,
+      color = 'white'
     ),
     box(DT::dataTableOutput("core_lib_images_table"),
       title = "DeGAUSS Core Library",
-      width = 12
+      width = 12,
+      status = 'primary',
+      solidHeader = TRUE,
+      color = "white"
     ),
-    rclipboard::rclipboardSetup(),
-    fluidRow(
-      box(
+    box(title = "DeGAUSS command(s)",
         verbatimTextOutput("degauss_cmd", placeholder = TRUE),
-        title = "DeGAUSS command(s)",
-        width = 10
-      ),
-      uiOutput("clip", width = 2)
-      ),
+        uiOutput("clip"),
+        width = 12,
+        status = 'primary',
+        solidHeader = TRUE,
+        color = "white"
+    ),
     tags$head(tags$style(HTML("#core_lib_images_table {cursor:pointer;}")))
   )
 )
@@ -74,12 +122,15 @@ server <- function(input, output, session) {
   
   d_obj <- reactive({
     d <- dplyr::select(d, -degauss_cmd) %>%
-      transform(url = paste0("<a href='", url, "'>", url, "</a>")) 
+      transform(url = paste0("<a href='", url, "'>", url, "</a>"))
     
-    d <- ifelse(is.null(input$want) & input$temporal == "Not Sure",
-                d,
-                filter(d, category %in% input$want & temporal %in% input$temporal)
-    )
+    if (is.null(input$want) & input$temporal == "Not Sure"){
+      d
+    } else {
+    d <- d %>%
+      filter(category %in% input$want & temporal %in% input$temporal)
+    }
+   
   })
 
   output$core_lib_images_table <-
@@ -112,7 +163,8 @@ server <- function(input, output, session) {
       inputId = "clipbtn",
       label = "Copy Docker Command",
       clipText = selected_cmd(),
-      icon = icon("clipboard")
+      icon = icon("clipboard"),
+      
     )
   })
   
