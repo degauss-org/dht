@@ -1,0 +1,28 @@
+x-defaults:
+  volumes: &volume
+    - ${PWD}:/tmp
+  depends_on: &depends
+    geocoder:
+      condition: service_completed_successfully
+
+services:
+  geocoder:
+    image: ghcr.io/degauss-org/geocoder:3.2.0
+    command: ${ADDRESS_FILE:-address.csv} 0.5
+    volumes: *volume
+  census_block_group:
+    image: ghcr.io/degauss-org/census_block_group:0.5.1
+    command: ${GEOCODE_FILE:-address_geocoder_3.2.0_score_threshold_0.5.csv}
+    volumes: *volume
+    depends_on: *depends
+  roads:
+    image: ghcr.io/degauss-org/roads:0.2.1
+    command: ${GEOCODE_FILE:-address_geocoder_3.2.0_score_threshold_0.5.csv}
+    volumes: *volume
+    depends_on: *depends
+
+# ADDRESS_FILE=raisa_address.csv docker-compose up
+# deploy:
+#   resources:
+#     reservations:
+#       memory: 20gb

@@ -48,6 +48,7 @@ reference:
   - core_lib_images
   - create_degauss_menu_data
   - make_degauss_command
+  - use_degauss_compose
 
 - title: Deprecated
   description: |
