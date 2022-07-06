@@ -20,4 +20,19 @@ The below list contains the names of supported metadata elements captured using 
 
 - The template Dockerfile from {dht} (`dht::use_degauss_dockerfile()`) comes with the above four (but with commented out `ENV` instructions for specifying an optional command line argument)
 - Each `ENV` must be on its own line and only define one variable at a time
-- In general, any `ENV` instruction that begins with `degauss_` can/will be read in by `dht::get_degauss_env_dockerfile()` or `dht::get_degauss_env_online()`
+- In general, any `ENV` instruction that begins with `degauss_` can/will be read in by `dht::get_degauss_env_dockerfile()` or `dht::get_degauss_env_online()` 
+
+### Getting Metadata About A DeGAUSS Image Online
+
+Get information about one single DeGAUSS image:
+
+```{r}
+dht::get_degauss_env_online("fortunes")
+```
+
+or get a table of information about the images in the core library
+
+```{r}
+core_info <- dht::get_degauss_core_lib_env()
+knitr::kable(core_info)
+```

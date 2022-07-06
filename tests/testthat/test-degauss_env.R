@@ -13,14 +13,19 @@ test_that("get_degauss_metadata_from_dockerfile works", {
   )
 })
 
-
 test_that("can get degauss metadata from online dockerfile", {
-  testthat::expect_equal(
-    get_degauss_env_online("fortunes")["degauss_name"],
-    c("degauss_name" = "fortunes")
-  )
+  expect_snapshot(get_degauss_env_online("fortunes"))
 })
 
 test_that("can get degauss metadata online for core library", {
-  testthat::expect_equal(nrow(get_available_images()), 11)
+  expect_snapshot({
+    get_degauss_core_lib_env() |>
+      suppressMessages() |>
+      as.data.frame()
+  })
+  expect_snapshot({
+    get_degauss_core_lib_env(geocoder = FALSE) |>
+      suppressMessages() |>
+      as.data.frame()
+  })
 })

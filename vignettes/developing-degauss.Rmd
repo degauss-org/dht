@@ -38,7 +38,7 @@ However, some files **must** be edited:
 
 Fill out the "Using", "Geomarker Methods", and "Geomarker Data" sections in `README.md`, as applicable. *Make sure that the version in the example call matches the version of the latest released container.*
 
-Within the `Dockerfile`, `ENV` instructions are used to define [environment variables that capture metadata](./degauss-metadata-specification.html) about the DeGAUSS container, including the name (`degauss_name`), version (`degauss_version`), and a short description (`degauss_description`). These environment variables will be available to R code running from inside the container and can be used for `dht::greeting()` as well as other {dht} functions that read and write geomarker data. Outside of a DeGAUSS container, these are also used by `get_degauss_env_dockerfile()`, `get_degauss_env_online()`, and `get_available_images()`.
+Within the `Dockerfile`, `ENV` instructions are used to define [environment variables that capture metadata](./degauss-metadata-specification.html) about the DeGAUSS container, including the name (`degauss_name`), version (`degauss_version`), and a short description (`degauss_description`). These environment variables will be available to R code running from inside the container and can be used for `dht::greeting()` as well as other {dht} functions that read and write geomarker data. Outside of a DeGAUSS container, these are also used by `get_degauss_env_dockerfile()`, `get_degauss_env_online()`, and `get_degauss_core_lib_env()`.
 
 When creating a new DeGAUSS container, all but `degauss_description` are automatically defined and this value needs to be edited from 
 
