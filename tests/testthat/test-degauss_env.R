@@ -18,7 +18,14 @@ test_that("can get degauss metadata from online dockerfile", {
 })
 
 test_that("can get degauss metadata online for core library", {
-  expect_snapshot(suppressMessages(get_degauss_core_lib_env()))
-  expect_snapshot(suppressMessages(get_degauss_core_lib_env(geocoder = FALSE)))
+  expect_snapshot({
+    get_degauss_core_lib_env() |>
+      suppressMessages() |>
+      as.data.frame()
+  })
+  expect_snapshot({
+    get_degauss_core_lib_env(geocoder = FALSE) |>
+      suppressMessages() |>
+      as.data.frame()
+  })
 })
-

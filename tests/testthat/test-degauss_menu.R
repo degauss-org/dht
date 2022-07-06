@@ -10,6 +10,9 @@ test_that("can make degauss command", {
 })
 
 test_that("create degauss menu data", {
-  # TODO this test will break if a new version of a container is released
-  expect_snapshot(suppressMessages(create_degauss_menu_data()))
+  expect_snapshot({
+    create_degauss_menu_data() |>
+      suppressMessages() |>
+      as.data.frame()
+  })
 })
