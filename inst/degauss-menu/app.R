@@ -6,7 +6,7 @@ library(fresh)
 
 theme <- create_theme(
   bs4dash_vars(
-    navbar_light_color = degauss_colors(2),
+    navbar_light_color = dht::degauss_colors(2),
     navbar_light_active_color = "#FFF",
     navbar_light_hover_color = "#FFF",
     card_bg = "#FFF"
@@ -17,18 +17,19 @@ theme <- create_theme(
     text_light = "black"
   ),
   bs4dash_layout(
-    main_bg = degauss_colors(6)
+    main_bg = dht::degauss_colors(6)
   ),
   bs4dash_sidebar_light(
-    bg = degauss_colors(2),
-    header_color = degauss_colors(1)
+    bg = dht::degauss_colors(2),
+    header_color = dht::degauss_colors(1)
   ),
   bs4dash_status(
-    primary = degauss_colors(1),
-    success = degauss_colors(3)
+    primary = dht::degauss_colors(1),
+    success = dht::degauss_colors(3),
+    info = dht::degauss_colors(4)
   ),
   bs4dash_color(
-    gray_900 = degauss_colors(1), white = degauss_colors(4)
+    gray_900 = dht::degauss_colors(1), white = dht::degauss_colors(4)
   )
 )
 
@@ -42,8 +43,13 @@ ui <- function(request) {
     
     title = "DeGAUSS Menu",
     
-    header = dashboardHeader(htmltools::h3("DeGAUSS Menu"), compact = TRUE),
-  
+    header = dashboardHeader(title = dashboardBrand(
+      "DeGAUSS Menu",
+      color = 'primary',
+      href = "https://degauss.org",
+      image = "https://raw.githubusercontent.com/degauss-org/degauss_hex_logo/main/SVG/degauss_hex.svg"),
+      compact = TRUE),
+
   sidebar = dashboardSidebar(
     
     minified = FALSE,
@@ -64,22 +70,29 @@ ui <- function(request) {
   ),
   preloader = list(
     html = tagList(spin_refresh(), h3("Loading DeGAUSS Menu...")),
-    color = degauss_colors(5)#dht::degauss_colors(5)
+    color = dht::degauss_colors(5)
   ),
   
   body = dashboardBody(
     
     rclipboard::rclipboardSetup(),
     
-    box(
-      title = "Input File",
-      textInput("input_filename", "Geocoded filename", value = "my_address_file_geocoded.csv"),
-      bookmarkButton("Copy URL to save app state"),
-      width = 6,
-      status = 'primary',
-      solidHeader = TRUE,
-      color = 'white'
-    ),
+    fluidRow(
+      box(
+        title = "Input File",
+        textInput("input_filename", "Geocoded filename", value = "my_address_file_geocoded.csv"),
+        bookmarkButton("Copy URL to save app state"),
+        width = 6,
+        status = 'primary',
+        solidHeader = TRUE,
+        color = 'white'
+        ),
+      box(
+        title = "How to Use the DeGAUSS Menu",
+        p("To use this menu, select from the left panel what geomarkers you are looking to add to your data. You may also select if you have temporal data. Enter the name of your data file and click on the DeGAUSS containers that you would like to use. Copy and paste the output commands into your working directory."),
+        status = 'info'
+      )),
+    
     box(DT::dataTableOutput("core_lib_images_table"),
       title = "DeGAUSS Core Library",
       width = 12,
@@ -104,7 +117,7 @@ server <- function(input, output, session) {
 
   d <-
     get_degauss_core_lib_env(geocoder = FALSE) %>%
-    create_degauss_menu_data()  #dht::create_degauss_menu_data()
+    dht::create_degauss_menu_data()
   
   d <- d %>%
     mutate(category = case_when(
@@ -134,11 +147,22 @@ server <- function(input, output, session) {
   })
 
   output$core_lib_images_table <-
-    DT::renderDataTable(
-      d_obj(),
+    DT::renderDataTable(DT::datatable(
+      d_obj() %>%
+        select('Name' = name,
+               'Version' = version,
+               'Description' = description,
+               'Argument' = argument,
+               'Argument Default' = argument_default,
+               'URL' = url,
+               category,
+               temporal),
       escape = FALSE,
-      options = list(autoWidth = TRUE),
+      options = list(list(autoWidth = TRUE),
+                     dom = 't',
+                     columnDefs = list(list(visible = FALSE, targets = c(7,8)))),
       selection = "single"
+    )
     )
 
   selected_cmd <- reactive({
