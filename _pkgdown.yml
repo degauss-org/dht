@@ -15,6 +15,7 @@ reference:
   - greeting
   - check_ram
   - degauss_colors
+  - degauss_menu
 
 - title: Reading and Writing Data
   contents:

@@ -7,9 +7,10 @@
 degauss_menu()
 }
 \description{
-Run an interactive shiny application to create instructions
-for running multiple DeGAUSS containers.  At launch, it will
+Run an interactive shiny application to find geomarkers
+available within DeGAUSS based on categories and input data
+characteristics. At launch, it will
 download the latest information about DeGAUSS images in
-the core library.  After selection and setting options,
-copy (or save to file) bash code used to run a DeGAUSS pipeline.
+the core library.  Suggested DeGAUSS commands are
+automatically created and displayed for use.
 }
