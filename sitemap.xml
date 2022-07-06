@@ -49,10 +49,22 @@
     <loc>http://degauss.org/dht/reference/clean_address.html</loc>
   </url>
   <url>
+    <loc>http://degauss.org/dht/reference/core_lib_images.html</loc>
+  </url>
+  <url>
+    <loc>http://degauss.org/dht/reference/create_degauss_menu_data.html</loc>
+  </url>
+  <url>
     <loc>http://degauss.org/dht/reference/degauss_colors.html</loc>
   </url>
   <url>
+    <loc>http://degauss.org/dht/reference/degauss_menu.html</loc>
+  </url>
+  <url>
     <loc>http://degauss.org/dht/reference/expand_dates.html</loc>
+  </url>
+  <url>
+    <loc>http://degauss.org/dht/reference/get_degauss_core_lib_env.html</loc>
   </url>
   <url>
     <loc>http://degauss.org/dht/reference/get_degauss_env_dockerfile.html</loc>
@@ -62,6 +74,9 @@
   </url>
   <url>
     <loc>http://degauss.org/dht/reference/index.html</loc>
+  </url>
+  <url>
+    <loc>http://degauss.org/dht/reference/make_degauss_command.html</loc>
   </url>
   <url>
     <loc>http://degauss.org/dht/reference/pipe.html</loc>

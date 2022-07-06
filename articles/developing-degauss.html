@@ -33,7 +33,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">dht</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.0.4</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.1</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -148,7 +148,7 @@
 <h3 id="documentation">Documentation<a class="anchor" aria-label="anchor" href="#documentation"></a>
 </h3>
 <p>Fill out the “Using”, “Geomarker Methods”, and “Geomarker Data” sections in <code>README.md</code>, as applicable. <em>Make sure that the version in the example call matches the version of the latest released container.</em></p>
-<p>Within the <code>Dockerfile</code>, <code>ENV</code> instructions are used to define <a href="./degauss-metadata-specification.html">environment variables that capture metadata</a> about the DeGAUSS container, including the name (<code>degauss_name</code>), version (<code>degauss_version</code>), and a short description (<code>degauss_description</code>). These environment variables will be available to R code running from inside the container and can be used for <code><a href="../reference/greeting.html">dht::greeting()</a></code> as well as other {dht} functions that read and write geomarker data. Outside of a DeGAUSS container, these are also used by <code><a href="../reference/get_degauss_env_dockerfile.html">get_degauss_env_dockerfile()</a></code>, <code><a href="../reference/get_degauss_env_dockerfile.html">get_degauss_env_online()</a></code>, and <code><a href="../reference/get_degauss_env_dockerfile.html">get_available_images()</a></code>.</p>
+<p>Within the <code>Dockerfile</code>, <code>ENV</code> instructions are used to define <a href="./degauss-metadata-specification.html">environment variables that capture metadata</a> about the DeGAUSS container, including the name (<code>degauss_name</code>), version (<code>degauss_version</code>), and a short description (<code>degauss_description</code>). These environment variables will be available to R code running from inside the container and can be used for <code><a href="../reference/greeting.html">dht::greeting()</a></code> as well as other {dht} functions that read and write geomarker data. Outside of a DeGAUSS container, these are also used by <code><a href="../reference/get_degauss_env_dockerfile.html">get_degauss_env_dockerfile()</a></code>, <code><a href="../reference/get_degauss_env_dockerfile.html">get_degauss_env_online()</a></code>, and <code><a href="../reference/get_degauss_core_lib_env.html">get_degauss_core_lib_env()</a></code>.</p>
 <p>When creating a new DeGAUSS container, all but <code>degauss_description</code> are automatically defined and this value needs to be edited from</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1"></a><span class="ex">ENV</span> degauss_description=<span class="st">"insert short description here that finishes the sentence 'This container returns ...'"</span></span></code></pre></div>
 <p>to something specific and short (ideally <em>less than 50 characters</em>) that finishes the sentence “This container returns …”, like</p>
