@@ -3,6 +3,7 @@ library(shiny)
 library(bs4Dash)
 library(waiter)
 library(fresh)
+library(dplyr)
 
 theme <- create_theme(
   bs4dash_vars(
