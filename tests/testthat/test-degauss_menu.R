@@ -10,9 +10,6 @@ test_that("can make degauss command", {
 })
 
 test_that("create degauss menu data", {
-  expect_snapshot({
-    create_degauss_menu_data() |>
-      suppressMessages() |>
-      as.data.frame()
-  })
+  d <- create_degauss_menu_data()
+  expect_equal(d$name, core_lib_images())
 })
