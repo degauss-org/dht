@@ -4,6 +4,7 @@ library(bs4Dash)
 library(waiter)
 library(fresh)
 library(dplyr)
+library(dht)
 
 theme <- create_theme(
   bs4dash_vars(
@@ -118,7 +119,7 @@ server <- function(input, output, session) {
 
   d <-
     get_degauss_core_lib_env(geocoder = FALSE) %>%
-    dht::create_degauss_menu_data()
+    create_degauss_menu_data()
   
   d <- d %>%
     mutate(category = case_when(
