@@ -3,10 +3,14 @@ library(shiny)
 library(bs4Dash)
 library(waiter)
 library(fresh)
+library(dplyr)
+library(dht)
+library(rclipboard)
+library(DT)
 
 theme <- create_theme(
   bs4dash_vars(
-    navbar_light_color = dht::degauss_colors(2),
+    navbar_light_color = degauss_colors(2),
     navbar_light_active_color = "#FFF",
     navbar_light_hover_color = "#FFF",
     card_bg = "#FFF"
@@ -17,25 +21,25 @@ theme <- create_theme(
     text_light = "black"
   ),
   bs4dash_layout(
-    main_bg = dht::degauss_colors(6)
+    main_bg = degauss_colors(6)
   ),
   bs4dash_sidebar_light(
-    bg = dht::degauss_colors(2),
-    header_color = dht::degauss_colors(1)
+    bg = degauss_colors(2),
+    header_color = degauss_colors(1)
   ),
   bs4dash_status(
-    primary = dht::degauss_colors(1),
-    success = dht::degauss_colors(3),
-    info = dht::degauss_colors(4)
+    primary = degauss_colors(1),
+    success = degauss_colors(3),
+    info = degauss_colors(4)
   ),
   bs4dash_color(
-    gray_900 = dht::degauss_colors(1), white = dht::degauss_colors(4)
+    gray_900 = degauss_colors(1), white = degauss_colors(4)
   )
 )
 
 
 ui <- function(request) {
-  bs4Dash::dashboardPage(
+  dashboardPage(
     
     freshTheme = theme,
     
@@ -70,12 +74,12 @@ ui <- function(request) {
   ),
   preloader = list(
     html = tagList(spin_refresh(), h3("Loading DeGAUSS Menu...")),
-    color = dht::degauss_colors(5)
+    color = degauss_colors(5)
   ),
   
   body = dashboardBody(
     
-    rclipboard::rclipboardSetup(),
+    rclipboardSetup(),
     
     fluidRow(
       box(
@@ -93,7 +97,7 @@ ui <- function(request) {
         status = 'info'
       )),
     
-    box(DT::dataTableOutput("core_lib_images_table"),
+    box(dataTableOutput("core_lib_images_table"),
       title = "DeGAUSS Core Library",
       width = 12,
       status = 'primary',
@@ -117,7 +121,7 @@ server <- function(input, output, session) {
 
   d <-
     get_degauss_core_lib_env(geocoder = FALSE) %>%
-    dht::create_degauss_menu_data()
+    create_degauss_menu_data()
   
   d <- d %>%
     mutate(category = case_when(
@@ -134,7 +138,7 @@ server <- function(input, output, session) {
       ))
   
   d_obj <- reactive({
-    d <- dplyr::select(d, -degauss_cmd) %>%
+    d <- select(d, -degauss_cmd) %>%
       transform(url = paste0("<a href='", url, "'>", url, "</a>"))
     
     if (is.null(input$want) & input$temporal == "Not Sure"){
@@ -147,7 +151,7 @@ server <- function(input, output, session) {
   })
 
   output$core_lib_images_table <-
-    DT::renderDataTable(DT::datatable(
+    renderDataTable(datatable(
       d_obj() %>%
         select('Name' = name,
                'Version' = version,
@@ -168,9 +172,8 @@ server <- function(input, output, session) {
   selected_cmd <- reactive({
     ifelse(length(input$core_lib_images_table_rows_selected),
            d %>%
-             ## dplyr::filter(name %in% input$selected_images) %>%
-             dplyr::slice(input$core_lib_images_table_rows_selected) %>%
-             dplyr::pull(degauss_cmd) %>%
+             slice(input$core_lib_images_table_rows_selected) %>%
+             pull(degauss_cmd) %>%
              gsub("my_address_file_geocoded.csv",
                   input$input_filename,
                   .,
@@ -183,7 +186,7 @@ server <- function(input, output, session) {
   })
   
   output$clip <- renderUI({
-    rclipboard::rclipButton(
+    rclipButton(
       inputId = "clipbtn",
       label = "Copy Docker Command",
       clipText = selected_cmd(),

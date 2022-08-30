@@ -18,15 +18,15 @@
       as.data.frame(suppressMessages(get_degauss_core_lib_env()))
     Output
                degauss_name degauss_version
-      1            geocoder           3.2.0
-      2  census_block_group           0.5.1
-      3           dep_index           0.2.0
+      1            geocoder           3.2.1
+      2  census_block_group           0.6.0
+      3           dep_index           0.2.1
       4          greenspace           0.3.0
       5               roads           0.2.1
       6                aadt           0.2.0
       7                nlcd           0.2.0
       8           drivetime           1.1.0
-      9     st_census_tract           0.2.0
+      9     st_census_tract           0.2.1
       10                 pm           0.2.0
       11               narr           0.4.0
                                        degauss_description
@@ -60,14 +60,14 @@
       as.data.frame(suppressMessages(get_degauss_core_lib_env(geocoder = FALSE)))
     Output
                degauss_name degauss_version
-      1  census_block_group           0.5.1
-      2           dep_index           0.2.0
+      1  census_block_group           0.6.0
+      2           dep_index           0.2.1
       3          greenspace           0.3.0
       4               roads           0.2.1
       5                aadt           0.2.0
       6                nlcd           0.2.0
       7           drivetime           1.1.0
-      8     st_census_tract           0.2.0
+      8     st_census_tract           0.2.1
       9                  pm           0.2.0
       10               narr           0.4.0
                                        degauss_description
