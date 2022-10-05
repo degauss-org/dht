@@ -20,6 +20,7 @@ remotes::install_github("degauss-org/dht")
 
 Please see the [articles](https://degauss.org/dht/articles) for example usage and best practices:
 
-- [Helper Functions](https://degauss.org/dht/articles/helper-functions.html)
-- [Developing a New DeGAUSS Container](https://degauss.org/dht/articles/developing-degauss.html)
+- [Calling DeGAUSS from R](https://degauss.org/dht/articles/calling-degauss-from-R.html)
 - [DeGAUSS Metadata Specifications](https://degauss.org/dht/articles/degauss-metadata-specification.html)
+- [Developing a New DeGAUSS Container](https://degauss.org/dht/articles/developing-degauss.html)
+- [Helper Functions](https://degauss.org/dht/articles/helper-functions.html)

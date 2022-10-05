@@ -40,6 +40,15 @@ reference:
   - check_end_after_start_date
   - expand_dates
 
+- title: Running DeGAUSS from R
+  description: |
+    Run tabular data through DeGAUSS containers from R without using CSV files.
+  contents:
+  - degauss_run
+  - find_docker
+  - has_docker
+  - make_degauss_command
+
 - title: Development and Infrastructure
   contents:
   - use_degauss_container

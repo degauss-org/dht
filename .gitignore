@@ -7,3 +7,4 @@ dht.Rproj
 docs
 inst/doc
 /pkgdown/
+/vignettes/calling-degauss-from-R_cache/

@@ -1,0 +1,87 @@
+---
+title: "Calling DeGAUSS from R"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Calling DeGAUSS from R}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+```{r setup}
+library(dplyr, warn.conflicts = FALSE)
+library(dht)
+```
+
+#### Create addresses
+
+Addresses could be imported from a CSV file, database, or other source. For the sake of this example, we'll use ten example addresses that were randomly sampled from [CAGIS](http://cagismaps.hamilton-co.org/cagisportal):
+
+```{r}
+addresses <-
+  tibble::tibble(
+    id = paste0("g_", 1:10),
+    address = c(
+      "518 Fortune Ave Cincinnati OH 45219",
+      "3201 Stanhope Av Apt. 2 Cincinnati, OH 45211",
+      "3917 Catherine Av Norwood OH 45212",
+      "9960 Carolina Trace Road Harrison Township OH 45030",
+      "332 East Sharon Rd Unit #15 Glendale OH 45246",
+      "10101 Hamilton Cleves Road Crosby Township OH 45030",
+      "6076 Lagrange Ln Green Township, OH 45239",
+      "1325 Fuhrman Rd Reading, OH 45215",
+      "8831 Wellerstation Drive Montgomery OH 45249",
+      "2916 Willow Ridge Dr Colerain Township OH 45251"
+    ))
+```
+
+#### Parse Addresses
+
+```{r cache = TRUE}
+d <-
+  addresses |>
+  degauss_run("postal", "0.1.1", quiet = TRUE) |>
+  select(id = id, address = parsed_address)
+```
+
+#### Geocode Parsed Addresses
+
+```{r cache = TRUE}
+d <- d |>
+  degauss_run("geocoder", "3.2.1", quiet = TRUE) |>
+  select(id, lat, lon)
+```
+
+#### Add 2020 Census Tract
+
+```{r cache = TRUE}
+d <- d |>
+  degauss_run("census_block_group", "0.6.0", argument = "2020", quiet = TRUE)
+```
+
+#### Merge Census Data
+
+```{r cache = TRUE}
+# CODECdata::???
+## d <- d |>
+##   rename(census_tract_id = census_tract_id_2020) |>
+##   mutate(census_tract_vintage = "2020") |>
+##   select(-census_block_group_id_2020)
+```
+
+#### Add Greenspace (Enhanced Vegetation Index)
+
+```{r cache = TRUE}
+d <- d |>
+  degauss_run("greenspace", "0.3.0", quiet = TRUE)
+```
+
+```{r cache = TRUE}
+tibble::glimpse(d)
+```
