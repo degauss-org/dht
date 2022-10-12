@@ -10,9 +10,32 @@ vignette: >
 ```{r, include = FALSE}
 knitr::opts_chunk$set(
   collapse = TRUE,
+  eval = FALSE,
   comment = "#>"
 )
 ```
+
+## Background
+
+[DeGAUSS](https://degauss.org) is designed to be [used](using_degauss.html) at the [command line](using_degauss.html#Command_Line) by issuing [DeGAUSS commands](using_degauss.html#DeGAUSS_Commands) one at a time to read and write CSV files. Our [Sample Workflow](sample_workflow.html) and other specific step-by-step guides specify each command, including the input and output filenames, but this approach can be inflexible and working with longer and longer CSV file names can be cumbersome. 
+
+`degauss_run()` is a method for using DeGAUSS on a data frame in R instead of on a CSV file on disk. Data is passed to DeGAUSS via system Docker calls and the resulting data is read back into R. Since DeGAUSS always works by *adding* additional columns to the original input data, `degauss_run()` can be used to flexibly create DeGAUSS data pipelines from within R. This also allows for cleaner integration of `Make`-like workflows for geomarker assessment at scale.
+
+An example DeGAUSS pipeline in R might look like this: 
+
+```{r eval = F}
+addresses |>
+  degauss_run("postal", "0.1.1") |>
+  dplyr::select(id = id, address = parsed_address) |>
+  degauss_run("geocoder", "3.2.1") |>
+  select(id, lat, lon) |>
+  degauss_run("census_block_group", "0.6.0") |>
+  degauss_run("greenspace", "0.3.0")
+```
+
+The next section is a detailed example with step-by-step code and output.
+
+## Example
 
 ```{r setup}
 library(dplyr, warn.conflicts = FALSE)
@@ -21,7 +44,7 @@ library(dht)
 
 #### Create addresses
 
-Addresses could be imported from a CSV file, database, or other source. For the sake of this example, we'll use ten example addresses that were randomly sampled from [CAGIS](http://cagismaps.hamilton-co.org/cagisportal):
+Addresses could be imported from a CSV file, database, or other source. For the sake of this example, we'll use ten addresses randomly sampled from [all dwellings in Hamilton County, Ohio](http://cagis.org/Opendata/Auditor/):
 
 ```{r}
 addresses <-
@@ -43,6 +66,8 @@ addresses <-
 
 #### Parse Addresses
 
+Before geocoding, we will use the DeGAUSS `postal` image to create a "normalized and parsed" address column. We keep only our `id` column and the parsed addresses as `address` so that we can use it in the next step for geocoding.
+
 ```{r cache = TRUE}
 d <-
   addresses |>
@@ -52,13 +77,17 @@ d <-
 
 #### Geocode Parsed Addresses
 
+Geocode the addresses and keep only the `id`, latitude (`lat`), and longitude (`lon`) columns, discarding the addresses. 
+
 ```{r cache = TRUE}
 d <- d |>
   degauss_run("geocoder", "3.2.1", quiet = TRUE) |>
   select(id, lat, lon)
 ```
 
-#### Add 2020 Census Tract
+#### Add 2020 Census Tract Geographies
+
+Attach 2020 census tract and block group identifiers.  Here, we specify `argument = "2020"` to ensure the DeGAUSS image uses the correct vintage of census geographies.
 
 ```{r cache = TRUE}
 d <- d |>
@@ -67,20 +96,29 @@ d <- d |>
 
 #### Merge Census Data
 
+Census tract identifiers can be used to link [lots](https://geomarker.io/hh_acs_measures) and [lots](https://geomarker.io/census_mega_dataset) of different types of data.  Download the 2018 [material deprivation index](https://geomarker.io/dep_index) and join it to our data.
+
 ```{r cache = TRUE}
-# CODECdata::???
-## d <- d |>
-##   rename(census_tract_id = census_tract_id_2020) |>
-##   mutate(census_tract_vintage = "2020") |>
-##   select(-census_block_group_id_2020)
+dep_index <- "https://github.com/geomarker-io/dep_index/raw/master/2018_dep_index/ACS_deprivation_index_by_census_tracts.rds" |>
+  url() |>
+  gzcon() |>
+  readRDS() |>
+  as_tibble()
+
+d <- d |>
+  left_join(dep_index, by = c("census_tract_id_2020" = "census_tract_fips"))
 ```
 
-#### Add Greenspace (Enhanced Vegetation Index)
+#### Add Greenness
+
+As an example of geomarker assessment that does not rely on census geography, we add the mean EVI (enhanced vegetation index) within three differently sized buffers (radii of 500, 1,500, and 2,500 m) around each location.
 
 ```{r cache = TRUE}
 d <- d |>
   degauss_run("greenspace", "0.3.0", quiet = TRUE)
 ```
+
+Our geomarker assessment process is complete and everything is linked in one data frame, ready for storing, analyzing, and sharing.
 
 ```{r cache = TRUE}
 tibble::glimpse(d)
