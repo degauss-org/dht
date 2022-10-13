@@ -1,6 +1,6 @@
 Package: dht
 Title: A Collection of Functions to Assist Building DeGAUSS Containers
-Version: 1.1
+Version: 1.2.0
 Authors@R: c(
     person(given = "Erika",
            family = "Rasnick",
@@ -37,7 +37,8 @@ Imports:
     stringr (>= 1.4.0),
     whisker (>= 0.4),
     ps (>= 1.6.0),
-    prettyunits
+    prettyunits,
+    tidyselect
 Depends: 
     R (>= 2.10)
 Config/testthat/edition: 3
