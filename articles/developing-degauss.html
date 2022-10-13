@@ -75,7 +75,8 @@
 
 
 
-<script src="developing-degauss_files/accessible-code-block-0.0.1/empty-anchor.js"></script><div class="row">
+
+<div class="row">
   <main id="main" class="col-md-9"><div class="page-header">
       <img src="../logo.png" class="logo" alt=""><h1>Developing a New DeGAUSS Container</h1>
             
@@ -151,9 +152,9 @@
 <p>Fill out the “Using”, “Geomarker Methods”, and “Geomarker Data” sections in <code>README.md</code>, as applicable. <em>Make sure that the version in the example call matches the version of the latest released container.</em></p>
 <p>Within the <code>Dockerfile</code>, <code>ENV</code> instructions are used to define <a href="./degauss-metadata-specification.html">environment variables that capture metadata</a> about the DeGAUSS container, including the name (<code>degauss_name</code>), version (<code>degauss_version</code>), and a short description (<code>degauss_description</code>). These environment variables will be available to R code running from inside the container and can be used for <code><a href="../reference/greeting.html">dht::greeting()</a></code> as well as other {dht} functions that read and write geomarker data. Outside of a DeGAUSS container, these are also used by <code><a href="../reference/get_degauss_env_dockerfile.html">get_degauss_env_dockerfile()</a></code>, <code><a href="../reference/get_degauss_env_dockerfile.html">get_degauss_env_online()</a></code>, and <code><a href="../reference/get_degauss_core_lib_env.html">get_degauss_core_lib_env()</a></code>.</p>
 <p>When creating a new DeGAUSS container, all but <code>degauss_description</code> are automatically defined and this value needs to be edited from</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1"></a><span class="ex">ENV</span> degauss_description=<span class="st">"insert short description here that finishes the sentence 'This container returns ...'"</span></span></code></pre></div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="ex">ENV</span> degauss_description=<span class="st">"insert short description here that finishes the sentence 'This container returns ...'"</span></span></code></pre></div>
 <p>to something specific and short (ideally <em>less than 50 characters</em>) that finishes the sentence “This container returns …”, like</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1"></a><span class="ex">ENV</span> degauss_description=<span class="st">"proximity and length of major roads"</span></span></code></pre></div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="ex">ENV</span> degauss_description=<span class="st">"proximity and length of major roads"</span></span></code></pre></div>
 <p>When releasing a new version of the DeGAUSS container in the future, the environment variable <code>degauss_version</code> can be edited in the <code>Dockerfile</code> and R code in the container can use it for greetings, writing output files, and other operations that depend on the current version (or name or description). This prevents the need for manually changing the version number in several different locations for each new release.</p>
 </div>
 <div class="section level3">
@@ -172,31 +173,31 @@
 <span><span class="co"># "apt-get install -y libgdal-dev"     "apt-get install -y gdal-bin"</span></span>
 <span><span class="co"># "apt-get install -y libgeos-dev"     "apt-get install -y libproj-dev"</span></span></code></pre></div>
 <p>These system requirements could be translated to <code>RUN</code> instructions for the Dockerfile to make sure they are available before the R packages that require them are installed:</p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1"></a><span class="ex">RUN</span> apt-get update \</span>
-<span id="cb4-2"><a href="#cb4-2"></a>    <span class="kw">&amp;&amp;</span> <span class="ex">apt-get</span> install -yqq --no-install-recommends \</span>
-<span id="cb4-3"><a href="#cb4-3"></a>    libudunits2-dev \</span>
-<span id="cb4-4"><a href="#cb4-4"></a>    libssl-dev \</span>
-<span id="cb4-5"><a href="#cb4-5"></a>    libgdal-dev \</span>
-<span id="cb4-6"><a href="#cb4-6"></a>    gdal-bin \</span>
-<span id="cb4-7"><a href="#cb4-7"></a>    libgeos-dev \</span>
-<span id="cb4-8"><a href="#cb4-8"></a>    libproj-dev \</span>
-<span id="cb4-9"><a href="#cb4-9"></a>    <span class="kw">&amp;&amp;</span> <span class="ex">apt-get</span> clean</span></code></pre></div>
+<div class="sourceCode" id="cb4"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="ex">RUN</span> apt-get update <span class="dt">\</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>    <span class="kw">&amp;&amp;</span> <span class="ex">apt-get</span> install <span class="at">-yqq</span> <span class="at">--no-install-recommends</span> <span class="dt">\</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>    libudunits2-dev <span class="dt">\</span></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>    libssl-dev <span class="dt">\</span></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>    libgdal-dev <span class="dt">\</span></span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>    gdal-bin <span class="dt">\</span></span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>    libgeos-dev <span class="dt">\</span></span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>    libproj-dev <span class="dt">\</span></span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>    <span class="kw">&amp;&amp;</span> <span class="ex">apt-get</span> clean</span></code></pre></div>
 </div>
 </div>
 <div class="section level2">
 <h2 id="including-files-inside-the-container">Including files inside the container<a class="anchor" aria-label="anchor" href="#including-files-inside-the-container"></a>
 </h2>
 <p>By default, the container will copy in <code>entrypoint.R</code> and <code>renv.lock</code> for use at runtime and ignore anything else in the working directory to automatically speed up build times and keep containers smaller in size. If the container requires any other files (e.g., <code>.rds</code> datafiles), edit <code>Dockerfile</code> and <code>.dockerignore</code> so that the files are copied to the container and not ignored by Docker. For example, if we want to use <code>geomarker_data.rds</code>, we would make the following changes in <code>Dockerfile</code>:</p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1"></a>    <span class="ex">COPY</span> entrypoint.R .</span>
-<span id="cb5-2"><a href="#cb5-2"></a>    <span class="ex">COPY</span> geomarker_data.rds    <span class="co"># copy .rds file from host to container when building</span></span></code></pre></div>
+<div class="sourceCode" id="cb5"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>    <span class="ex">COPY</span> entrypoint.R .</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>    <span class="ex">COPY</span> geomarker_data.rds    <span class="co"># copy .rds file from host to container when building</span></span></code></pre></div>
 <p>and in <code>.dockerignore</code>:</p>
-<div class="sourceCode" id="cb6"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb6-1"><a href="#cb6-1"></a>    <span class="co"># ignore everything</span></span>
-<span id="cb6-2"><a href="#cb6-2"></a>    <span class="ex">**</span></span>
-<span id="cb6-3"><a href="#cb6-3"></a></span>
-<span id="cb6-4"><a href="#cb6-4"></a>    <span class="co"># except what we need</span></span>
-<span id="cb6-5"><a href="#cb6-5"></a>    !<span class="ex">/renv.lock</span></span>
-<span id="cb6-6"><a href="#cb6-6"></a>    !<span class="ex">/entrypoint.R</span></span>
-<span id="cb6-7"><a href="#cb6-7"></a>    !<span class="ex">/geomarker_data.rds</span>      <span class="co"># make sure the .rds file is not ignored</span></span></code></pre></div>
+<div class="sourceCode" id="cb6"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>    <span class="co"># ignore everything</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>    <span class="ex">**</span></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>    <span class="co"># except what we need</span></span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>    <span class="ex">!/renv.lock</span></span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>    <span class="ex">!/entrypoint.R</span></span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>    <span class="ex">!/geomarker_data.rds</span>      <span class="co"># make sure the .rds file is not ignored</span></span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="tests">Tests<a class="anchor" aria-label="anchor" href="#tests"></a>
