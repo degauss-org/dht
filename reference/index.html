@@ -10,7 +10,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">dht</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.1</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.2.0</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -24,6 +24,7 @@
 <li class="nav-item dropdown">
   <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown-articles">Articles</a>
   <div class="dropdown-menu" aria-labelledby="dropdown-articles">
+    <a class="dropdown-item" href="../articles/calling-degauss-from-R.html">Calling DeGAUSS from R</a>
     <a class="dropdown-item" href="../articles/degauss-metadata-specification.html">DeGAUSS Metadata Specifications</a>
     <a class="dropdown-item" href="../articles/developing-degauss.html">Developing a New DeGAUSS Container</a>
     <a class="dropdown-item" href="../articles/helper-functions.html">Helper Functions</a>
@@ -163,6 +164,37 @@
         </dt>
         <dd>expand dates between start_date and end_date</dd>
       </dl></div><div class="section level2">
+      <h2 id="running-degauss-from-r">Running DeGAUSS from R<a class="anchor" aria-label="anchor" href="#running-degauss-from-r"></a></h2>
+      
+      <p class="section-desc"></p><p>Run tabular data through DeGAUSS containers from R without using CSV files.</p>
+
+      
+    </div><div id="" class="section level2">
+      
+      
+      
+
+      <dl><dt>
+          
+          <code><a href="degauss_run.html">degauss_run()</a></code> 
+        </dt>
+        <dd>run a DeGAUSS container</dd>
+      </dl><dl><dt>
+          
+          <code><a href="find_docker.html">find_docker()</a></code> 
+        </dt>
+        <dd>find the path to the docker executable</dd>
+      </dl><dl><dt>
+          
+          <code><a href="has_docker.html">has_docker()</a></code> 
+        </dt>
+        <dd>is docker available?</dd>
+      </dl><dl><dt>
+          
+          <code><a href="make_degauss_command.html">make_degauss_command()</a></code> 
+        </dt>
+        <dd>create a <a href="https://degauss.org/using_degauss.html#DeGAUSS_Commands" class="external-link">DeGAUSS command</a></dd>
+      </dl></div><div class="section level2">
       <h2 id="development-and-infrastructure">Development and Infrastructure<a class="anchor" aria-label="anchor" href="#development-and-infrastructure"></a></h2>
       
       
@@ -202,8 +234,7 @@
           
           <code><a href="make_degauss_command.html">make_degauss_command()</a></code> 
         </dt>
-        <dd>creates a <a href="https://degauss.org/using_degauss.html#DeGAUSS_Commands" class="external-link">DeGAUSS command</a>
-with the supplied DeGAUSS image name, version, input file name, and optional argument.</dd>
+        <dd>create a <a href="https://degauss.org/using_degauss.html#DeGAUSS_Commands" class="external-link">DeGAUSS command</a></dd>
       </dl><dl><dt>
           
           <code><a href="use_degauss_compose.html">use_degauss_compose()</a></code> 

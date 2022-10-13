@@ -33,7 +33,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">dht</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.1</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.2.0</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -48,6 +48,7 @@
 <li class="active nav-item dropdown">
   <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown-articles">Articles</a>
   <div class="dropdown-menu" aria-labelledby="dropdown-articles">
+    <a class="dropdown-item" href="../articles/calling-degauss-from-R.html">Calling DeGAUSS from R</a>
     <a class="dropdown-item" href="../articles/degauss-metadata-specification.html">DeGAUSS Metadata Specifications</a>
     <a class="dropdown-item" href="../articles/developing-degauss.html">Developing a New DeGAUSS Container</a>
     <a class="dropdown-item" href="../articles/helper-functions.html">Helper Functions</a>
@@ -129,8 +130,7 @@
 <code class="sourceCode R"><span><span class="va">core_info</span> <span class="op">&lt;-</span> <span class="fu">dht</span><span class="fu">::</span><span class="fu"><a href="../reference/get_degauss_core_lib_env.html">get_degauss_core_lib_env</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## <span style="color: #00BBBB;">ℹ</span> downloading latest information about images in core library...</span></span></code></pre>
 <pre><code><span><span class="co">## <span style="color: #00BB00;">✔</span> find more at <span style="color: #0000BB; font-style: italic;">&lt;https://degauss.org/available_images&gt;</span></span></span></code></pre>
-<pre><code><span><span class="co">## downloading latest information about images in core library... <span style="color: #00BB00;">■■■■■■■■■■■■■■■■</span>…</span></span></code></pre>
-<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html" class="external-link">kable</a></span><span class="op">(</span><span class="va">core_info</span><span class="op">)</span></span></code></pre></div>
 <table class="table">
 <colgroup>
@@ -184,7 +184,7 @@
 </tr>
 <tr class="odd">
 <td align="left">nlcd</td>
-<td align="left">0.2.0</td>
+<td align="left">0.2.1</td>
 <td align="left">land cover (imperviousness, land use, greenness)</td>
 <td align="left">buffer radius in meters [default: 400]</td>
 </tr>
