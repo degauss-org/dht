@@ -4,14 +4,14 @@
 \alias{degauss_run}
 \title{run a DeGAUSS container}
 \usage{
-degauss_run(.x, image, version, argument = NA, quiet = FALSE)
+degauss_run(.x, image, version = "latest", argument = NA, quiet = FALSE)
 }
 \arguments{
 \item{.x}{a data.frame or tibble to be input to a DeGAUSS container}
 
 \item{image}{name of DeGAUSS image}
 
-\item{version}{version of DeGAUSS image}
+\item{version}{version of DeGAUSS image; will use latest version if not specified}
 
 \item{argument}{optional argument}
 

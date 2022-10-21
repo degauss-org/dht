@@ -2,12 +2,12 @@
 #' 
 #' @param .x a data.frame or tibble to be input to a DeGAUSS container
 #' @param image name of DeGAUSS image
-#' @param version version of DeGAUSS image
+#' @param version version of DeGAUSS image; will use latest version if not specified
 #' @param argument optional argument
 #' @param quiet suppress output from DeGAUSS container?
 #' @return `.x` with additional returned DeGAUSS columns
 #' @export
-degauss_run <- function(.x, image, version, argument = NA, quiet = FALSE) {
+degauss_run <- function(.x, image, version = "latest", argument = NA, quiet = FALSE) {
 
   tf <- tempfile(pattern = "degauss_", fileext = ".csv")
 
@@ -77,7 +77,7 @@ degauss_run <- function(.x, image, version, argument = NA, quiet = FALSE) {
 #' make_degauss_command(image = "geocoder", version = "3.2.0", argument = "0.4")
 #' make_degauss_command(image = "geocoder", version = "3.2.0", docker_cmd = "/usr/local/bin/docker")
 #' @export
-make_degauss_command <- function(input_file = "my_address_file_geocoded.csv", image, version, argument = NA, docker_cmd = "docker") {
+make_degauss_command <- function(input_file = "my_address_file_geocoded.csv", image, version = "latest", argument = NA, docker_cmd = "docker") {
   degauss_cmd <-
     glue::glue(
       "{docker_cmd}",

@@ -7,7 +7,7 @@
 make_degauss_command(
   input_file = "my_address_file_geocoded.csv",
   image,
-  version,
+  version = "latest",
   argument = NA,
   docker_cmd = "docker"
 )
