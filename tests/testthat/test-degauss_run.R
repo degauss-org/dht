@@ -36,3 +36,11 @@ test_that("can use degauss_run without specifying version", {
   d_out <- degauss_run(.x = d, image = "postal", quiet = TRUE)
   expect_snapshot(d_out)
   })
+
+test_that("multiple addresses don't cause merge problems", {
+  d_out <-
+    data.frame(address = c("224 Woolper Ave Cincinnati, OH 45220"),
+               id = 1:2) |>
+    degauss_run("postal")
+  expect_equal(nrow(d_out), 2)
+  })
