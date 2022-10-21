@@ -15,6 +15,7 @@ degauss_run <- function(.x, image, version = "latest", argument = NA, quiet = FA
 
   .x |>
     dplyr::select(tidyselect::all_of(degauss_input_names)) |>
+    unique() |>
     readr::write_csv(tf)
 
   degauss_cmd <-

@@ -38,6 +38,7 @@ test_that("can use degauss_run without specifying version", {
   })
 
 test_that("multiple addresses don't cause merge problems", {
+  skip_if(!has_docker(), "docker not available")
   d_out <-
     data.frame(address = c("224 Woolper Ave Cincinnati, OH 45220"),
                id = 1:2) |>
