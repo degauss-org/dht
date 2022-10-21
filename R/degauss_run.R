@@ -28,11 +28,16 @@ degauss_run <- function(.x, image, version = "latest", argument = NA, quiet = FA
 
   system(degauss_cmd, ignore.stdout = quiet, ignore.stderr = quiet)
 
-  .x_output <-
+  out_files <-
     list.files(dirname(tf),
                pattern = tools::file_path_sans_ext(basename(tf)),
-               full.names = TRUE)[1] |>
+               full.names = TRUE)
+
+  out_file <- out_files[!out_files == tf]
+  
+  .x_output <-
     readr::read_csv(
+      file = out_file,
       col_types = readr::cols(
         lat = "d",
         lon = "d",
