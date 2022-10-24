@@ -107,21 +107,22 @@ ui <- function(request) {
       width = 12,
       status = 'primary',
       solidHeader = TRUE,
-      color = "white", 
-      sidebar = boxSidebar(
-        id = "windowsSidebar",
-        checkboxInput('windows', "Using Windows?", value = FALSE),
-        width = 25,
-        startOpen = FALSE
-      )
+      color = "white"
     ),
     box(title = "DeGAUSS command(s)",
+        id = "cmd_box",
         verbatimTextOutput("degauss_cmd", placeholder = TRUE),
         uiOutput("clip"),
         width = 12,
         status = 'primary',
         solidHeader = TRUE,
-        color = "white"
+        color = "white", 
+        sidebar = boxSidebar(
+          id = "windowsSidebar",
+          checkboxInput('windows', "Using Windows?", value = FALSE),
+          width = 25,
+          startOpen = FALSE
+        )
     ),
     tags$head(tags$style(HTML("#core_lib_images_table {cursor:pointer;}")))
   )
@@ -189,7 +190,8 @@ server <- function(input, output, session) {
     )
 
   selected_cmd <- reactive({
-    ifelse(length(input$core_lib_images_table_rows_selected),
+    
+    if (length(input$core_lib_images_table_rows_selected)) {
            d %>%
              ## dplyr::filter(name %in% input$selected_images) %>%
              dplyr::slice(input$core_lib_images_table_rows_selected) %>%
@@ -197,13 +199,13 @@ server <- function(input, output, session) {
              gsub("my_address_file_geocoded.csv",
                   input$input_filename,
                   .,
-                  fixed = TRUE), 
-           "")
+                  fixed = TRUE)
+    } else {
+      ""
+    }
+    
     })
   
-  observeEvent(input$windows, {
-    updateBoxSidebar("windowsSidebar")
-  })
   
   output$degauss_cmd <- renderText({
     selected_cmd()
@@ -214,9 +216,49 @@ server <- function(input, output, session) {
       inputId = "clipbtn",
       label = "Copy Docker Command",
       clipText = selected_cmd(),
-      icon = icon("clipboard"),
-      
+      icon = icon("clipboard")
     )
+  })
+  
+  observe({
+    #req(input$windows)
+    isolate({
+      
+      selected_cmd <- reactive({
+        
+        if (length(input$core_lib_images_table_rows_selected) & input$windows == FALSE) {
+          d %>%
+            ## dplyr::filter(name %in% input$selected_images) %>%
+            dplyr::slice(input$core_lib_images_table_rows_selected) %>%
+            dplyr::pull(degauss_cmd) %>%
+            gsub("my_address_file_geocoded.csv",
+                 input$input_filename,
+                 .,
+                 fixed = TRUE)
+        } else if (length(input$core_lib_images_table_rows_selected) & req(input$windows) == TRUE) {
+          d %>%
+            mutate(degauss_cmd = stringr::str_replace(degauss_cmd, pattern = stringr::fixed("$PWD"), replacement = "%cd%")) %>%
+            ## dplyr::filter(name %in% input$selected_images) %>%
+            dplyr::slice(input$core_lib_images_table_rows_selected) %>%
+            dplyr::pull(degauss_cmd) %>%
+            gsub("my_address_file_geocoded.csv",
+                 input$input_filename,
+                 .,
+                 fixed = TRUE)
+        }
+        else {
+            ""
+          }
+      })
+      
+      output$degauss_cmd <- renderText({
+        selected_cmd()
+      })
+      
+      updateBox("cmd_box", action = c("update"))
+      
+    })
+    
   })
   
 }
