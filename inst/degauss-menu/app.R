@@ -67,7 +67,14 @@ ui <- function(request) {
     
     
     radioButtons(inputId = "temporal", inline = FALSE, label = "Do you have temporal data?",
-                       choices = c("Yes", "No", "Not Sure"), selected = "Not Sure")
+                       choices = c("Yes", "No"), selected = character(0)),
+    
+    tooltip(
+      title = "If you're not sure if you have temporal data, select this option to include all containers that allow temporal data columns in the input file",
+      placement = "bottom",
+      checkboxInput("not_sure", label = "Not sure if you have temporal data? Click here",
+                  value = FALSE)
+    )
     
   ),
   preloader = list(
@@ -100,7 +107,13 @@ ui <- function(request) {
       width = 12,
       status = 'primary',
       solidHeader = TRUE,
-      color = "white"
+      color = "white", 
+      sidebar = boxSidebar(
+        id = "windowsSidebar",
+        checkboxInput('windows', "Using Windows?", value = FALSE),
+        width = 25,
+        startOpen = FALSE
+      )
     ),
     box(title = "DeGAUSS command(s)",
         verbatimTextOutput("degauss_cmd", placeholder = TRUE),
@@ -133,19 +146,27 @@ server <- function(input, output, session) {
     temporal = case_when(
       name %in% c('st_census_tract', 'aadt', 'narr', 'pm') ~ 'Yes',
       name %in% c('census_block_group', 'dep_index', 'roads', 'drivetime', 'greenspace', 'nlcd') ~ 'No'
+      ),
+    not_sure = case_when(
+      name %in% c('dep_index', 'roads', 'drivetime', 'greenspace', 'nlcd') ~ 'optional',
+      name %in% c('st_census_tract', 'aadt', 'narr', 'pm', 'census_block_group') ~ 'non_optional'
       ))
   
   d_obj <- reactive({
     d <- dplyr::select(d, -degauss_cmd) %>%
       transform(url = paste0("<a href='", url, "'>", url, "</a>"))
     
-    if (is.null(input$want) & input$temporal == "Not Sure"){
+    if (is.null(input$want) & is.null(input$temporal)){
       d
-    } else {
-    d <- d %>%
-      filter(category %in% input$want & temporal %in% input$temporal)
-    }
-   
+    } else if (input$not_sure == TRUE | is.null(input$temporal)) {
+      d <- d %>%
+        filter(not_sure == "optional" & category %in% input$want)
+      d
+    } else if (input$not_sure == FALSE) {
+      d <- d %>%
+        filter(category %in% input$want & temporal %in% input$temporal)
+      d
+    } 
   })
 
   output$core_lib_images_table <-
@@ -179,6 +200,10 @@ server <- function(input, output, session) {
                   fixed = TRUE), 
            "")
     })
+  
+  observeEvent(input$windows, {
+    updateBoxSidebar("windowsSidebar")
+  })
   
   output$degauss_cmd <- renderText({
     selected_cmd()
