@@ -22,8 +22,7 @@ degauss_run <- function(.x, image, version = "latest", argument = NA, quiet = FA
     make_degauss_command(input_file = basename(tf),
                          image = image,
                          version = version,
-                         argument = argument,
-                         docker_cmd = find_docker())
+                         argument = argument)
 
   degauss_cmd <- gsub("$PWD", dirname(tf), degauss_cmd, fixed = TRUE)
 
@@ -82,7 +81,7 @@ degauss_run <- function(.x, image, version = "latest", argument = NA, quiet = FA
 #' make_degauss_command(image = "geocoder", version = "3.2.0", argument = "0.4")
 #' make_degauss_command(image = "geocoder", version = "3.2.0", docker_cmd = "/usr/local/bin/docker")
 #' @export
-make_degauss_command <- function(input_file = "my_address_file_geocoded.csv", image, version = "latest", argument = NA, docker_cmd = "docker") {
+make_degauss_command <- function(input_file = "my_address_file_geocoded.csv", image, version = "latest", argument = NA, docker_cmd = find_docker()) {
   degauss_cmd <-
     glue::glue(
       "{docker_cmd}",
