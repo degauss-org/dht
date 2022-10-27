@@ -9,7 +9,7 @@
 #' @export
 degauss_run <- function(.x, image, version = "latest", argument = NA, quiet = FALSE) {
 
-  tf <- tempfile(pattern = "degauss_", fileext = ".csv")
+  tf <- fs::path(tempfile(pattern = "degauss_", fileext = ".csv"))
 
   degauss_input_names <-  names(.x)[names(.x) %in% c("address", "lat", "lon", "start_date", "end_date")]
 
@@ -30,12 +30,11 @@ degauss_run <- function(.x, image, version = "latest", argument = NA, quiet = FA
   system(degauss_cmd, ignore.stdout = quiet, ignore.stderr = quiet)
 
   out_files <-
-    list.files(dirname(tf),
-               pattern = tools::file_path_sans_ext(basename(tf)),
-               full.names = TRUE)
+    fs::dir_ls(fs::path_dir(tf),
+               glob = paste0(fs::path_file(tf), "*.csv"))
 
   out_file <- out_files[!out_files == tf]
-  
+
   .x_output <-
     readr::read_csv(
       file = out_file,
