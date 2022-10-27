@@ -33,7 +33,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">dht</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.2.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.2.1</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -90,8 +90,19 @@
 <div class="section level2">
 <h2 id="background">Background<a class="anchor" aria-label="anchor" href="#background"></a>
 </h2>
-<p><a href="https://degauss.org" class="external-link">DeGAUSS</a> is designed to be <a href="using_degauss.html">used</a> at the <a href="using_degauss.html#Command_Line">command line</a> by issuing <a href="using_degauss.html#DeGAUSS_Commands">DeGAUSS commands</a> one at a time to read and write CSV files. Our <a href="sample_workflow.html">Sample Workflow</a> and other specific step-by-step guides specify each command, including the input and output filenames, but this approach can be inflexible and working with longer and longer CSV file names can be cumbersome.</p>
-<p><code><a href="../reference/degauss_run.html">degauss_run()</a></code> is a method for using DeGAUSS on a data frame in R instead of on a CSV file on disk. Data is passed to DeGAUSS via system Docker calls and the resulting data is read back into R. Since DeGAUSS always works by <em>adding</em> additional columns to the original input data, <code><a href="../reference/degauss_run.html">degauss_run()</a></code> can be used to flexibly create DeGAUSS data pipelines from within R. This also allows for cleaner integration of <code>Make</code>-like workflows for geomarker assessment at scale.</p>
+<p><a href="https://degauss.org" class="external-link">DeGAUSS</a> is designed to be <a href="using_degauss.html">used</a> at the <a href="using_degauss.html#Command_Line">command line</a> by issuing <a href="using_degauss.html#DeGAUSS_Commands">DeGAUSS commands</a> one at a
+time to read and write CSV files. Our <a href="sample_workflow.html">Sample Workflow</a> and other specific
+step-by-step guides specify each command, including the input and output
+filenames, but this approach can be inflexible and working with longer
+and longer CSV file names can be cumbersome.</p>
+<p><code><a href="../reference/degauss_run.html">degauss_run()</a></code> is a method for using DeGAUSS on a data
+frame in R instead of on a CSV file on disk. Data is passed to DeGAUSS
+via system Docker calls and the resulting data is read back into R.
+Since DeGAUSS always works by <em>adding</em> additional columns to the
+original input data, <code><a href="../reference/degauss_run.html">degauss_run()</a></code> can be used to flexibly
+create DeGAUSS data pipelines from within R. This also allows for
+cleaner integration of <code>Make</code>-like workflows for geomarker
+assessment at scale.</p>
 <p>An example DeGAUSS pipeline in R might look like this:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">addresses</span> <span class="op">|&gt;</span></span>
@@ -101,7 +112,8 @@
 <span>  <span class="fu">select</span><span class="op">(</span><span class="va">id</span>, <span class="va">lat</span>, <span class="va">lon</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="../reference/degauss_run.html">degauss_run</a></span><span class="op">(</span><span class="st">"census_block_group"</span>, <span class="st">"0.6.0"</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="../reference/degauss_run.html">degauss_run</a></span><span class="op">(</span><span class="st">"greenspace"</span>, <span class="st">"0.3.0"</span><span class="op">)</span></span></code></pre></div>
-<p>The next section is a detailed example with step-by-step code and output.</p>
+<p>The next section is a detailed example with step-by-step code and
+output.</p>
 </div>
 <div class="section level2">
 <h2 id="example">Example<a class="anchor" aria-label="anchor" href="#example"></a>
@@ -112,7 +124,10 @@
 <div class="section level4">
 <h4 id="create-addresses">Create addresses<a class="anchor" aria-label="anchor" href="#create-addresses"></a>
 </h4>
-<p>Addresses could be imported from a CSV file, database, or other source. For the sake of this example, we’ll use ten addresses randomly sampled from <a href="http://cagis.org/Opendata/Auditor/" class="external-link">all dwellings in Hamilton County, Ohio</a>:</p>
+<p>Addresses could be imported from a CSV file, database, or other
+source. For the sake of this example, we’ll use ten addresses randomly
+sampled from <a href="http://cagis.org/Opendata/Auditor/" class="external-link">all dwellings
+in Hamilton County, Ohio</a>:</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">addresses</span> <span class="op">&lt;-</span></span>
 <span>  <span class="fu">tibble</span><span class="fu">::</span><span class="fu"><a href="https://tibble.tidyverse.org/reference/tibble.html" class="external-link">tibble</a></span><span class="op">(</span></span>
@@ -133,7 +148,10 @@
 <div class="section level4">
 <h4 id="parse-addresses">Parse Addresses<a class="anchor" aria-label="anchor" href="#parse-addresses"></a>
 </h4>
-<p>Before geocoding, we will use the DeGAUSS <code>postal</code> image to create a “normalized and parsed” address column. We keep only our <code>id</code> column and the parsed addresses as <code>address</code> so that we can use it in the next step for geocoding.</p>
+<p>Before geocoding, we will use the DeGAUSS <code>postal</code> image
+to create a “normalized and parsed” address column. We keep only our
+<code>id</code> column and the parsed addresses as <code>address</code>
+so that we can use it in the next step for geocoding.</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">d</span> <span class="op">&lt;-</span></span>
 <span>  <span class="va">addresses</span> <span class="op">|&gt;</span></span>
@@ -143,7 +161,9 @@
 <div class="section level4">
 <h4 id="geocode-parsed-addresses">Geocode Parsed Addresses<a class="anchor" aria-label="anchor" href="#geocode-parsed-addresses"></a>
 </h4>
-<p>Geocode the addresses and keep only the <code>id</code>, latitude (<code>lat</code>), and longitude (<code>lon</code>) columns, discarding the addresses.</p>
+<p>Geocode the addresses and keep only the <code>id</code>, latitude
+(<code>lat</code>), and longitude (<code>lon</code>) columns, discarding
+the addresses.</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">d</span> <span class="op">&lt;-</span> <span class="va">d</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="../reference/degauss_run.html">degauss_run</a></span><span class="op">(</span><span class="st">"geocoder"</span>, <span class="st">"3.2.1"</span>, quiet <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span> <span class="op">|&gt;</span></span>
@@ -152,7 +172,9 @@
 <div class="section level4">
 <h4 id="add-2020-census-tract-geographies">Add 2020 Census Tract Geographies<a class="anchor" aria-label="anchor" href="#add-2020-census-tract-geographies"></a>
 </h4>
-<p>Attach 2020 census tract and block group identifiers. Here, we specify <code>argument = "2020"</code> to ensure the DeGAUSS image uses the correct vintage of census geographies.</p>
+<p>Attach 2020 census tract and block group identifiers. Here, we
+specify <code>argument = "2020"</code> to ensure the DeGAUSS image uses
+the correct vintage of census geographies.</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">d</span> <span class="op">&lt;-</span> <span class="va">d</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="../reference/degauss_run.html">degauss_run</a></span><span class="op">(</span><span class="st">"census_block_group"</span>, <span class="st">"0.6.0"</span>, argument <span class="op">=</span> <span class="st">"2020"</span>, quiet <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
@@ -160,7 +182,9 @@
 <div class="section level4">
 <h4 id="merge-census-data">Merge Census Data<a class="anchor" aria-label="anchor" href="#merge-census-data"></a>
 </h4>
-<p>Census tract identifiers can be used to link <a href="https://geomarker.io/hh_acs_measures" class="external-link">lots</a> and <a href="https://geomarker.io/census_mega_dataset" class="external-link">lots</a> of different types of data. Download the 2018 <a href="https://geomarker.io/dep_index" class="external-link">material deprivation index</a> and join it to our data.</p>
+<p>Census tract identifiers can be used to link <a href="https://geomarker.io/hh_acs_measures" class="external-link">lots</a> and <a href="https://geomarker.io/census_mega_dataset" class="external-link">lots</a> of different
+types of data. Download the 2018 <a href="https://geomarker.io/dep_index" class="external-link">material deprivation index</a> and
+join it to our data.</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">dep_index</span> <span class="op">&lt;-</span> <span class="st">"https://github.com/geomarker-io/dep_index/raw/master/2018_dep_index/ACS_deprivation_index_by_census_tracts.rds"</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="https://rdrr.io/r/base/connections.html" class="external-link">url</a></span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span></span>
@@ -174,11 +198,15 @@
 <div class="section level4">
 <h4 id="add-greenness">Add Greenness<a class="anchor" aria-label="anchor" href="#add-greenness"></a>
 </h4>
-<p>As an example of geomarker assessment that does not rely on census geography, we add the mean EVI (enhanced vegetation index) within three differently sized buffers (radii of 500, 1,500, and 2,500 m) around each location.</p>
+<p>As an example of geomarker assessment that does not rely on census
+geography, we add the mean EVI (enhanced vegetation index) within three
+differently sized buffers (radii of 500, 1,500, and 2,500 m) around each
+location.</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">d</span> <span class="op">&lt;-</span> <span class="va">d</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="../reference/degauss_run.html">degauss_run</a></span><span class="op">(</span><span class="st">"greenspace"</span>, <span class="st">"0.3.0"</span>, quiet <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
-<p>Our geomarker assessment process is complete and everything is linked in one data frame, ready for storing, analyzing, and sharing.</p>
+<p>Our geomarker assessment process is complete and everything is linked
+in one data frame, ready for storing, analyzing, and sharing.</p>
 </div>
 </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>

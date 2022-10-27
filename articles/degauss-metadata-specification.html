@@ -33,7 +33,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">dht</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.2.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.2.1</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -90,16 +90,25 @@
 <div class="section level2">
 <h2 id="metadata-elements">Metadata Elements<a class="anchor" aria-label="anchor" href="#metadata-elements"></a>
 </h2>
-<p>The below list contains the names of supported metadata elements captured using environment variables defined using <code>ENV</code> instructions inside the Dockerfile:</p>
+<p>The below list contains the names of supported metadata elements
+captured using environment variables defined using <code>ENV</code>
+instructions inside the Dockerfile:</p>
 <ul>
 <li>
-<strong><code>degauss_name</code></strong>: name of DeGAUSS container (use only lower case letters and underscores)</li>
+<strong><code>degauss_name</code></strong>: name of DeGAUSS
+container (use only lower case letters and underscores)</li>
 <li>
-<strong><code>degauss_version</code></strong>: version number corresponding to GitHub release and latest version of container available from the GitHub Container Registry</li>
+<strong><code>degauss_version</code></strong>: version number
+corresponding to GitHub release and latest version of container
+available from the GitHub Container Registry</li>
 <li>
-<strong><code>degauss_description</code></strong>: a short (&lt; 50 characters) description that finishes the sentence “This container returns …”</li>
+<strong><code>degauss_description</code></strong>: a short (&lt; 50
+characters) description that finishes the sentence “This container
+returns …”</li>
 <li>
-<strong><code>degauss_argument</code></strong>: name and default value of any argument <code>short argument description [default: x]</code>
+<strong><code>degauss_argument</code></strong>: name and default
+value of any argument
+<code>short argument description [default: x]</code>
 </li>
 </ul>
 </div>
@@ -107,9 +116,16 @@
 <h2 id="defining-metadata-environment-variables-in-the-dockerfile">Defining Metadata Environment Variables in the Dockerfile<a class="anchor" aria-label="anchor" href="#defining-metadata-environment-variables-in-the-dockerfile"></a>
 </h2>
 <ul>
-<li>The template Dockerfile from {dht} (<code><a href="../reference/use_degauss_container.html">dht::use_degauss_dockerfile()</a></code>) comes with the above four (but with commented out <code>ENV</code> instructions for specifying an optional command line argument)</li>
-<li>Each <code>ENV</code> must be on its own line and only define one variable at a time</li>
-<li>In general, any <code>ENV</code> instruction that begins with <code>degauss_</code> can/will be read in by <code><a href="../reference/get_degauss_env_dockerfile.html">dht::get_degauss_env_dockerfile()</a></code> or <code><a href="../reference/get_degauss_env_dockerfile.html">dht::get_degauss_env_online()</a></code>
+<li>The template Dockerfile from {dht}
+(<code><a href="../reference/use_degauss_container.html">dht::use_degauss_dockerfile()</a></code>) comes with the above four
+(but with commented out <code>ENV</code> instructions for specifying an
+optional command line argument)</li>
+<li>Each <code>ENV</code> must be on its own line and only define one
+variable at a time</li>
+<li>In general, any <code>ENV</code> instruction that begins with
+<code>degauss_</code> can/will be read in by
+<code><a href="../reference/get_degauss_env_dockerfile.html">dht::get_degauss_env_dockerfile()</a></code> or
+<code><a href="../reference/get_degauss_env_dockerfile.html">dht::get_degauss_env_online()</a></code>
 </li>
 </ul>
 <div class="section level3">
@@ -126,7 +142,8 @@
 <span><span class="co">##                          "random quotes" </span></span>
 <span><span class="co">##                         degauss_argument </span></span>
 <span><span class="co">## "number of quotes to print [default: 1]"</span></span></code></pre>
-<p>or get a table of information about the images in the core library</p>
+<p>or get a table of information about the images in the core
+library</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">core_info</span> <span class="op">&lt;-</span> <span class="fu">dht</span><span class="fu">::</span><span class="fu"><a href="../reference/get_degauss_core_lib_env.html">get_degauss_core_lib_env</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## <span style="color: #00BBBB;">ℹ</span> downloading latest information about images in core library...</span></span></code></pre>
@@ -211,7 +228,8 @@
 <td align="left">narr</td>
 <td align="left">0.4.0</td>
 <td align="left">daily weather data (temperature, humidity, etc)</td>
-<td align="left">NARR variables to be returned (weather, wind, atmosphere, pratepres, or none) [default: weather]</td>
+<td align="left">NARR variables to be returned (weather, wind,
+atmosphere, pratepres, or none) [default: weather]</td>
 </tr>
 </tbody>
 </table>
