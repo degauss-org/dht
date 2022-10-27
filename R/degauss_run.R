@@ -24,13 +24,13 @@ degauss_run <- function(.x, image, version = "latest", argument = NA, quiet = FA
                          version = version,
                          argument = argument)
 
-  degauss_cmd <- gsub("$PWD", dirname(tf), degauss_cmd, fixed = TRUE)
+  degauss_cmd <- gsub("$PWD", fs::path_dir(tf), degauss_cmd, fixed = TRUE)
 
   system(degauss_cmd, ignore.stdout = quiet, ignore.stderr = quiet)
 
   out_files <-
     fs::dir_ls(fs::path_dir(tf),
-               glob = paste0(fs::path_file(tf), "*.csv"))
+               glob = paste0(fs::path_ext_remove(tf), "*.csv"))
 
   out_file <- out_files[!out_files == tf]
 

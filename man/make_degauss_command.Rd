@@ -9,7 +9,7 @@ make_degauss_command(
   image,
   version = "latest",
   argument = NA,
-  docker_cmd = "docker"
+  docker_cmd = find_docker()
 )
 }
 \arguments{

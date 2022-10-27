@@ -1,10 +1,10 @@
 test_that("can make degauss command", {
   expect_equal(
-    make_degauss_command(image = "geocoder", version = "3.2.0"),
+    make_degauss_command(image = "geocoder", version = "3.2.0", docker_cmd = "docker"),
     "docker run --rm -v $PWD:/tmp ghcr.io/degauss-org/geocoder:3.2.0 my_address_file_geocoded.csv"
   )
   expect_equal(
-    make_degauss_command(image = "geocoder", version = "3.2.0", argument = "0.4"),
+    make_degauss_command(image = "geocoder", version = "3.2.0", argument = "0.4", docker_cmd = "docker"),
     "docker run --rm -v $PWD:/tmp ghcr.io/degauss-org/geocoder:3.2.0 my_address_file_geocoded.csv 0.4"
   )
   expect_equal(
@@ -12,7 +12,7 @@ test_that("can make degauss command", {
     "/usr/local/bin/docker run --rm -v $PWD:/tmp ghcr.io/degauss-org/geocoder:3.2.0 my_address_file_geocoded.csv"
   )
   expect_equal(
-    make_degauss_command(image = "geocoder"),
+    make_degauss_command(image = "geocoder", docker_cmd = "docker"),
     "docker run --rm -v $PWD:/tmp ghcr.io/degauss-org/geocoder:latest my_address_file_geocoded.csv"
   )
 })
