@@ -9,7 +9,7 @@
 #' @export
 degauss_run <- function(.x, image, version = "latest", argument = NA, quiet = FALSE) {
 
-  tf <- fs::path(tempfile(pattern = "degauss_", fileext = ".csv"))
+  tf <- fs::file_temp(ext = ".csv", pattern = "degauss_")
 
   degauss_input_names <-  names(.x)[names(.x) %in% c("address", "lat", "lon", "start_date", "end_date")]
 
