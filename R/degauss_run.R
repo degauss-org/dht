@@ -9,7 +9,7 @@
 #' @export
 degauss_run <- function(.x, image, version = "latest", argument = NA, quiet = FALSE) {
 
-  tf <- tempfile(pattern = "degauss_", fileext = ".csv")
+  tf <- fs::file_temp(ext = ".csv", pattern = "degauss_")
 
   degauss_input_names <-  names(.x)[names(.x) %in% c("address", "lat", "lon", "start_date", "end_date")]
 
@@ -22,20 +22,18 @@ degauss_run <- function(.x, image, version = "latest", argument = NA, quiet = FA
     make_degauss_command(input_file = basename(tf),
                          image = image,
                          version = version,
-                         argument = argument,
-                         docker_cmd = find_docker())
+                         argument = argument)
 
-  degauss_cmd <- gsub("$PWD", dirname(tf), degauss_cmd, fixed = TRUE)
+  degauss_cmd <- gsub("$PWD", fs::path_dir(tf), degauss_cmd, fixed = TRUE)
 
   system(degauss_cmd, ignore.stdout = quiet, ignore.stderr = quiet)
 
   out_files <-
-    list.files(dirname(tf),
-               pattern = tools::file_path_sans_ext(basename(tf)),
-               full.names = TRUE)
+    fs::dir_ls(fs::path_dir(tf),
+               glob = paste0(fs::path_ext_remove(tf), "*.csv"))
 
   out_file <- out_files[!out_files == tf]
-  
+
   .x_output <-
     readr::read_csv(
       file = out_file,
@@ -79,11 +77,11 @@ degauss_run <- function(.x, image, version = "latest", argument = NA, quiet = FA
 #' @param docker_cmd path to docker executable
 #' @return DeGAUSS command as a character string
 #' @examples
-#' make_degauss_command(image = "geocoder", version = "3.2.0")
-#' make_degauss_command(image = "geocoder", version = "3.2.0", argument = "0.4")
+#' make_degauss_command(image = "geocoder", version = "3.2.0", docker_cmd = "docker")
+#' make_degauss_command(image = "geocoder", version = "3.2.0", argument = "0.4", docker_cmd = "docker")
 #' make_degauss_command(image = "geocoder", version = "3.2.0", docker_cmd = "/usr/local/bin/docker")
 #' @export
-make_degauss_command <- function(input_file = "my_address_file_geocoded.csv", image, version = "latest", argument = NA, docker_cmd = "docker") {
+make_degauss_command <- function(input_file = "my_address_file_geocoded.csv", image, version = "latest", argument = NA, docker_cmd = find_docker()) {
   degauss_cmd <-
     glue::glue(
       "{docker_cmd}",
