@@ -77,8 +77,8 @@ degauss_run <- function(.x, image, version = "latest", argument = NA, quiet = FA
 #' @param docker_cmd path to docker executable
 #' @return DeGAUSS command as a character string
 #' @examples
-#' make_degauss_command(image = "geocoder", version = "3.2.0")
-#' make_degauss_command(image = "geocoder", version = "3.2.0", argument = "0.4")
+#' make_degauss_command(image = "geocoder", version = "3.2.0", docker_cmd = "docker")
+#' make_degauss_command(image = "geocoder", version = "3.2.0", argument = "0.4", docker_cmd = "docker")
 #' make_degauss_command(image = "geocoder", version = "3.2.0", docker_cmd = "/usr/local/bin/docker")
 #' @export
 make_degauss_command <- function(input_file = "my_address_file_geocoded.csv", image, version = "latest", argument = NA, docker_cmd = find_docker()) {

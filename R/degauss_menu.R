@@ -21,7 +21,8 @@ create_degauss_menu_data <- function(core_lib_env = get_degauss_core_lib_env()) 
     degauss_cmd =
       purrr::pmap_chr(
         list(image = name, version = version, argument = argument_default),
-        make_degauss_command
+        make_degauss_command,
+        docker_cmd = "docker"
       )
   )
 }

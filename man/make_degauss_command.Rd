@@ -30,7 +30,7 @@ DeGAUSS command as a character string
 create a \href{https://degauss.org/using_degauss.html#DeGAUSS_Commands}{DeGAUSS command}
 }
 \examples{
-make_degauss_command(image = "geocoder", version = "3.2.0")
-make_degauss_command(image = "geocoder", version = "3.2.0", argument = "0.4")
+make_degauss_command(image = "geocoder", version = "3.2.0", docker_cmd = "docker")
+make_degauss_command(image = "geocoder", version = "3.2.0", argument = "0.4", docker_cmd = "docker")
 make_degauss_command(image = "geocoder", version = "3.2.0", docker_cmd = "/usr/local/bin/docker")
 }
