@@ -24,6 +24,7 @@ test_that("can test for and find docker", {
   })
 
 test_that("can use degauss_run", {
+  skip_on_ci()
   skip_if(!has_docker(), "docker not available")
   d <- readr::read_csv(test_path("my_address_file.csv"), show_col_types = FALSE)
   d_out <- degauss_run(.x = d, image = "postal", version = "0.1.1", quiet = TRUE)
@@ -31,6 +32,7 @@ test_that("can use degauss_run", {
   })
 
 test_that("can use degauss_run without specifying version", {
+  skip_on_ci()
   skip_if(!has_docker(), "docker not available")
   d <- readr::read_csv(test_path("my_address_file.csv"), show_col_types = FALSE)
   d_out <- degauss_run(.x = d, image = "postal", quiet = TRUE)
@@ -38,6 +40,7 @@ test_that("can use degauss_run without specifying version", {
   })
 
 test_that("multiple addresses don't cause merge problems", {
+  skip_on_ci()
   skip_if(!has_docker(), "docker not available")
   d_out <-
     data.frame(address = c("224 Woolper Ave Cincinnati, OH 45220"),
