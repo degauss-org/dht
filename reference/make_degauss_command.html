@@ -10,7 +10,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">dht</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.2.1</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.2.2</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -62,7 +62,7 @@
 <span>  <span class="va">image</span>,</span>
 <span>  version <span class="op">=</span> <span class="st">"latest"</span>,</span>
 <span>  argument <span class="op">=</span> <span class="cn">NA</span>,</span>
-<span>  docker_cmd <span class="op">=</span> <span class="st">"docker"</span></span>
+<span>  docker_cmd <span class="op">=</span> <span class="fu"><a href="find_docker.html">find_docker</a></span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
 
@@ -97,9 +97,9 @@
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="fu">make_degauss_command</span><span class="op">(</span>image <span class="op">=</span> <span class="st">"geocoder"</span>, version <span class="op">=</span> <span class="st">"3.2.0"</span><span class="op">)</span></span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="fu">make_degauss_command</span><span class="op">(</span>image <span class="op">=</span> <span class="st">"geocoder"</span>, version <span class="op">=</span> <span class="st">"3.2.0"</span>, docker_cmd <span class="op">=</span> <span class="st">"docker"</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> docker run --rm -v $PWD:/tmp ghcr.io/degauss-org/geocoder:3.2.0 my_address_file_geocoded.csv</span>
-<span class="r-in"><span><span class="fu">make_degauss_command</span><span class="op">(</span>image <span class="op">=</span> <span class="st">"geocoder"</span>, version <span class="op">=</span> <span class="st">"3.2.0"</span>, argument <span class="op">=</span> <span class="st">"0.4"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu">make_degauss_command</span><span class="op">(</span>image <span class="op">=</span> <span class="st">"geocoder"</span>, version <span class="op">=</span> <span class="st">"3.2.0"</span>, argument <span class="op">=</span> <span class="st">"0.4"</span>, docker_cmd <span class="op">=</span> <span class="st">"docker"</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> docker run --rm -v $PWD:/tmp ghcr.io/degauss-org/geocoder:3.2.0 my_address_file_geocoded.csv 0.4</span>
 <span class="r-in"><span><span class="fu">make_degauss_command</span><span class="op">(</span>image <span class="op">=</span> <span class="st">"geocoder"</span>, version <span class="op">=</span> <span class="st">"3.2.0"</span>, docker_cmd <span class="op">=</span> <span class="st">"/usr/local/bin/docker"</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> /usr/local/bin/docker run --rm -v $PWD:/tmp ghcr.io/degauss-org/geocoder:3.2.0 my_address_file_geocoded.csv</span>
