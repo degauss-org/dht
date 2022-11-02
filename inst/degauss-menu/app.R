@@ -50,6 +50,9 @@ ui <- function(request) {
       color = 'primary',
       href = "https://degauss.org",
       image = "https://raw.githubusercontent.com/degauss-org/degauss_hex_logo/main/SVG/degauss_hex.svg"),
+      
+      actionButton(inputId = 'survey_link', label = "User Survey", icon = icon("link"),
+                   onclick = "window.open('https://redcap.research.cchmc.org/surveys/?s=PCR88EMPDY')"),
       compact = TRUE),
 
   sidebar = dashboardSidebar(
@@ -64,15 +67,10 @@ ui <- function(request) {
                        choices = c("Census geography" = "census", "Area material deprivation" = "depind",
                                    "Traffic/driving information" = "traffic", "Landcover makeup" = "land",
                                    "Weather data" = "weather", "Air pollution" = "pollute")),
-    
-    
-    radioButtons(inputId = "temporal", inline = FALSE, label = "Do you have temporal data?",
-                       choices = c("Yes", "No"), selected = character(0)),
-    
     tooltip(
-      title = "If you're not sure if you have temporal data, select this option to include all containers that allow temporal data columns in the input file",
+      title = "Certain DeGUASS containers are linked to temporal data and may utilize start and end dates to collect the appropriate data",
       placement = "bottom",
-      checkboxInput("not_sure", label = "Not sure if you have temporal data? Click here",
+      checkboxInput("temporal", label = "If your data has columns with start dates and end dates, click here",
                   value = FALSE)
     )
     
@@ -117,9 +115,11 @@ ui <- function(request) {
         status = 'primary',
         solidHeader = TRUE,
         color = "white", 
+        collapsed = T, 
+        collapsible = T, 
         sidebar = boxSidebar(
           id = "windowsSidebar",
-          checkboxInput('windows', "Using Windows?", value = FALSE),
+          checkboxInput('windows', "Using Windows cmd prompt?", value = FALSE),
           width = 25,
           startOpen = FALSE
         )
@@ -145,29 +145,26 @@ server <- function(input, output, session) {
       name %in% "pm" ~ "pollute"
     ),
     temporal = case_when(
-      name %in% c('st_census_tract', 'aadt', 'narr', 'pm') ~ 'Yes',
-      name %in% c('census_block_group', 'dep_index', 'roads', 'drivetime', 'greenspace', 'nlcd') ~ 'No'
-      ),
-    not_sure = case_when(
-      name %in% c('dep_index', 'roads', 'drivetime', 'greenspace', 'nlcd') ~ 'optional',
-      name %in% c('st_census_tract', 'aadt', 'narr', 'pm', 'census_block_group') ~ 'non_optional'
-      ))
+      name %in% c('st_census_tract', 'aadt', 'narr', 'pm') ~ TRUE,
+      name %in% c('census_block_group', 'dep_index', 'roads', 'drivetime', 'greenspace', 'nlcd') ~ FALSE
+      )
+    )
   
   d_obj <- reactive({
     d <- dplyr::select(d, -degauss_cmd) %>%
       transform(url = paste0("<a href='", url, "'>", url, "</a>"))
     
-    if (is.null(input$want) & is.null(input$temporal)){
+    if (is.null(input$want)){
       d
-    } else if (input$not_sure == TRUE | is.null(input$temporal)) {
+    } else if (input$temporal == TRUE) {
       d <- d %>%
-        filter(not_sure == "optional" & category %in% input$want)
+        filter(category %in% input$want)
       d
-    } else if (input$not_sure == FALSE) {
+    } else if (input$temporal == FALSE) {
       d <- d %>%
-        filter(category %in% input$want & temporal %in% input$temporal)
+        filter(category %in% input$want & temporal == FALSE)
       d
-    } 
+    }
   })
 
   output$core_lib_images_table <-
