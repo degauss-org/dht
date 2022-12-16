@@ -38,8 +38,5 @@ create_degauss_menu_data <- function(core_lib_env = get_degauss_core_lib_env()) 
 #' @return NULL
 #' @export
 degauss_menu <- function() {
-  if (!requireNamespace("shiny", quietly = TRUE)) {
-    cli::cli_abort("please install {.pkg shiny} to run degauss menu")
-  }
-  shiny::runApp(system.file("degauss-menu", package = "dht"))
+  .Deprecated("please visit https://degauss.org/menu instead")
 }

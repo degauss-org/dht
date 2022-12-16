@@ -15,15 +15,14 @@ License: GPL (>= 3)
 Encoding: UTF-8
 LazyData: true
 Roxygen: list(markdown = TRUE)
-RoxygenNote: 7.2.1
+RoxygenNote: 7.2.2
 Suggests: 
     testthat (>= 3.0.0),
     sf (>= 0.8-1),
     renv (>= 0.8.3),
     tibble,
     knitr,
-    rmarkdown,
-    shiny
+    rmarkdown
 Imports: 
     cli (>= 2.2.0),
     magrittr,

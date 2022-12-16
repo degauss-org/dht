@@ -15,7 +15,6 @@ reference:
   - greeting
   - check_ram
   - degauss_colors
-  - degauss_menu
 
 - title: Reading and Writing Data
   contents:
@@ -66,3 +65,4 @@ reference:
     development, as better solutions now exist.
   contents:
     - qlibrary
+    - degauss_menu
