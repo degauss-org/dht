@@ -25,10 +25,14 @@ test_that("is PO Box", {
 test_that("is institutional", {
   expect_identical(
     address_is_institutional(c(
-      "3333 Burnet Ave Cincinnati OH 45229-1234", "PO Box 1234 Cincinnati OH 45229",
-      "2600 CLIFTON AVE Cincinnati OH 45229"
+      "3333 Burnet Ave Cincinnati OH 45229-1234",
+      "3333 Burnett Ave Cincinnati OH 45229",
+      "3333 Burnet Ave, Syracuse, NY 13206", # false positive!!!
+      "PO Box 1234 Cincinnati OH 45229",
+      "2600 CLIFTON AVE Cincinnati OH 45229",
+      "341 Erkenbrecher Ave, Cincinnati, OH 45229"
     )),
-    c(TRUE, FALSE, FALSE)
+    c(TRUE, TRUE, TRUE, FALSE, FALSE, TRUE)
   )
 })
 
