@@ -6,33 +6,41 @@ test_that("clean_address", {
       "2600    CLIFTON AVE., Cincinnati, OH 45229"
     )),
     c(
-      "3333 Burnet Ave Cincinnati OH 45229-1234", "PO Box 1234 Cincinnati OH 45229",
+      "3333 Burnet Ave Cincinnati OH 45229-1234",
+      "PO Box 1234 Cincinnati OH 45229",
       "2600 CLIFTON AVE Cincinnati OH 45229"
     )
   )
 })
 
-test_that("is PO Box", {
+test_that("PO Box", {
   expect_identical(
     address_is_po_box(c(
-      "3333 Burnet Ave Cincinnati OH 45229-1234", "PO Box 1234 Cincinnati OH 45229",
+      "3333 Burnet Ave Cincinnati OH 45229-1234",
+      "PO Box 1234 Cincinnati OH 45229",
+      "P.O. Box 1234 Cincinnati OH 45229",
       "2600 CLIFTON AVE Cincinnati OH 45229"
     )),
-    c(FALSE, TRUE, FALSE)
+    c(FALSE, TRUE, TRUE, FALSE)
   )
 })
 
-test_that("is institutional", {
+test_that("institutional address", {
   expect_identical(
     address_is_institutional(c(
-      "3333 Burnet Ave Cincinnati OH 45229-1234", "PO Box 1234 Cincinnati OH 45229",
-      "2600 CLIFTON AVE Cincinnati OH 45229"
+      "3333 Burnet Ave Cincinnati OH 45229-1234",
+      "3333 Burnett Ave Cincinnati OH 45229",
+      "3333 Burnet Ave, Syracuse, NY 13206", # false positive!!!
+      "PO Box 1234 Cincinnati OH 45229",
+      "2600 CLIFTON AVE Cincinnati OH 45229",
+      "341 Erkenbrecher Ave, Cincinnati, OH 45229",
+      "3031 Eden Ave"
     )),
-    c(TRUE, FALSE, FALSE)
+    c(TRUE, TRUE, TRUE, FALSE, FALSE, TRUE, TRUE)
   )
 })
 
-test_that("is JFS", {
+test_that("JFS institutional address", {
   expect_true(
     all(
       address_is_institutional(c(
@@ -51,13 +59,12 @@ test_that("is JFS", {
   )
 })
 
-
-test_that("check slash dates", {
+test_that("non address", {
   expect_identical(
     address_is_nonaddress(c(
       "3333 Burnet Ave Cincinnati OH 45229-1234", "PO Box 1234 Cincinnati OH 45229",
-      "foreign", ""
+      "foreign", "FOREIGN", ""
     )),
-    c(FALSE, FALSE, TRUE, TRUE)
+    c(FALSE, FALSE, TRUE, TRUE, TRUE)
   )
 })
