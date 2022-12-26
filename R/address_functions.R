@@ -37,7 +37,13 @@ address_is_po_box <- function(address) {
 #' @param address character vector of address text
 #' @return logical vector; TRUE when address contains some text
 #'         indicating Cincinnati Children's Hospital, Ronald
-#'         McDonald House, or Jobs and Family Services for Hamilton and Butler Counties in Ohio.
+#'         McDonald House, Jobs and Family Services
+#'         for Hamilton and Butler Counties in Ohio, or
+#'         Stetson Square
+#' @details Print the function to view the source and the complete
+#' list of addresses considered to be Cincinnati insitutional addresses;
+#' Note that addresses in other cities might be erroneously categorized as institutional
+#' (e.g., "3333 Burnet Ave Syracuse NY 13206")
 address_is_institutional <- function(address) {
   cli::cli_alert_info("flagging known Cincinnati foster & institutional addresses...", wrap = TRUE)
   institutional_strings <- c(
