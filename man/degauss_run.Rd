@@ -21,5 +21,17 @@ degauss_run(.x, image, version = "latest", argument = NA, quiet = FALSE)
 \code{.x} with additional returned DeGAUSS columns
 }
 \description{
-run a DeGAUSS container
+This function uses temporary CSV files and DeGAUSS commands
+as system calls to \code{docker}. Because of this approach,
+caching of geocoding results or reuse of intermediate downloaded data
+files are not possible, \emph{unless called from the same R session.} See
+the examples for a workaround.
+}
+\examples{
+## create a memoised version of degauss_run so repetitive calls are cached
+## this can be useful during development of DeGAUSS pipelines
+\dontrun{
+fc <- memoise::cache_filesystem(fs::path(fs::path_wd(), "data-raw"))
+degauss_run <- memoise::memoise(degauss_run, omit_args = c("quiet"), cache = fc)
+}
 }

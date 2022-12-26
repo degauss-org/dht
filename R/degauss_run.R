@@ -1,5 +1,10 @@
 #' run a DeGAUSS container
-#' 
+#'
+#' This function uses temporary CSV files and DeGAUSS commands
+#' as system calls to `docker`. Because of this approach,
+#' caching of geocoding results or reuse of intermediate downloaded data
+#' files are not possible, *unless called from the same R session.* See
+#' the examples for a workaround.
 #' @param .x a data.frame or tibble to be input to a DeGAUSS container
 #' @param image name of DeGAUSS image
 #' @param version version of DeGAUSS image; will use latest version if not specified
@@ -7,6 +12,13 @@
 #' @param quiet suppress output from DeGAUSS container?
 #' @return `.x` with additional returned DeGAUSS columns
 #' @export
+#' @examples
+#' ## create a memoised version of degauss_run so repetitive calls are cached
+#' ## this can be useful during development of DeGAUSS pipelines
+#' \dontrun{
+#' fc <- memoise::cache_filesystem(fs::path(fs::path_wd(), "data-raw"))
+#' degauss_run <- memoise::memoise(degauss_run, omit_args = c("quiet"), cache = fc)
+#' }
 degauss_run <- function(.x, image, version = "latest", argument = NA, quiet = FALSE) {
 
   tf <- fs::file_temp(ext = ".csv", pattern = "degauss_")
