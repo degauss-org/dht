@@ -25,7 +25,7 @@ An example DeGAUSS pipeline in R might look like this:
 
 ```{r eval = F}
 addresses |>
-  degauss_run("postal", "0.1.1") |>
+  degauss_run("postal", "0.1.4") |>
   dplyr::select(id = id, address = parsed_address) |>
   degauss_run("geocoder", "3.2.1") |>
   select(id, lat, lon) |>
@@ -71,7 +71,7 @@ Before geocoding, we will use the DeGAUSS `postal` image to create a "normalized
 ```{r}
 d <-
   addresses |>
-  degauss_run("postal", "0.1.1", quiet = TRUE) |>
+  degauss_run("postal", "0.1.4", quiet = TRUE) |>
   select(id = id, address = parsed_address)
 ```
 
